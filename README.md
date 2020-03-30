@@ -1,1 +1,1 @@
-# mobile_polimi_project
+# Progetto Mobile Tasca/Roncaglioni
