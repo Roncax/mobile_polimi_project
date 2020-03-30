@@ -1,0 +1,2 @@
+rootProject.name='iAdvice'
+include ':app'
