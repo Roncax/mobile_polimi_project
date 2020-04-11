@@ -2,5 +2,7 @@
     <string name="app_name">iAdvice</string>
     <string name="login_button">Login</string>
     <string name="register_button">Register</string>
-    <string name="username_text">Insert your Email here..</string>
+    <string name="username_text">Insert Email here</string>
+    <string name="logo_description">Main logo of the app</string>
+    <string name="password_hint">Insert Password</string>
 </resources>
