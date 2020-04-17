@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.example.iadvice.App
 
 import com.example.iadvice.R
 import com.example.iadvice.databinding.LoginFragmentBinding
+import kotlinx.android.synthetic.main.login_fragment.*
 
 class LoginFragment : Fragment() {
     //private lateinit var binding: LoginFragmentBinding //class created by the compiler for the binding
@@ -37,13 +39,20 @@ class LoginFragment : Fragment() {
         binding.apply {
             loginButton.setOnClickListener {
                 loginControl(it)
-                viewModel.loginUser(binding.passwordText.text, binding.usernameText.text)}
+                val user = username_text.text.toString()
+                App.user = user
+                viewModel.loginUserButton(binding.passwordText.text, binding.usernameText.text)
+                //startActivity(Intent(MainActivity@MainActivity, ChatActivity::class.java))
+            }
+
             registerButton.setOnClickListener {
                 registerControl(it)
-                viewModel.registerUser(binding.passwordText.text, binding.usernameText.text)}
+                viewModel.registerUserButton(binding.passwordText.text, binding.usernameText.text)
+        }
+
             facebookLoginButton.setOnClickListener { facebookLogin(it) }
-            googleLoginButton.setOnClickListener { googleLogin(it)}
-            twitterLoginButton.setOnClickListener{twitterLogin(it)}
+            googleLoginButton.setOnClickListener { googleLogin(it) }
+            twitterLoginButton.setOnClickListener { twitterLogin(it) }
         }
         return binding.root
     }
@@ -56,11 +65,11 @@ class LoginFragment : Fragment() {
 
     private fun registerControl(it: View?) {
         Log.i(TAG, "Registrazione iniziata")
-
     }
 
     private fun loginControl(it: View?) {
         Log.i(TAG, "Login iniziato")
+
     }
 
     private fun facebookLogin(it: View?) {

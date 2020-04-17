@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "email": "paolo.roncaglioni@gmail.com",
+      "name": "Paolo",
+      "surname": "Roncaglioni",
+      "age": 25,
+      "gender": "male",
+      "photo": "to_add",
+      "nickname": "Roncax",
+      "password": "admin"
+    },
+    {
+      "email": "thomas.tasca@gmail.com",
+      "name": "Thomas",
+      "surname": "Tasca",
+      "age": 24,
+      "gender": "male",
+      "photo": "to_add",
+      "nickname": "tm95",
+      "password": "password"
+    }
+  ]
+}

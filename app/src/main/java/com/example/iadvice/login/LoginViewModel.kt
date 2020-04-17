@@ -18,11 +18,18 @@ class LoginViewModel : ViewModel() {
 
     private val TAG = "LoginViewModel"
 
-    fun registerUser(password: Editable, username: Editable) {
-        Log.i(TAG, "Ricevuto registrzione di user $username con pw $password")
+    //login screen button
+    fun registerUserButton(password: Editable, username: Editable) {
+        Log.i(TAG, "Ricevuto registrazione di user $username con pw $password")
     }
 
-    fun loginUser(password: Editable, username: Editable) {
+    // register screen button
+    fun registerUser(name: String, nickname: String, email: String,  password: String, personalPhoto: String){
+        Log.i(TAG, "Ricevuta registrazione di user $nickname con pw $password")
+    }
+
+    fun loginUserButton(password: Editable, username: Editable) {
         Log.i(TAG, "Ricevuto login di user $username con pw $password")
     }
+
 }

@@ -1,0 +1,36 @@
+{
+  "chats": [
+    {
+      "id": "num",
+      "title": "prova",
+      "info": "insert info here",
+      "owner": "paolo.roncaglioni@gmail.com",
+      "type": "openchat",
+      "photo": "id_photo",
+      "partecipants": [
+        {
+          "email": "thomas.tasca@gmail.com"
+        },
+        {
+          "email": "roberto.turi@polimi.it"
+        }
+      ]
+    },
+    {
+      "id": "1234",
+      "title": "allungamento pene",
+      "info": "insert info here",
+      "owner": "tasca.thomas@gmail.com",
+      "type": "YesOrNo",
+      "photo": "id_photo",
+      "partecipants": [
+        {
+          "email": "paolo.roncaglioni@gmail.com"
+        },
+        {
+          "email": "roberto.turi@polimi.it"
+        }
+      ]
+    }
+  ]
+}
