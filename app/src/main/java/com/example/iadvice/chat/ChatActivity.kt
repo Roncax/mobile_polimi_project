@@ -17,7 +17,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 private const val TAG = "ChatActivity"
 
 class ChatActivity : AppCompatActivity() {
@@ -29,10 +28,11 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
         messageList.layoutManager = LinearLayoutManager(this)
         adapter = MessageAdapter(this)
         messageList.adapter = adapter
-        Log.i(TAG, "PORCODIOOOOOOOOOO")
+
         btnSend.setOnClickListener {
             if (txtMessage.text.isNotEmpty()) {
                 val time = Calendar.getInstance().timeInMillis

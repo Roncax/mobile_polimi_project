@@ -1,5 +1,6 @@
 package com.example.iadvice.login
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -8,21 +9,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.iadvice.App
+import com.example.iadvice.MainActivity
 
 import com.example.iadvice.R
+import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.databinding.LoginFragmentBinding
 import kotlinx.android.synthetic.main.login_fragment.*
 
+private var TAG = "LoginViewModel" //used for the logs
+
 class LoginFragment : Fragment() {
     //private lateinit var binding: LoginFragmentBinding //class created by the compiler for the binding
-    private var TAG = "LoginViewModel" //used for the logs
+
     private lateinit var viewModel: LoginViewModel
-
-
-    companion object {
-        fun newInstance() = LoginFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,26 +34,26 @@ class LoginFragment : Fragment() {
             inflater,
             R.layout.login_fragment, container, false
         )
+
         // viewModelProviders used to not destroy the viewmodel until detached
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
         binding.apply {
             loginButton.setOnClickListener {
-                loginControl(it)
                 val user = username_text.text.toString()
                 App.user = user
-                viewModel.loginUserButton(binding.passwordText.text, binding.usernameText.text)
-                //startActivity(Intent(MainActivity@MainActivity, ChatActivity::class.java))
+                viewModel.loginUserButton(binding.passwordText.text.toString(), binding.usernameText.text.toString())
+                view!!.findNavController().navigate(R.id.action_loginFragment_to_chatActivity)
+                //startActivity(Intent(MainActivity@ LoginFragment, ChatActivity::class.java))
             }
 
             registerButton.setOnClickListener {
-                registerControl(it)
                 viewModel.registerUserButton(binding.passwordText.text, binding.usernameText.text)
-        }
+            }
 
-            facebookLoginButton.setOnClickListener { facebookLogin(it) }
-            googleLoginButton.setOnClickListener { googleLogin(it) }
-            twitterLoginButton.setOnClickListener { twitterLogin(it) }
+            //facebook_login_button.setOnClickListener {}
+           // google_login_button.setOnClickListener {}
+           // twitter_login_button.setOnClickListener {}
         }
         return binding.root
     }
@@ -61,27 +62,6 @@ class LoginFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         // TODO: Use the ViewModel
-    }
-
-    private fun registerControl(it: View?) {
-        Log.i(TAG, "Registrazione iniziata")
-    }
-
-    private fun loginControl(it: View?) {
-        Log.i(TAG, "Login iniziato")
-
-    }
-
-    private fun facebookLogin(it: View?) {
-        Log.i(TAG, "Login facebook iniziato")
-    }
-
-    private fun twitterLogin(it: View?) {
-        Log.i(TAG, "Login twitter iniziato")
-    }
-
-    private fun googleLogin(it: View?) {
-        Log.i(TAG, "Login google iniziato")
     }
 
 }
