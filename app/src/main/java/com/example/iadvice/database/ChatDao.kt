@@ -25,5 +25,5 @@ interface ChatDao {
 
     @Query("SELECT chat_messages FROM chat_table WHERE uid = :chatId")
     fun getMessages(chatId: Int): List<Message>
-    
+
 }
