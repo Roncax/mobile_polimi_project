@@ -41,12 +41,10 @@ class ChatActivity : AppCompatActivity() {
                     txtMessage.text.toString(),
                     time
                 )
-                Log.i(
-                    TAG,
-                    "The user ${App.user} sent the message ${txtMessage.text.toString()} at time $time"
-                )
+
+                Log.i(TAG,"The user ${App.user} sent the message ${txtMessage.text} at time $time")
                 val call = ChatService.create().postMessage(message)
-                Log.i(TAG, "Ho superato il chatservice!!!")
+                Log.i(TAG, "Ho inviato il messaggio")
 
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -104,7 +102,7 @@ class ChatActivity : AppCompatActivity() {
         options.setCluster(pusherAppCluster)
 
         val pusher = Pusher(pusherAppKey, options)
-        val channel = pusher.subscribe("chat")
+        val channel = pusher.subscribe("chat") //TODO id chat
 
         channel.bind("new_message") { channelName, eventName, data ->
             val jsonObject = JSONObject(data)

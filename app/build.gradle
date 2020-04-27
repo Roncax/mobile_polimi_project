@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -14,6 +15,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -21,35 +23,62 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
+
     dataBinding {
         enabled = true
     }
-
 }
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // support
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
-    implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
-
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
+    //lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    //Junit test
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'androidx.test.ext:junit:1.1.1'
+    testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'org.robolectric:robolectric:4.2.1'
+
+    //recyclerview
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+
+    //pusher (for the end API)
     implementation 'com.pusher:pusher-java-client:1.8.0'
-    implementation("com.squareup.moshi:moshi:1.9.2")
+
+    //MOSHI for json
+    implementation "com.squareup.moshi:moshi:1.9.2"
+    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.9.2'
+    implementation "com.squareup.moshi:moshi-kotlin:1.9.2"
+
+    //Retrofit for internet calls
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
-    implementation"android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
+    // navigations
+    implementation "android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "android.arch.navigation:navigation-ui-ktx:$navigationVersion"
+
+    //Preference for the settings
+    implementation "androidx.preference:preference:1.1.1"
 
 }

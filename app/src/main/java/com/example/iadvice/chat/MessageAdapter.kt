@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.other_bubble.view.*
 //possono essere messi in un companion object
 private const val VIEW_TYPE_MY_MESSAGE = 1
 private const val VIEW_TYPE_OTHER_MESSAGE = 2
+
 private const val TAG = "MessageAdapter"
 
 class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHolder>() {
@@ -72,7 +73,7 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     inner class OtherMessageViewHolder (view: View) : MessageViewHolder(view) {
         private var messageText: TextView = view.txtOtherMessage
         private var userText: TextView = view.txtOtherUser
-        private var timeText: TextView = view.txtOtherMessageTime
+    private var timeText: TextView = view.txtOtherMessageTime
 
         override fun bind(message: Message) {
             messageText.text = message.message

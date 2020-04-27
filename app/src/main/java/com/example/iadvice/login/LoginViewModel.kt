@@ -1,59 +1,53 @@
 package com.example.iadvice.login
 
-import android.content.Intent
-import android.text.Editable
+import android.app.Application
 import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
+import androidx.navigation.findNavController
 import com.example.iadvice.App
-import com.example.iadvice.chat.ChatActivity
-import com.example.iadvice.database.dbManager
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.iadvice.R
+import com.example.iadvice.database.User
+import com.example.iadvice.database.UserDao
 
-// always use AppCompatActivity for backward compatibility
-class LoginViewModel : ViewModel() {
+private const val TAG = "LoginViewModel"
 
-    init {
-        Log.i("LoginViewModel", "LoginViewModel created!")
-    }
+class LoginViewModel(
+    val database: UserDao,
+    application: Application
+) : ViewModel() {
+
 
     override fun onCleared() {
         super.onCleared()
         Log.i("LoginViewModel", "LoginViewModel destroyed!")
     }
 
-    private val TAG = "LoginViewModel"
 
-    //login screen button
-    fun registerUserButton(password: Editable, username: Editable) {
-        Log.i(TAG, "Ricevuto registrazione di user $username con pw $password")
-    }
-
-    // register screen button
+    // register the user with the selected parameters
     fun registerUser(
         name: String,
         nickname: String,
         email: String,
         password: String,
-        personalPhoto: String
+        personalPhoto: String,
+        age: Int,
+        gender: String
     ) {
-        Log.i(TAG, "Ricevuta registrazione di user $nickname con pw $password")
+        val user = User(name, email, age, gender, personalPhoto, nickname, password)
+        database.insert(user)
+        Log.i(TAG, "Ricevuto e inserito l'utente $nickname con pw $password")
     }
 
-    fun loginUserButton(password: String, username: String) {
-        Log.i(TAG, "Ricevuto login di user $username con pw $password")
-        if (username.isNotEmpty()) {
-            App.user = username
-            Log.i(TAG, "Accepted login")
-            if (password.isNotEmpty()) {
 
-            } else {
-                Log.i(TAG, "Empty password")
-            }
+    // TODO transfer the check of pw online
+    fun loginUser(password: String, email: String) {
+        Log.i(TAG, "Ricevuto login di user $email con pw $password")
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            val retrivedUser = database.findByEmail(email)
+            Log.i(TAG,"Login riuscito! name: ${retrivedUser.firstName} e genre: ${retrivedUser.gender}")
+            App.user = email
         } else {
-            Log.i(TAG, "Empty username")
+            Log.i(TAG, "Empty username or password")
         }
     }
 

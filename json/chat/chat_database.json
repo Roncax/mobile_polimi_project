@@ -1,7 +1,6 @@
-{
-  "chats": [
+[
     {
-      "id": "num",
+      "id": "0",
       "title": "prova",
       "info": "insert info here",
       "owner": "paolo.roncaglioni@gmail.com",
@@ -17,7 +16,7 @@
       ]
     },
     {
-      "id": "1234",
+      "id": "1",
       "title": "allungamento pene",
       "info": "insert info here",
       "owner": "tasca.thomas@gmail.com",
@@ -33,4 +32,3 @@
       ]
     }
   ]
-}
