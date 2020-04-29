@@ -12,6 +12,7 @@ import com.example.iadvice.App
 import com.example.iadvice.R
 import com.example.iadvice.database.AppDatabase
 import com.example.iadvice.databinding.LoginFragmentBinding
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.login_fragment.*
 
 private const val TAG = "LoginViewModel" //used for the logs
@@ -51,7 +52,8 @@ class LoginFragment : Fragment() {
             }
 
             registerButton.setOnClickListener {
-                requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+               // requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+                requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
 
             facebookLoginButton.setOnClickListener {}
@@ -61,5 +63,21 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-
+    /**
+     * Called when the fragment's activity has been created and this
+     * fragment's view hierarchy instantiated.  It can be used to do final
+     * initialization once these pieces are in place, such as retrieving
+     * views or restoring state.  It is also useful for fragments that use
+     * [.setRetainInstance] to retain their instance,
+     * as this callback tells the fragment when it is fully associated with
+     * the new activity instance.  This is called after [.onCreateView]
+     * and before [.onViewStateRestored].
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout).setVisibility(View.GONE)
+    }
 }

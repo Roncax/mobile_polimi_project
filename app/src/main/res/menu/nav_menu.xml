@@ -4,12 +4,14 @@
     <group>
         <item
             android:id="@+id/settingsFragment"
+            android:icon="@drawable/ic_settings"
             android:title="SETTINGS"/>
-<!--        android:icon="@drawable/ic_settings"-->
+
         <item
             android:id="@+id/nav_faq"
+            android:icon="@drawable/ic_faq"
             android:title="FAQ"/>
-<!--        android:icon="@drawable/ic_faq"-->
+
     </group>
 
 </menu>
