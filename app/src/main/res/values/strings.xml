@@ -13,8 +13,8 @@
     <string name="nav_header_desc">Description</string>
     <string name="nav_header_title">Title</string>
     <string name="nav_header_subtitle">Subtitle</string>
-    <string name="nav_settings">Settings</string>
-    <string name="nav_faq">FAQ</string>
+    <string name="settingsFragment">Settings</string>
+    <string name="faqFragment">FAQ</string>
 
     <!-- Preference Titles -->
     <string name="account_header">Account</string>

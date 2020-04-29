@@ -4,17 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.iadvice.R
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var viewPager: ViewPager2
+
+    private lateinit var toolbar: Toolbar
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +72,24 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout).setVisibility(View.VISIBLE)
+
+
+
+        /* Manage the creation of the toolbar (the actionbar) */
+        toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
+        (requireActivity() as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+
+        /* Manage the drawerMenu on the left */
+        drawerLayout = requireActivity().findViewById(R.id.drawer_layout)
+        navView = requireActivity().findViewById(R.id.navView)
+        val toggle = ActionBarDrawerToggle(
+            requireActivity(), drawerLayout, toolbar, 0, 0
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+      //  navView.setNavigationItemSelectedListener(requireActivity())
+
+
     }
 }
 
