@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.iadvice.R
 import com.google.android.material.appbar.AppBarLayout
@@ -15,12 +16,9 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-
-
-
-
-
+import androidx.navigation.ui.setupWithNavController
 
 
 class HomeFragment : Fragment() {
@@ -32,12 +30,13 @@ class HomeFragment : Fragment() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
 
+    private lateinit var navController: NavController
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         val layout : View
         //Inflate the layout for this fragment
@@ -50,8 +49,6 @@ class HomeFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
 
         homeViewPagerAdapter = HomeViewPagerAdapter(this)
         viewPager = view.findViewById(R.id.pager)
@@ -84,7 +81,7 @@ class HomeFragment : Fragment() {
         requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout).setVisibility(View.VISIBLE)
 
 
-
+/**
         /* Manage the creation of the toolbar (the actionbar) */
         toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
         (requireActivity() as AppCompatActivity?)!!.setSupportActionBar(toolbar)
@@ -98,50 +95,33 @@ class HomeFragment : Fragment() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
       //  navView.setNavigationItemSelectedListener(requireActivity())
+*/
+
+
+val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment))
+
+        toolbar = requireActivity().findViewById(R.id.toolbar)
+        (requireActivity() as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+
+        drawerLayout = requireActivity().findViewById(R.id.drawer_layout)
+
+        navView = requireActivity().findViewById(R.id.navView)
+
+        val toggle = ActionBarDrawerToggle( requireActivity(), drawerLayout, toolbar, 0, 0)
+        toggle.syncState()
+        val navController = requireActivity().findNavController(R.id.myNavHostFragment)
+
+        NavigationUI.setupActionBarWithNavController(requireActivity() as AppCompatActivity,navController,drawerLayout)
+
+        NavigationUI.setupWithNavController(navView, navController)
 
     }
 
-
-    /**
-     * Initialize the contents of the Fragment host's standard options menu.  You
-     * should place your menu items in to <var>menu</var>.  For this method
-     * to be called, you must have first called [.setHasOptionsMenu].  See
-     * [Activity.onCreateOptionsMenu]
-     * for more information.
-     *
-     * @param menu The options menu in which you place your items.
-     *
-     * @see .setHasOptionsMenu
-     *
-     * @see .onPrepareOptionsMenu
-     *
-     * @see .onOptionsItemSelected
-     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.nav_menu,menu)
     }
 
-
-    /**
-     * This hook is called whenever an item in your options menu is selected.
-     * The default implementation simply returns false to have the normal
-     * processing happen (calling the item's Runnable or sending a message to
-     * its Handler as appropriate).  You can use this method for any items
-     * for which you would like to do processing without those other
-     * facilities.
-     *
-     *
-     * Derived classes should call through to the base class for it to
-     * perform the default menu handling.
-     *
-     * @param item The menu item that was selected.
-     *
-     * @return boolean Return false to allow normal menu processing to
-     * proceed, true to consume it here.
-     *
-     * @see .onCreateOptionsMenu
-     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return NavigationUI.onNavDestinationSelected(item!!,requireView()!!.findNavController())
                 ||super.onOptionsItemSelected(item)
