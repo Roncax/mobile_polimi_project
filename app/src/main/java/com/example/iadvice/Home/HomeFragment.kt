@@ -1,9 +1,7 @@
 package com.example.iadvice.Home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +14,14 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+
+
+
+
+
+
 
 class HomeFragment : Fragment() {
 
@@ -26,16 +32,20 @@ class HomeFragment : Fragment() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
 
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+        val layout : View
         //Inflate the layout for this fragment
-        return inflater.inflate(R.layout.home_fragment, container, false)
+        layout = inflater.inflate(R.layout.home_fragment, container, false)
+
+        setHasOptionsMenu(true)
+        return layout
+
     }
 
 
@@ -89,8 +99,54 @@ class HomeFragment : Fragment() {
         toggle.syncState()
       //  navView.setNavigationItemSelectedListener(requireActivity())
 
-
     }
+
+
+    /**
+     * Initialize the contents of the Fragment host's standard options menu.  You
+     * should place your menu items in to <var>menu</var>.  For this method
+     * to be called, you must have first called [.setHasOptionsMenu].  See
+     * [Activity.onCreateOptionsMenu]
+     * for more information.
+     *
+     * @param menu The options menu in which you place your items.
+     *
+     * @see .setHasOptionsMenu
+     *
+     * @see .onPrepareOptionsMenu
+     *
+     * @see .onOptionsItemSelected
+     */
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.nav_menu,menu)
+    }
+
+
+    /**
+     * This hook is called whenever an item in your options menu is selected.
+     * The default implementation simply returns false to have the normal
+     * processing happen (calling the item's Runnable or sending a message to
+     * its Handler as appropriate).  You can use this method for any items
+     * for which you would like to do processing without those other
+     * facilities.
+     *
+     *
+     * Derived classes should call through to the base class for it to
+     * perform the default menu handling.
+     *
+     * @param item The menu item that was selected.
+     *
+     * @return boolean Return false to allow normal menu processing to
+     * proceed, true to consume it here.
+     *
+     * @see .onCreateOptionsMenu
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return NavigationUI.onNavDestinationSelected(item!!,requireView()!!.findNavController())
+                ||super.onOptionsItemSelected(item)
+    }
+
 }
 
 

@@ -8,7 +8,7 @@
             android:title="@string/settingsFragment"/>
 
         <item
-            android:id="@+id/nav_faq"
+            android:id="@+id/faqFragment"
             android:icon="@drawable/ic_faq"
             android:title="@string/faqFragment"/>
 
