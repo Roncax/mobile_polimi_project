@@ -15,7 +15,6 @@ data class Message (
     //TODO id chat, tavola differente?
     @ColumnInfo(name = "message_sender") var userId: Int,
     @ColumnInfo(name = "message_text") var text: String?,
-    @ColumnInfo(name = "message_date") var date: String?, //TODO how to store data and time?
     @ColumnInfo(name = "message_time") var time: String?,
     @ColumnInfo(name = "message_image") var image:String? //TODO come aggiungere l'immagine?
 )

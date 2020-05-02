@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.iadvice.*
+import com.example.iadvice.database.AppDatabase
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.util.*
 import com.pusher.client.Pusher
@@ -20,6 +21,7 @@ import retrofit2.Response
 private const val TAG = "ChatActivity"
 
 class ChatActivity : AppCompatActivity() {
+
     private lateinit var adapter: MessageAdapter
 
     private val pusherAppKey = "6e1f164ad49aa236076b"
@@ -29,30 +31,32 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+        val application = requireNotNull(this).application
+        val chatDataSource = AppDatabase.getInstance(application).chatDao
+
         messageList.layoutManager = LinearLayoutManager(this)
-        adapter = MessageAdapter(this)
+        adapter = MessageAdapter(this, chatDataSource, chatId)
         messageList.adapter = adapter
+
+
 
         btnSend.setOnClickListener {
             if (txtMessage.text.isNotEmpty()) {
                 val time = Calendar.getInstance().timeInMillis
+
                 val message = Message(
                     App.user,
                     txtMessage.text.toString(),
-                    time
+                    time,
+                    chatId
                 )
 
-                Log.i(TAG,"The user ${App.user} sent the message ${txtMessage.text} at time $time")
+                Log.i(TAG, "The user ${App.user} sent the message ${txtMessage.text} at time $time")
                 val call = ChatService.create().postMessage(message)
-                Log.i(TAG, "Ho inviato il messaggio")
 
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         resetInput()
-                        Log.i(
-                            TAG,
-                            "Onresponse dice: il messaggio é ${response.body()} e ${response.headers()} "
-                        )
                         if (!response.isSuccessful) {
                             Log.e(TAG, response.code().toString());
                             Toast.makeText(
@@ -73,6 +77,7 @@ class ChatActivity : AppCompatActivity() {
                         ).show()
                     }
                 })
+
             } else {
                 Toast.makeText(
                     applicationContext,
@@ -102,7 +107,7 @@ class ChatActivity : AppCompatActivity() {
         options.setCluster(pusherAppCluster)
 
         val pusher = Pusher(pusherAppKey, options)
-        val channel = pusher.subscribe("chat") //TODO id chat
+        val channel = pusher.subscribe(chatId) //TODO id chat
 
         channel.bind("new_message") { channelName, eventName, data ->
             val jsonObject = JSONObject(data)
@@ -110,7 +115,8 @@ class ChatActivity : AppCompatActivity() {
             val message = Message(
                 jsonObject["user"].toString(),
                 jsonObject["message"].toString(),
-                jsonObject["time"].toString().toLong()
+                jsonObject["time"].toString().toLong(),
+                jsonObject["chatId"].toString().toInt()
             )
 
             runOnUiThread {

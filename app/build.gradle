@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-
+    apply plugin: "androidx.navigation.safeargs.kotlin"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
