@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.iadvice.*
 import com.example.iadvice.database.AppDatabase
@@ -22,6 +23,10 @@ private const val TAG = "ChatActivity"
 
 class ChatActivity : AppCompatActivity() {
 
+    //take the chatId from the previous screen (home in this case)
+    //TODO mettere in safeargs il chatID dalla home
+    val safeArgs: ChatActivityArgs by navArgs()
+    val chatId = safeArgs.chatId
     private lateinit var adapter: MessageAdapter
 
     private val pusherAppKey = "6e1f164ad49aa236076b"
@@ -107,16 +112,16 @@ class ChatActivity : AppCompatActivity() {
         options.setCluster(pusherAppCluster)
 
         val pusher = Pusher(pusherAppKey, options)
-        val channel = pusher.subscribe(chatId) //TODO id chat
+        val channel = pusher.subscribe(chatId.toString()) //TODO id chat
 
-        channel.bind("new_message") { channelName, eventName, data ->
+        channel.bind("new_message") { chatId, eventName, data ->
             val jsonObject = JSONObject(data)
 
-            val message = Message(
+            val message = com.example.iadvice.database.Message(
                 jsonObject["user"].toString(),
                 jsonObject["message"].toString(),
                 jsonObject["time"].toString().toLong(),
-                jsonObject["chatId"].toString().toInt()
+                jsonObject["chatId"].toString()
             )
 
             runOnUiThread {

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -25,12 +26,14 @@
     <activity
         android:id="@+id/chatActivity"
         android:name="com.example.iadvice.chat.ChatActivity"
-        android:label="activity_chat"
-        tools:layout="@layout/activity_chat" >
+        android:label="chatActivity"
+        tools:layout="@layout/activity_chat">
         <argument
             android:name="chatId"
+            android:defaultValue="123"
             app:argType="integer" />
     </activity>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.iadvice.login.RegisterFragment"
@@ -40,12 +43,15 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.iadvice.Home.HomeFragment"
         android:label="HomeFragment" />
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.iadvice.settings.SettingsFragment"
         android:label="SettingsFragment" />
+
 </navigation>

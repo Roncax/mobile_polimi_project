@@ -20,10 +20,12 @@ interface ChatDao {
     @Query ("DELETE FROM chat_table")
     fun deleteAll()
 
-    @Query("SELECT * FROM chat_table WHERE uid = :chatId")
+    @Query("SELECT * FROM chat_table WHERE chatId = :chatId")
     fun getChatById(chatId: Int): Chat
 
-    @Query("SELECT chat_messages FROM chat_table WHERE uid = :chatId")
-    fun getMessages(chatId: Int): List<Message>
+    @Transaction
+    @Query("SELECT * FROM chat_table")
+    fun getChatWithMessages(): List<ChatWithMessages>
+
 
 }

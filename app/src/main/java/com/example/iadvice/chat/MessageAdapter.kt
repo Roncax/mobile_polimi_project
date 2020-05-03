@@ -20,8 +20,10 @@ private const val VIEW_TYPE_OTHER_MESSAGE = 2
 
 private const val TAG = "MessageAdapter"
 
-class MessageAdapter (val context: Context, val chatDataSource: ChatDao, chatId: Int) : RecyclerView.Adapter<MessageViewHolder>() {
+class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int) : RecyclerView.Adapter<MessageViewHolder>() {
+
     private val messages: ArrayList<Message> = ArrayList()
+    val chatId = Id
 
     init {
         loadMessages()
@@ -46,7 +48,7 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, chatId:
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
 
-        return if(App.user == message.user) {
+        return if(App.user == message.userId.toString()) {
             VIEW_TYPE_MY_MESSAGE
         }
         else {
@@ -73,10 +75,10 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, chatId:
         private var timeText: TextView = view.txtMyMessageTime
 
         override fun bind(message: Message) {
-            messageText.text = message.message
+            messageText.text = message.text
             timeText.text =
-                DateUtils.fromMillisToTimeString(message.time)
-            Log.i(TAG, "Sono dentro al mio messaggio, ${message.message}")
+                DateUtils.fromMillisToTimeString(message.time!!.toLong())
+            Log.i(TAG, "Sono dentro al mio messaggio, ${message.text}")
         }
     }
 
@@ -86,10 +88,10 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, chatId:
     private var timeText: TextView = view.txtOtherMessageTime
 
         override fun bind(message: Message) {
-            messageText.text = message.message
-            userText.text = message.user
+            messageText.text = message.text
+            userText.text = message.userId.toString()
             timeText.text =
-                DateUtils.fromMillisToTimeString(message.time)
+                DateUtils.fromMillisToTimeString(message.time!!.toLong())
 
             }
     }

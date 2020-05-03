@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.iadvice.App
 import com.example.iadvice.R
 import com.example.iadvice.chat.ChatActivity
@@ -50,8 +51,10 @@ class LoginFragment : Fragment() {
                     binding.passwordText.text.toString(),
                     binding.usernameText.text.toString()
                 )
-                val action =
-                requireView().findNavController().navigate(R.id.action_loginFragment_to_chatActivity)
+
+                //to pass the safeargs id to chat activity
+                val action = LoginFragmentDirections.actionLoginFragmentToChatActivity(321)
+                findNavController().navigate(action)
             }
 
             registerButton.setOnClickListener {
