@@ -6,6 +6,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.POST
 import retrofit2.http.Body
 import android.util.Log
+import com.example.iadvice.database.Message
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val TAG = "ChatService"

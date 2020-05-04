@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 //TODO bisogna guardare le observable queries
-@Database(entities = [User::class, Chat::class], version = 3, exportSchema = false)
+@Database(entities = [User::class, Chat::class, Message::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val userDao: UserDao

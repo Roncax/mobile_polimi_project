@@ -16,6 +16,6 @@ data class User(
 
 ){
 //important to set 0 if autogenerate
-    @PrimaryKey(autoGenerate = true) var uid: Int = 0
+    @PrimaryKey(autoGenerate = true) var uid: Long = 0
 
 }

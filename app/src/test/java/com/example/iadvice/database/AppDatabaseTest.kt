@@ -1,10 +1,7 @@
 package com.example.iadvice.database
 
-import android.content.Context
-import android.util.Log
+
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.assertEquals
 import org.junit.After
@@ -13,30 +10,35 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
-/**
- * This is not meant to be a full set of tests. For simplicity, most of your samples do not
- * include tests. However, when building the Room, it is helpful to make sure it works before
- * adding the UI.
- */
-
 @RunWith(androidx.test.ext.junit.runners.AndroidJUnit4::class)
 class AppDatabaseTest {
 
     private lateinit var userDaoDb: UserDao
+    private lateinit var chatDao: ChatDao
     private lateinit var db: AppDatabase
+
+    val sampleFirstName = "Paolo"
+    val sampleEmail = "paolo.roncaglioni@gmail.com"
+    val sampleChatId = 111
+    val sampleTxt1 = "Questo é un messaggio"
+    val sampleTxt2 = "Immagine"
+    val user = User(sampleFirstName, sampleEmail, 25, "male", "", "Roncax", "eltinto1")
+    val chat = Chat(sampleChatId, sampleFirstName, "chat_di_prova")
+    val sampleMessage = Message(sampleChatId, sampleFirstName, sampleTxt1, 1234)
+    val sampleMessage2 = Message(sampleChatId, sampleFirstName, sampleTxt2, 124)
 
     @Before
     fun createDb() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         // Using an in-memory database because the information stored here disappears when the
         // process is killed.
-        //val context = ApplicationProvider.getApplicationContext<Context>()
 
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
             // Allowing main thread queries, just for testing.
             .allowMainThreadQueries()
             .build()
         userDaoDb = db.userDao
+        chatDao = db.chatDao
     }
 
     @After
@@ -48,11 +50,29 @@ class AppDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun insertAndGetUser() {
-        val email = "paolo.roncaglioni@gmail.com"
-        val user = User("Paolo", email, 25, "male", "", "Roncax", "eltinto1")
         userDaoDb.insert(user)
-        val user2 = userDaoDb.findByEmail(email)
-        assertEquals("Insert or Get non funzionanti", "Paolo", user2.firstName)
+        assertEquals("Insert or Get non funzionanti", sampleFirstName, userDaoDb.findByEmail(sampleEmail).firstName)
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAndGetChat() {
+        chatDao.insert(chat)
+        assertEquals("Insert or Get in Chat not working", sampleFirstName, chatDao.getChat(sampleChatId).user)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAndGetMessages() {
+        chatDao.insert(chat)
+        chatDao.insert(sampleMessage)
+        chatDao.insert(sampleMessage2)
+        for (elem in chatDao.getChatWithMessages()) {
+            print("chatname:" + elem.chat.chatId + "\n")
+            for (mess in elem.messages)
+                print(mess.text + "\n")
+        }
+    }
+
 
 }

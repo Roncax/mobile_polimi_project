@@ -10,6 +10,7 @@ import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.iadvice.*
 import com.example.iadvice.database.AppDatabase
+import com.example.iadvice.database.Message
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.util.*
 import com.pusher.client.Pusher
@@ -25,8 +26,9 @@ class ChatActivity : AppCompatActivity() {
 
     //take the chatId from the previous screen (home in this case)
     //TODO mettere in safeargs il chatID dalla home
-    val safeArgs: ChatActivityArgs by navArgs()
-    val chatId = safeArgs.chatId
+   // val safeArgs: ChatActivityArgs by navArgs()
+    //val chatId = safeArgs.chatId
+    val chatId = 123
     private lateinit var adapter: MessageAdapter
 
     private val pusherAppKey = "6e1f164ad49aa236076b"
@@ -50,10 +52,10 @@ class ChatActivity : AppCompatActivity() {
                 val time = Calendar.getInstance().timeInMillis
 
                 val message = Message(
-                    App.user,
+                    chatId,
+                    "Paolo",
                     txtMessage.text.toString(),
-                    time,
-                    chatId
+                    time
                 )
 
                 Log.i(TAG, "The user ${App.user} sent the message ${txtMessage.text} at time $time")
@@ -118,10 +120,10 @@ class ChatActivity : AppCompatActivity() {
             val jsonObject = JSONObject(data)
 
             val message = com.example.iadvice.database.Message(
+                jsonObject["chatId"].toString().toInt(),
                 jsonObject["user"].toString(),
                 jsonObject["message"].toString(),
-                jsonObject["time"].toString().toLong(),
-                jsonObject["chatId"].toString()
+                jsonObject["time"].toString().toLong()
             )
 
             runOnUiThread {

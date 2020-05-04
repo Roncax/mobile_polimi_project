@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.App
 import com.example.iadvice.DateUtils
 import com.example.iadvice.R
+import com.example.iadvice.database.Chat
 import com.example.iadvice.database.ChatDao
+import com.example.iadvice.database.Message
+import com.example.iadvice.database.User
 import kotlinx.android.synthetic.main.my_bubble.view.*
 import kotlinx.android.synthetic.main.other_bubble.view.*
 
@@ -26,12 +29,25 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int
     val chatId = Id
 
     init {
+        val sampleFirstName = "Paolo"
+        val sampleEmail = "paolo.roncaglioni@gmail.com"
+        val sampleChatId = 123
+        val sampleTxt1 = "Questo é un messaggio"
+        val sampleTxt2 = "Immagine"
+        val user = User(sampleFirstName, sampleEmail, 25, "male", "", "Roncax", "eltinto1")
+        val chat = Chat(sampleChatId, sampleFirstName, "chat_di_prova")
+        val sampleMessage = Message(sampleChatId, sampleFirstName, sampleTxt1, 1234)
+        val sampleMessage2 = Message(sampleChatId, sampleFirstName, sampleTxt2, 124)
+
+//        chatDataSource.insert(chat)
+//        chatDataSource.insert(sampleMessage)
+//        chatDataSource.insert(sampleMessage2)
         loadMessages()
     }
 
     fun loadMessages(){
-        val oldMessages = chatDataSource.getMessages(chatId)
-        for (message in oldMessages) {
+        val oldMessages = chatDataSource.getChatWithMessagesFromId(chatId)
+        for (message in oldMessages.messages) {
             messages.add(message)
         }
     }
@@ -48,7 +64,7 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
 
-        return if(App.user == message.userId.toString()) {
+        return if(App.user == message.username) {
             VIEW_TYPE_MY_MESSAGE
         }
         else {
@@ -89,7 +105,7 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int
 
         override fun bind(message: Message) {
             messageText.text = message.text
-            userText.text = message.userId.toString()
+            userText.text = message.username
             timeText.text =
                 DateUtils.fromMillisToTimeString(message.time!!.toLong())
 
