@@ -10,13 +10,22 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
 import org.json.JSONObject
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.iadvice.databinding.YourQuestionsFragmentBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class your_questions_fragment : Fragment(),OnItemClickListener {
 
+
+    private lateinit var binding: YourQuestionsFragmentBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var  yourQuestionsView: View
+
     /* Used for JSON mamagement in the innerClass */
     private var dataList = ArrayList<HashMap<String, String>>()
 
@@ -25,9 +34,15 @@ class your_questions_fragment : Fragment(),OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        yourQuestionsView= inflater.inflate(R.layout.your_questions_fragment, container, false)
-        return yourQuestionsView
+
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.your_questions_fragment,
+            container,
+            false
+        )
+
+        return  binding.root
     }
 
     /**
@@ -44,6 +59,10 @@ class your_questions_fragment : Fragment(),OnItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         fetchJsonData().execute()
+
+
+       binding.fab.setOnClickListener {onFabClick()}
+
     }
 
 
@@ -184,7 +203,7 @@ class your_questions_fragment : Fragment(),OnItemClickListener {
 
             viewAdapter =  QuestionsAdapter(dataList,this@your_questions_fragment)
 
-            recyclerView = yourQuestionsView.findViewById<RecyclerView>(R.id.RecyclerView).apply {
+            recyclerView = binding.RecyclerView.apply {
                 //used to improve performances
                 setHasFixedSize(true)
                 adapter = viewAdapter
@@ -195,6 +214,10 @@ class your_questions_fragment : Fragment(),OnItemClickListener {
 
     override fun onItemClick(item: HashMap<String, String>) {
         Toast.makeText(activity, "${item.get("title")} selected", Toast.LENGTH_SHORT).show()
+    }
+
+    fun onFabClick(){
+        findNavController().navigate(R.id.newQuestionFragment, null)
     }
 
 }

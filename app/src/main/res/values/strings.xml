@@ -37,5 +37,13 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="feedback_header">Feedback</string>
     <string name="feedback_title">Send feedback</string>
+    <string name="question_title">Title:</string>
+    <string name="question_title_edit">Insert here the title</string>
+    <string name="question_category">Category:</string>
+    <string name="question_target_gender">Sex of your target</string>
+    <string name="new_question_button">Create</string>
+    <string name="anonimity">Keep your identity anonimous</string>
+    <string name="question_duration">Self destruct timer</string>
 
 </resources>
+

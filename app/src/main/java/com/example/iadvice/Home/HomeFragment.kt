@@ -16,15 +16,18 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 import androidx.navigation.findNavController
+
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var viewPager: ViewPager2
+    private lateinit var appBarConfiguration : AppBarConfiguration
+
+
 
     private lateinit var toolbar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
@@ -98,7 +101,10 @@ class HomeFragment : Fragment() {
 */
 
 
+
 val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment))
+
+
 
         toolbar = requireActivity().findViewById(R.id.toolbar)
         (requireActivity() as AppCompatActivity?)!!.setSupportActionBar(toolbar)
@@ -115,6 +121,9 @@ val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment))
 
         NavigationUI.setupWithNavController(navView, navController)
 
+
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -122,14 +131,14 @@ val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment))
         inflater?.inflate(R.menu.nav_menu,menu)
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return NavigationUI.onNavDestinationSelected(item!!,requireView()!!.findNavController())
                 ||super.onOptionsItemSelected(item)
     }
 
+
 }
-
-
 
 
 //TODO TabLayoutMediator
