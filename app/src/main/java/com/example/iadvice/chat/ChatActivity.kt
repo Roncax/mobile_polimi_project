@@ -6,8 +6,11 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.iadvice.*
+import com.example.iadvice.database.AppDatabase
+import com.example.iadvice.database.Message
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.util.*
 import com.pusher.client.Pusher
@@ -20,6 +23,11 @@ import retrofit2.Response
 private const val TAG = "ChatActivity"
 
 class ChatActivity : AppCompatActivity() {
+
+    //take the chatId from the previous screen (home in this case)
+    //TODO mettere in safeargs il chatID dalla home
+    val safeArgs: ChatActivityArgs by navArgs()
+    val chatId = safeArgs.chatId
     private lateinit var adapter: MessageAdapter
 
     private val pusherAppKey = "6e1f164ad49aa236076b"
@@ -29,30 +37,32 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+        val application = requireNotNull(this).application
+        val chatDataSource = AppDatabase.getInstance(application).chatDao
+
         messageList.layoutManager = LinearLayoutManager(this)
-        adapter = MessageAdapter(this)
+        adapter = MessageAdapter(this, chatDataSource, chatId)
         messageList.adapter = adapter
+        messageList.scrollToPosition(adapter.itemCount - 1)
+
 
         btnSend.setOnClickListener {
             if (txtMessage.text.isNotEmpty()) {
                 val time = Calendar.getInstance().timeInMillis
+
                 val message = Message(
+                    chatId,
                     App.user,
                     txtMessage.text.toString(),
                     time
                 )
 
-                Log.i(TAG,"The user ${App.user} sent the message ${txtMessage.text} at time $time")
+                Log.i(TAG, "The user ${App.user} sent the message ${txtMessage.text} at time $time")
                 val call = ChatService.create().postMessage(message)
-                Log.i(TAG, "Ho inviato il messaggio")
 
                 call.enqueue(object : Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         resetInput()
-                        Log.i(
-                            TAG,
-                            "Onresponse dice: il messaggio é ${response.body()} e ${response.headers()} "
-                        )
                         if (!response.isSuccessful) {
                             Log.e(TAG, response.code().toString());
                             Toast.makeText(
@@ -73,6 +83,7 @@ class ChatActivity : AppCompatActivity() {
                         ).show()
                     }
                 })
+
             } else {
                 Toast.makeText(
                     applicationContext,
@@ -100,23 +111,23 @@ class ChatActivity : AppCompatActivity() {
     private fun setupPusher() {
         val options = PusherOptions()
         options.setCluster(pusherAppCluster)
-
         val pusher = Pusher(pusherAppKey, options)
-        val channel = pusher.subscribe("chat") //TODO id chat
+        val channel = pusher.subscribe(chatId.toString())
 
-        channel.bind("new_message") { channelName, eventName, data ->
+        channel.bind("new_message") { channelId, eventName, data ->
+
             val jsonObject = JSONObject(data)
-
             val message = Message(
-                jsonObject["user"].toString(),
-                jsonObject["message"].toString(),
+                jsonObject["chatId"].toString().toInt(),
+                jsonObject["username"].toString(),
+                jsonObject["text"].toString(),
                 jsonObject["time"].toString().toLong()
             )
 
             runOnUiThread {
-                adapter.addMessage(message)
+                adapter.addNewMessage(message)
                 // scroll the RecyclerView to the last added element
-                messageList.scrollToPosition(adapter.itemCount - 1);
+                messageList.scrollToPosition(adapter.itemCount - 1)
             }
 
         }

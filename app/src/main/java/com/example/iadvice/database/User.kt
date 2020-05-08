@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// primary key = email
 @Entity(tableName = "users_table")
 data class User(
     @ColumnInfo(name = "first_name") var firstName: String?,
@@ -16,6 +17,6 @@ data class User(
 
 ){
 //important to set 0 if autogenerate
-    @PrimaryKey(autoGenerate = true) var uid: Int = 0
+    @PrimaryKey(autoGenerate = true) var uid: Long = 0
 
 }

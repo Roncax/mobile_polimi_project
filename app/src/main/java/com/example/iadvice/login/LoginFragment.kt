@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.iadvice.App
 import com.example.iadvice.R
+import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.AppDatabase
 import com.example.iadvice.databinding.LoginFragmentBinding
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.login_fragment.*
 
 private const val TAG = "LoginViewModel" //used for the logs
@@ -48,12 +52,16 @@ class LoginFragment : Fragment() {
                     binding.passwordText.text.toString(),
                     binding.usernameText.text.toString()
                 )
+
+                //to pass the safeargs id to chat activity
+//                val action = LoginFragmentDirections.actionLoginFragmentToChatActivity(321)
+//                requireView().findNavController().navigate(action)
                 requireView().findNavController().navigate(R.id.action_loginFragment_to_chatActivity)
             }
 
             registerButton.setOnClickListener {
-               // requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-                requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+               requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+                //requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
 
             facebookLoginButton.setOnClickListener {}

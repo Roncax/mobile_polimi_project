@@ -6,10 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 //TODO bisogna guardare le observable queries
-@Database(entities = [User::class], version = 2, exportSchema = false)
+@Database(entities = [User::class, Chat::class, Message::class], version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val userDao: UserDao
+    abstract val chatDao: ChatDao
 
     companion object {
 
@@ -22,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
             synchronized(this) {
                 var instance = INSTANCE
 
-                //TODO alloWmainTread NOT TO DO, change in coroutines
+                //TODO allowMainTread NOT TO DO, must change in coroutines
                 //if no db yet
                 if (instance == null) {
                     instance = Room.databaseBuilder(

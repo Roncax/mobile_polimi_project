@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.App
 import com.example.iadvice.DateUtils
 import com.example.iadvice.R
+import com.example.iadvice.database.Chat
+import com.example.iadvice.database.ChatDao
+import com.example.iadvice.database.Message
+import com.example.iadvice.database.User
 import kotlinx.android.synthetic.main.my_bubble.view.*
 import kotlinx.android.synthetic.main.other_bubble.view.*
 
@@ -19,8 +23,26 @@ private const val VIEW_TYPE_OTHER_MESSAGE = 2
 
 private const val TAG = "MessageAdapter"
 
-class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHolder>() {
+class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int) : RecyclerView.Adapter<MessageViewHolder>() {
+
     private val messages: ArrayList<Message> = ArrayList()
+    val chatId = Id
+
+    init {
+        loadMessages()
+    }
+
+    fun loadMessages(){
+        val oldMessages = chatDataSource.getChatWithMessagesFromId(chatId)
+        for (message in oldMessages.messages) {
+            messages.add(message)
+        }
+    }
+
+    fun addNewMessage(message: Message){
+        chatDataSource.insert(message)
+        addMessage(message)
+    }
 
     fun addMessage(message: Message){
         messages.add(message)
@@ -34,7 +56,7 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
 
-        return if(App.user == message.user) {
+        return if(App.user == message.username) {
             VIEW_TYPE_MY_MESSAGE
         }
         else {
@@ -43,8 +65,6 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        Log.i(TAG, "Sono dentro al mio messaggio")
-
         return if(viewType == VIEW_TYPE_MY_MESSAGE) {
             MyMessageViewHolder(LayoutInflater.from(context).inflate(R.layout.my_bubble, parent, false))
         } else {
@@ -63,10 +83,10 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
         private var timeText: TextView = view.txtMyMessageTime
 
         override fun bind(message: Message) {
-            messageText.text = message.message
+            messageText.text = message.text
             timeText.text =
-                DateUtils.fromMillisToTimeString(message.time)
-            Log.i(TAG, "Sono dentro al mio messaggio, ${message.message}")
+                DateUtils.fromMillisToTimeString(message.time!!.toLong())
+            Log.i(TAG, "Sono dentro al mio messaggio, ${message.text}")
         }
     }
 
@@ -76,11 +96,10 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     private var timeText: TextView = view.txtOtherMessageTime
 
         override fun bind(message: Message) {
-            messageText.text = message.message
-            userText.text = message.user
+            messageText.text = message.text
+            userText.text = message.username
             timeText.text =
-                DateUtils.fromMillisToTimeString(message.time)
-            Log.i(TAG, "Sono dentro all'altro messaggio, ${message.message}")
+                DateUtils.fromMillisToTimeString(message.time!!.toLong())
 
             }
     }
