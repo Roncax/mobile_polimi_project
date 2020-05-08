@@ -26,9 +26,8 @@ class ChatActivity : AppCompatActivity() {
 
     //take the chatId from the previous screen (home in this case)
     //TODO mettere in safeargs il chatID dalla home
-   // val safeArgs: ChatActivityArgs by navArgs()
-    //val chatId = safeArgs.chatId
-    val chatId = 123
+    val safeArgs: ChatActivityArgs by navArgs()
+    val chatId = safeArgs.chatId
     private lateinit var adapter: MessageAdapter
 
     private val pusherAppKey = "6e1f164ad49aa236076b"
@@ -44,7 +43,7 @@ class ChatActivity : AppCompatActivity() {
         messageList.layoutManager = LinearLayoutManager(this)
         adapter = MessageAdapter(this, chatDataSource, chatId)
         messageList.adapter = adapter
-
+        messageList.scrollToPosition(adapter.itemCount - 1)
 
 
         btnSend.setOnClickListener {
@@ -53,7 +52,7 @@ class ChatActivity : AppCompatActivity() {
 
                 val message = Message(
                     chatId,
-                    "Paolo",
+                    App.user,
                     txtMessage.text.toString(),
                     time
                 )
@@ -112,24 +111,23 @@ class ChatActivity : AppCompatActivity() {
     private fun setupPusher() {
         val options = PusherOptions()
         options.setCluster(pusherAppCluster)
-
         val pusher = Pusher(pusherAppKey, options)
-        val channel = pusher.subscribe(chatId.toString()) //TODO id chat
+        val channel = pusher.subscribe(chatId.toString())
 
-        channel.bind("new_message") { chatId, eventName, data ->
+        channel.bind("new_message") { channelId, eventName, data ->
+
             val jsonObject = JSONObject(data)
-
-            val message = com.example.iadvice.database.Message(
+            val message = Message(
                 jsonObject["chatId"].toString().toInt(),
-                jsonObject["user"].toString(),
-                jsonObject["message"].toString(),
+                jsonObject["username"].toString(),
+                jsonObject["text"].toString(),
                 jsonObject["time"].toString().toLong()
             )
 
             runOnUiThread {
-                adapter.addMessage(message)
+                adapter.addNewMessage(message)
                 // scroll the RecyclerView to the last added element
-                messageList.scrollToPosition(adapter.itemCount - 1);
+                messageList.scrollToPosition(adapter.itemCount - 1)
             }
 
         }

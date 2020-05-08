@@ -29,19 +29,6 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int
     val chatId = Id
 
     init {
-        val sampleFirstName = "Paolo"
-        val sampleEmail = "paolo.roncaglioni@gmail.com"
-        val sampleChatId = 123
-        val sampleTxt1 = "Questo é un messaggio"
-        val sampleTxt2 = "Immagine"
-        val user = User(sampleFirstName, sampleEmail, 25, "male", "", "Roncax", "eltinto1")
-        val chat = Chat(sampleChatId, sampleFirstName, "chat_di_prova")
-        val sampleMessage = Message(sampleChatId, sampleFirstName, sampleTxt1, 1234)
-        val sampleMessage2 = Message(sampleChatId, sampleFirstName, sampleTxt2, 124)
-
-//        chatDataSource.insert(chat)
-//        chatDataSource.insert(sampleMessage)
-//        chatDataSource.insert(sampleMessage2)
         loadMessages()
     }
 
@@ -50,6 +37,11 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int
         for (message in oldMessages.messages) {
             messages.add(message)
         }
+    }
+
+    fun addNewMessage(message: Message){
+        chatDataSource.insert(message)
+        addMessage(message)
     }
 
     fun addMessage(message: Message){

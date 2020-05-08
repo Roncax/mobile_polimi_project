@@ -27,7 +27,10 @@ interface ChatDao {
     fun getAll(): List<Chat>?
 
     @Query ("DELETE FROM chat_table")
-    fun deleteAll()
+    fun deleteAllChat()
+
+    @Query ("DELETE FROM message_table")
+    fun deleteAllMessages()
 
     @Query ("SELECT * FROM chat_table WHERE chatId = :chatId")
     fun getChat(chatId: Int): Chat
@@ -40,5 +43,13 @@ interface ChatDao {
     @Transaction
     @Query("SELECT * FROM chat_table WHERE chatId = :chatId")
     fun getChatWithMessagesFromId(chatId: Int): ChatWithMessages
+
+//TODO better deletion
+    fun deleteMsgFromChat(chatId: Int){
+        var messages = getChatWithMessagesFromId(chatId).messages
+        for (msg in messages){
+            delete(msg)
+        }
+    }
 
 }

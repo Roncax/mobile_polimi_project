@@ -2,7 +2,6 @@ package com.example.iadvice.chat
 
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.POST
 import retrofit2.http.Body
 import android.util.Log
