@@ -8,48 +8,75 @@
         android:id="@+id/newQuestion"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@+id/anonimity_switch"
-        app:layout_constraintTop_toTopOf="@+id/anonimity_switch">
+        app:layout_constraintBottom_toTopOf="@+id/poll_switch"
+        app:layout_constraintTop_toTopOf="@+id/poll_switch">
 
         <TextView
             android:id="@+id/title_text"
-            android:layout_width="59dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/question_title"
-            app:layout_constraintBaseline_toBaselineOf="@+id/box_title"
+            app:layout_constraintBottom_toTopOf="@id/box_title"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/category_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/question_category"
-            app:layout_constraintBaseline_toBaselineOf="@+id/category_spinner"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Spinner
-            android:id="@+id/category_spinner"
+        <!--<Spinner
+            android:id="@+id/country_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toTopOf="@+id/gender_spinner"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/box_title" />
+            app:layout_constraintTop_toBottomOf="@+id/box_title" />-->
+
 
         <TextView
-            android:id="@+id/anonimity_text"
+            android:id="@+id/country_text"
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="30dp"
+            android:text="pippo"
+            app:layout_constraintEnd_toStartOf="@id/country_spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/country_spinner"
+            tools:layout_editor_absoluteY="194dp"
+
+
+
+            />
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/country_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:ccp_showFullName="true"
+            app:ccp_showPhoneCode="false"
+            app:ccp_showNameCode="false"
+
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/gender_spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/box_title"
+            />
+
+
+
+        <TextView
+            android:id="@+id/poll_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@string/anonimity"
-            app:layout_constraintBaseline_toBaselineOf="@+id/anonimity_switch"
+            android:text="@string/poll"
+            app:layout_constraintBaseline_toBaselineOf="@+id/poll_switch"
             app:layout_constraintStart_toStartOf="parent" />
 
 
         <Switch
-            android:id="@+id/anonimity_switch"
+            android:id="@+id/poll_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -69,7 +96,7 @@
             android:ems="10"
             android:inputType="text"
             android:hint="@string/question_title_edit"
-            app:layout_constraintBottom_toTopOf="@+id/category_spinner"
+            app:layout_constraintBottom_toTopOf="@+id/country_spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints"
@@ -82,7 +109,7 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toTopOf="@+id/create_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/anonimity_switch" />
+            app:layout_constraintTop_toBottomOf="@+id/poll_switch" />
 
         <TextView
             android:id="@+id/duration_text"
@@ -98,9 +125,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/anonimity_switch"
+            app:layout_constraintBottom_toTopOf="@+id/poll_switch"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category_spinner"
+            app:layout_constraintTop_toBottomOf="@+id/country_spinner"
             tools:ignore="MissingConstraints" />
 
         <TextView

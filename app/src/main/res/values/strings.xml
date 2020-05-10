@@ -39,10 +39,10 @@
     <string name="feedback_title">Send feedback</string>
     <string name="question_title">Title:</string>
     <string name="question_title_edit">Insert here the title</string>
-    <string name="question_category">Category:</string>
+    <string name="question_country">Country of partecipants (by default maximum diversity is promoted):</string>
     <string name="question_target_gender">Sex of your target</string>
     <string name="new_question_button">Create</string>
-    <string name="anonimity">Keep your identity anonimous</string>
+    <string name="poll">Poll feature</string>
     <string name="question_duration">Self destruct timer</string>
 
 </resources>

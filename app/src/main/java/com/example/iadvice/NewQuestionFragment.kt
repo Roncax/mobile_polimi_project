@@ -16,11 +16,10 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var viewModel: NewQuestionFragmentViewModel
 
-    lateinit var category: String
     lateinit var gender: String
     lateinit var duration: String
     lateinit var title: String
-    var anonimity: Boolean = false
+    var poll: Boolean = false
 
 
     override fun onCreateView(
@@ -36,7 +35,7 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         )
 
         binding.createButton.setOnClickListener { onCreateNewQuestion() }
-        setAnonimity()
+        setPoll()
 
         return binding.root
     }
@@ -48,27 +47,12 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val categorySpinner = binding.categorySpinner
         val durationSpinner = binding.durationSpinner
         val genderSpinner = binding.genderSpinner
 
         //Set all the ItemListener on the spinners
-        categorySpinner.onItemSelectedListener = this
         durationSpinner.onItemSelectedListener = this
         genderSpinner.onItemSelectedListener = this
-
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            requireActivity(),
-            R.array.category_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            categorySpinner.adapter = adapter
-        }
 
         ArrayAdapter.createFromResource(
             requireActivity(),
@@ -107,22 +91,21 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val selected: String = parent?.getItemAtPosition(position).toString()
         when(parent?.id){
-            R.id.category_spinner -> category = selected
             R.id.duration_spinner -> gender = selected
             R.id.gender_spinner -> duration = selected
         }
     }
 
-    private fun setAnonimity(){
+    private fun setPoll(){
 
-        val switch: Switch = binding.anonimitySwitch
+        val switch: Switch = binding.pollSwitch
         switch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                anonimity = true
-                Toast.makeText(activity,"Your question will be anonymous", Toast.LENGTH_SHORT).show()
+                poll = true
+                Toast.makeText(activity,"Poll feature on", Toast.LENGTH_SHORT).show()
             } else {
-                anonimity = false
-                Toast.makeText(activity,"Involved users will see your identity", Toast.LENGTH_SHORT).show()
+                poll = false
+                Toast.makeText(activity,"Poll feature off", Toast.LENGTH_SHORT).show()
             }
         }
 
