@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Switch
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.iadvice.databinding.NewQuestionFragmentBinding
+import com.hbb20.CountryCodePicker.OnCountryChangeListener
 
 
 class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -19,6 +23,7 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     lateinit var gender: String
     lateinit var duration: String
     lateinit var title: String
+    lateinit var selectedCountry: String
     var poll: Boolean = false
 
 
@@ -34,11 +39,20 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             false
         )
 
-        binding.createButton.setOnClickListener { onCreateNewQuestion() }
+
+
+        //Initially don't show the Country selector
+        binding.countrySpinner.visibility = View.GONE
+
+        //Setting Listeners for views
         setPoll()
+        setCountrySwitch()
+        binding.createButton.setOnClickListener { onCreateNewQuestion() }
 
         return binding.root
     }
+
+
 
 
     /**
@@ -79,8 +93,9 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
      * make the call to the DB
      */
     private fun onCreateNewQuestion() {
-        title = binding.boxTitle.text.toString()
+        title = binding.argumentText.text.toString()
         //TODO make the call for the DB creation
+            //if not selected country put a dummy value
     }
 
 
@@ -97,7 +112,6 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun setPoll(){
-
         val switch: Switch = binding.pollSwitch
         switch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -109,6 +123,26 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
         }
 
+    }
+
+    private fun setCountrySwitch() {
+        val switch: Switch = binding.countrySwitch
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.countrySpinner.visibility = View.VISIBLE
+               // Toast.makeText(activity,"Poll feature on", Toast.LENGTH_SHORT).show()
+            } else {
+                binding.countrySpinner.visibility = View.GONE
+                //Toast.makeText(activity,"Poll feature off", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+    private fun onSelectedCountry(){
+        binding.countrySpinner.setOnCountryChangeListener(OnCountryChangeListener {
+            selectedCountry = binding.countrySpinner.getSelectedCountryName().toString()
+        })
     }
 
 }

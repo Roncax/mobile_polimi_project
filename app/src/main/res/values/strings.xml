@@ -37,13 +37,14 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="feedback_header">Feedback</string>
     <string name="feedback_title">Send feedback</string>
-    <string name="question_title">Title:</string>
-    <string name="question_title_edit">Insert here the title</string>
-    <string name="question_country">Country of partecipants (by default maximum diversity is promoted):</string>
+    <string name="argument_text">Argument</string>
+    <string name="question_argument_edit">Argument you want to discuss about</string>
+    <string name="default_country_text">By default, max  number of country of origin among participants is selected, to promote diversity \n (but if you want, you can select a specific country)</string>
     <string name="question_target_gender">Sex of your target</string>
     <string name="new_question_button">Create</string>
     <string name="poll">Poll feature</string>
     <string name="question_duration">Self destruct timer</string>
+    <string name="specify_country">Restrict to a specific country</string>
 
 </resources>
 

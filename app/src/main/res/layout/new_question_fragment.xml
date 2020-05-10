@@ -14,44 +14,38 @@
 
 
         <TextView
-            android:id="@+id/title_text"
+            android:id="@+id/argument_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:text="@string/question_title"
-            app:layout_constraintBottom_toTopOf="@+id/box_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@string/argument_text"
+            app:layout_constraintBottom_toTopOf="@+id/box_argument"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="16dp" />
 
         <TextView
             android:id="@+id/country_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-
-
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:text="@string/question_country"
-            app:layout_constraintBottom_toTopOf="@+id/country_spinner"
+            android:text="@string/default_country_text"
+            app:layout_constraintBottom_toTopOf="@+id/country_switch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/box_title" />
+            app:layout_constraintTop_toBottomOf="@+id/poll_switch" />
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/country_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-
             android:layout_marginEnd="16dp"
             app:ccp_showFullName="true"
             app:ccp_showNameCode="false"
@@ -60,7 +54,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/country_text" />
+            app:layout_constraintTop_toBottomOf="@+id/country_switch" />
 
 
         <TextView
@@ -79,24 +73,26 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:checked="false"
-            app:layout_constraintBottom_toTopOf="@+id/duration_text"
+            app:layout_constraintBottom_toTopOf="@+id/country_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gender_spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/box_argument" />
 
         <EditText
-            android:id="@+id/box_title"
-            android:layout_width="wrap_content"
+            android:id="@+id/box_argument"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:autofillHints=""
             android:ems="10"
-            android:hint="@string/question_title_edit"
+            android:hint="@string/question_argument_edit"
             android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/country_text"
-            app:layout_constraintEnd_toEndOf="@+id/title_text"
+            app:layout_constraintBottom_toTopOf="@+id/poll_switch"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/title_text"
-            app:layout_constraintTop_toBottomOf="@+id/title_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/argument_text"
             tools:ignore="MissingConstraints" />
 
         <Spinner
@@ -117,14 +113,16 @@
             android:id="@+id/duration_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="@string/question_duration"
             app:layout_constraintBottom_toTopOf="@+id/duration_spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/poll_switch" />
+            app:layout_constraintTop_toBottomOf="@+id/gender_spinner" />
 
         <Spinner
             android:id="@+id/gender_spinner"
@@ -134,7 +132,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/poll_switch"
+            app:layout_constraintBottom_toTopOf="@+id/duration_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -170,6 +168,26 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/duration_spinner" />
+
+        <Switch
+            android:id="@+id/country_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:checked="false"
+            app:layout_constraintBottom_toTopOf="@+id/country_spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/country_text" />
+
+        <TextView
+            android:id="@+id/country_switch_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/specify_country"
+            app:layout_constraintBaseline_toBaselineOf="@+id/country_switch"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
