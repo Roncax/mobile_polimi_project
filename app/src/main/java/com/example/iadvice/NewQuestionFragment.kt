@@ -59,7 +59,7 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             R.array.duration_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
             durationSpinner.adapter = adapter
         }
 
