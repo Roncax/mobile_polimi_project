@@ -10,6 +10,7 @@ import android.widget.Switch
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.iadvice.databinding.NewQuestionFragmentBinding
 import com.hbb20.CountryCodePicker
 import com.hbb20.CountryCodePicker.OnCountryChangeListener
@@ -21,14 +22,8 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var viewModel: NewQuestionFragmentViewModel
 
-
     var countryCodePicker: CountryCodePicker? = null
-    lateinit var category: String
-    lateinit var gender: String
-    lateinit var duration: String
-    lateinit var title: String
-    lateinit var selectedCountry: String
-    var poll: Boolean = false
+
 
 
     override fun onCreateView(
@@ -42,6 +37,13 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             container,
             false
         )
+
+
+
+        val application = requireNotNull(this.activity).application
+        val viewModelFactory = NewQuestionViewModelFactory( application)
+        // viewModelProviders used to not destroy the viewmodel until detached
+        viewModel = ViewModelProvider(this, viewModelFactory).get(NewQuestionFragmentViewModel::class.java)
 
         //bind views
         countryCodePicker = binding.countrySpinner
@@ -57,60 +59,25 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         return binding.root
     }
 
-
-
-
-    /**
-     * gestione lista scelte menu a tendina. Sarà poi implementata prendendola da DB
-     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //Set data to viewModel
+        viewModel.durationSpinner = binding.durationSpinner
+        viewModel.genderSpinner = binding.genderSpinner
+        viewModel.categorySpinner = binding.categorySpinner
 
-        val durationSpinner = binding.durationSpinner
-        val genderSpinner = binding.genderSpinner
-        val categorySpinner = binding.categorySpinner
+        viewModel.fillSPinners()
 
         //Set all the ItemListener on the spinners
-        durationSpinner.onItemSelectedListener = this
-        genderSpinner.onItemSelectedListener = this
-        categorySpinner.onItemSelectedListener = this
-
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            requireActivity(),
-            R.array.category_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            categorySpinner.adapter = adapter
-        }
-
-        ArrayAdapter.createFromResource(
-            requireActivity(),
-            R.array.duration_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-            durationSpinner.adapter = adapter
-        }
-
-        ArrayAdapter.createFromResource(
-            requireActivity(),
-            R.array.gender_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            genderSpinner.adapter = adapter
-        }
+        viewModel.durationSpinner.onItemSelectedListener = this
+        viewModel.genderSpinner.onItemSelectedListener = this
+        viewModel.categorySpinner.onItemSelectedListener = this
     }
 
+
     private fun onCreateNewQuestion() {
-        title = binding.argumentText.text.toString()
+        viewModel.title = binding.argumentText.text.toString()
         //TODO make the call for the DB creation
-            //if not selected country put a dummy value
     }
 
 
@@ -119,9 +86,9 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val selected: String = parent?.getItemAtPosition(position).toString()
         when(parent?.id){
-            R.id.gender_spinner -> category = selected
-            R.id.duration_spinner -> gender = selected
-            R.id.gender_spinner -> duration = selected
+            R.id.gender_spinner -> viewModel.category = selected
+            R.id.duration_spinner -> viewModel.target = selected
+            R.id.gender_spinner -> viewModel.duration = selected
         }
     }
 
@@ -129,10 +96,10 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val switch: Switch = binding.pollSwitch
         switch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                poll = true
+                viewModel.poll = true
                 Toast.makeText(activity,"Poll feature on", Toast.LENGTH_SHORT).show()
             } else {
-                poll = false
+                viewModel.poll = false
                 Toast.makeText(activity,"Poll feature off", Toast.LENGTH_SHORT).show()
             }
         }
@@ -153,7 +120,7 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private fun onSelectedCountry(){
         countryCodePicker!!.setOnCountryChangeListener(OnCountryChangeListener {
             Toast.makeText( context, "Updated " + countryCodePicker!!.getSelectedCountryName(), Toast.LENGTH_SHORT).show()
-            selectedCountry = countryCodePicker!!.getSelectedCountryName().toString()
+            viewModel.selectedCountry = countryCodePicker!!.getSelectedCountryName().toString()
         })
     }
 
