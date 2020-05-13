@@ -45,6 +45,7 @@
     <string name="poll">Poll feature</string>
     <string name="question_duration">Self destruct timer</string>
     <string name="specify_country">Restrict to a specific country</string>
+    <string name="category">Category</string>
 
 </resources>
 

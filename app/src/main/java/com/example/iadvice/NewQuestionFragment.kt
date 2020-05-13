@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.iadvice.databinding.NewQuestionFragmentBinding
+import com.hbb20.CountryCodePicker
 import com.hbb20.CountryCodePicker.OnCountryChangeListener
 
 
@@ -20,6 +21,9 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var viewModel: NewQuestionFragmentViewModel
 
+
+    var countryCodePicker: CountryCodePicker? = null
+    lateinit var category: String
     lateinit var gender: String
     lateinit var duration: String
     lateinit var title: String
@@ -39,15 +43,16 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             false
         )
 
-
-
-        //Initially don't show the Country selector
+        //bind views
+        countryCodePicker = binding.countrySpinner
         binding.countrySpinner.visibility = View.GONE
 
         //Setting Listeners for views
         setPoll()
         setCountrySwitch()
+        onSelectedCountry()
         binding.createButton.setOnClickListener { onCreateNewQuestion() }
+
 
         return binding.root
     }
@@ -63,10 +68,25 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         val durationSpinner = binding.durationSpinner
         val genderSpinner = binding.genderSpinner
+        val categorySpinner = binding.categorySpinner
 
         //Set all the ItemListener on the spinners
         durationSpinner.onItemSelectedListener = this
         genderSpinner.onItemSelectedListener = this
+        categorySpinner.onItemSelectedListener = this
+
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            requireActivity(),
+            R.array.category_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            categorySpinner.adapter = adapter
+        }
 
         ArrayAdapter.createFromResource(
             requireActivity(),
@@ -85,13 +105,8 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             genderSpinner.adapter = adapter
         }
-
     }
 
-
-    /**
-     * make the call to the DB
-     */
     private fun onCreateNewQuestion() {
         title = binding.argumentText.text.toString()
         //TODO make the call for the DB creation
@@ -99,13 +114,12 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
 
-
-
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val selected: String = parent?.getItemAtPosition(position).toString()
         when(parent?.id){
+            R.id.gender_spinner -> category = selected
             R.id.duration_spinner -> gender = selected
             R.id.gender_spinner -> duration = selected
         }
@@ -130,18 +144,16 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         switch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.countrySpinner.visibility = View.VISIBLE
-               // Toast.makeText(activity,"Poll feature on", Toast.LENGTH_SHORT).show()
             } else {
                 binding.countrySpinner.visibility = View.GONE
-                //Toast.makeText(activity,"Poll feature off", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     private fun onSelectedCountry(){
-        binding.countrySpinner.setOnCountryChangeListener(OnCountryChangeListener {
-            selectedCountry = binding.countrySpinner.getSelectedCountryName().toString()
+        countryCodePicker!!.setOnCountryChangeListener(OnCountryChangeListener {
+            Toast.makeText( context, "Updated " + countryCodePicker!!.getSelectedCountryName(), Toast.LENGTH_SHORT).show()
+            selectedCountry = countryCodePicker!!.getSelectedCountryName().toString()
         })
     }
 

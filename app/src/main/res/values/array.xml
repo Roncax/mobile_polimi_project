@@ -8,6 +8,14 @@
         <item> No timer</item>
     </string-array>
 
+
+    <string-array name="category_array">
+    <item>Cloths</item>
+    <item>Tech</item>
+    <item>Forniture</item>
+</string-array>
+
+
     <string-array name="gender_array">
         <item>Males</item>
         <item>Females</item>
