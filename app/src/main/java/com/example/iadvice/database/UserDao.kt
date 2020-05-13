@@ -15,16 +15,7 @@ interface UserDao {
     @Update
     fun update(user: User)
 
-    @Query("SELECT * FROM users_table")
-    fun getAll(): List<User>?
-
-    @Query ("DELETE FROM users_table")
-    fun deleteAll()
-
-    @Query("SELECT * FROM users_table WHERE uid = :userId")
-    fun getUser(userId: Int): User
-
-    @Query("SELECT * FROM users_table WHERE email = :mail")
-    fun findByEmail(mail: String): User
+    @Query("SELECT * FROM user WHERE email = :email")
+    fun getUser(email: String): LiveData<User>
 
 }
