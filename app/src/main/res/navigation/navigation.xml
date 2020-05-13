@@ -47,7 +47,7 @@
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/your_questions_fragment"
-        android:name="com.example.iadvice.Home.your_questions_fragment"
+        android:name="com.example.iadvice.Home.YourQuestionsFragment"
         android:label="your_questions_fragment"
         tools:layout="@layout/your_questions_fragment">
         <action
@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/newQuestionFragment"
-        android:name="com.example.iadvice.NewQuestionFragment"
+        android:name="com.example.iadvice.NewQuestion.NewQuestionFragment"
         android:label="newQuestionFragment"
         tools:layout="@layout/new_question_fragment"/>
 </navigation>

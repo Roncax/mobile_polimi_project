@@ -1,6 +1,5 @@
 package com.example.iadvice.Home
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
@@ -23,7 +22,7 @@ class HomeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
      */
     override fun createFragment(position: Int): Fragment {
         when(position) {
-            0 -> return your_questions_fragment()
+            0 -> return YourQuestionsFragment()
             else -> return OtherQuestionsFragment()
         }
     }

@@ -1,12 +1,13 @@
-package com.example.iadvice
+package com.example.iadvice.NewQuestion
 
 import android.app.Application
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.lifecycle.ViewModel
+import com.example.iadvice.R
 
 
-class NewQuestionFragmentViewModel(private val application: Application) : ViewModel() {
+class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
     //TODO mettere in LiveData
     lateinit var category: String
@@ -41,7 +42,7 @@ class NewQuestionFragmentViewModel(private val application: Application) : ViewM
         //durationSpinner
         ArrayAdapter.createFromResource(
             application,
-            R.array.category_array,
+            R.array.duration_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -50,7 +51,7 @@ class NewQuestionFragmentViewModel(private val application: Application) : ViewM
         //genderSpinner
         ArrayAdapter.createFromResource(
             application,
-            R.array.category_array,
+            R.array.gender_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

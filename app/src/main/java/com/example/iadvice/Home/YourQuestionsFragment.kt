@@ -11,14 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
 import org.json.JSONObject
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class your_questions_fragment : Fragment(),OnItemClickListener {
+class YourQuestionsFragment : Fragment(),OnItemClickListener {
 
 
     private lateinit var binding: YourQuestionsFragmentBinding
@@ -201,7 +198,7 @@ class your_questions_fragment : Fragment(),OnItemClickListener {
                 dataList.add(map)
             }
 
-            viewAdapter =  QuestionsAdapter(dataList,this@your_questions_fragment)
+            viewAdapter =  QuestionsAdapter(dataList,this@YourQuestionsFragment)
 
             recyclerView = binding.RecyclerView.apply {
                 //used to improve performances
