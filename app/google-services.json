@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "157127290083",
+    "firebase_url": "https://iadvice-49847.firebaseio.com",
+    "project_id": "iadvice-49847",
+    "storage_bucket": "iadvice-49847.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157127290083:android:9a99ad9ef2050f79f029d6",
+        "android_client_info": {
+          "package_name": "com.example.iadvice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "157127290083-6j860kfnbhn4ol41gnct0i5cbcab5qch.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr1OLIc-zzlZMKDNUmjOM9B1q5_JFNbJ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "157127290083-6j860kfnbhn4ol41gnct0i5cbcab5qch.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
