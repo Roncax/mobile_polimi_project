@@ -2,12 +2,16 @@ package com.example.iadvice.Home
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.Toolbar
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.viewpager2.widget.ViewPager2
 import com.example.iadvice.R
 import com.google.android.material.appbar.AppBarLayout
@@ -15,25 +19,16 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-import androidx.navigation.findNavController
-
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-
-
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var viewPager: ViewPager2
-    private lateinit var appBarConfiguration : AppBarConfiguration
-
-
 
     private lateinit var toolbar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
 
-    private lateinit var navController: NavController
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +39,6 @@ class HomeFragment : Fragment() {
         val layout : View
         //Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.home_fragment, container, false)
-
-        setHasOptionsMenu(true)
         return layout
 
     }
@@ -83,62 +76,36 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout).setVisibility(View.VISIBLE)
 
+        setUpDrawerMenu()
+    }
 
-/**
-        /* Manage the creation of the toolbar (the actionbar) */
-        toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
-        (requireActivity() as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+    private fun setUpDrawerMenu(){
+        toolbar = requireActivity().findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
 
-        /* Manage the drawerMenu on the left */
-        drawerLayout = requireActivity().findViewById(R.id.drawer_layout)
-        navView = requireActivity().findViewById(R.id.navView)
+        //setSupportActionBar(toolbar) setta il nome sulla barra
+        drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout)
+        navView = requireActivity().findViewById<NavigationView>(R.id.navView)
+
+        //setupDrawerLayout
         val toggle = ActionBarDrawerToggle(
-            requireActivity(), drawerLayout, toolbar, 0, 0
-        )
+            requireActivity() as AppCompatActivity, drawerLayout, toolbar, 0,0)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-      //  navView.setNavigationItemSelectedListener(requireActivity())
-*/
 
-
-
-val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment))
-
-
-
-        toolbar = requireActivity().findViewById(R.id.toolbar)
-        (requireActivity() as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-
-        drawerLayout = requireActivity().findViewById(R.id.drawer_layout)
-
-        navView = requireActivity().findViewById(R.id.navView)
-
-        val toggle = ActionBarDrawerToggle( requireActivity(), drawerLayout, toolbar, 0, 0)
-        toggle.syncState()
-        val navController = requireActivity().findNavController(R.id.myNavHostFragment)
-
-        NavigationUI.setupActionBarWithNavController(requireActivity() as AppCompatActivity,navController,drawerLayout)
-
-        NavigationUI.setupWithNavController(navView, navController)
-
-
-
-
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.nav_menu,menu)
+        navView.setNavigationItemSelectedListener(this)
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item!!,requireView()!!.findNavController())
-                ||super.onOptionsItemSelected(item)
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.settingsFragment -> requireView().findNavController().navigate(R.id.settingsFragment)
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
-
-
 }
+
+
 
 
 //TODO TabLayoutMediator
