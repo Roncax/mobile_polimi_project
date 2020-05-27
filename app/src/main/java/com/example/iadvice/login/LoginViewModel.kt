@@ -30,7 +30,6 @@ class LoginViewModel(
         gender: String
     ) {
 
-
         val categories = "ONE"
         val user = User(
             uid = uid,
@@ -55,7 +54,7 @@ class LoginViewModel(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     var retrivedUser = snapshot.getValue<User>()!!
                     App.user = retrivedUser
-                    Log.d(TAG, "L'utente caricato é AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: ${App.user.username}")
+                    Log.d(TAG, "L'utente caricato é: ${App.user.username}")
                 }
             }
 

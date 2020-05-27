@@ -30,6 +30,7 @@
             android:ems="10"
             android:hint="Email"
             android:inputType="textEmailAddress"
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/first_pw_text"
             app:layout_constraintEnd_toEndOf="@+id/nickname_text"
             app:layout_constraintStart_toStartOf="@+id/nickname_text"
@@ -42,6 +43,7 @@
             android:ems="10"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/google_register_button"
             app:layout_constraintEnd_toEndOf="@+id/email_register_text"
             app:layout_constraintHorizontal_bias="0.0"
@@ -53,8 +55,9 @@
             android:layout_width="193dp"
             android:layout_height="43dp"
             android:ems="10"
-            android:hint="Nickname here"
+            android:hint="Nickname"
             android:inputType="textPersonName"
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/email_register_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.522"
@@ -96,13 +99,13 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="211dp"
+            android:layout_height="127dp"
             android:layout_marginTop="68dp"
             app:layout_constraintEnd_toStartOf="@+id/add_image_register_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            app:srcCompat="@drawable/unnamed" />
 
         <Button
             android:id="@+id/add_image_register_button"
@@ -118,14 +121,18 @@
 
         <Switch
             android:id="@+id/gender_choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="M/F"
+            android:layout_width="128dp"
+            android:layout_height="49dp"
+            android:showText="true"
+            android:textAlignment="center"
+            android:textOff="Male"
+            android:textOn="Female"
             app:layout_constraintBottom_toTopOf="@+id/nickname_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/age_register_text"
             app:layout_constraintTop_toBottomOf="@+id/add_image_register_button"
-            app:layout_constraintVertical_bias="0.401" />
+            app:layout_constraintVertical_bias="0.401"
+            tools:checked="false" />
 
         <EditText
             android:id="@+id/age_register_text"
@@ -134,6 +141,7 @@
             android:ems="10"
             android:hint="Age"
             android:inputType="number"
+            android:textAlignment="center"
             app:layout_constraintBaseline_toBaselineOf="@+id/gender_choice"
             app:layout_constraintEnd_toStartOf="@+id/gender_choice"
             app:layout_constraintStart_toEndOf="@+id/imageView" />

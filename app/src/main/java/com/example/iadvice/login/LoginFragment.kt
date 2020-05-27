@@ -25,7 +25,6 @@ class LoginFragment : Fragment() {
 
     companion object {
         const val TAG = "LoginFragment"
-        const val SIGN_IN_RESULT_CODE = 1001
     }
 
     private lateinit var viewModel: LoginViewModel
