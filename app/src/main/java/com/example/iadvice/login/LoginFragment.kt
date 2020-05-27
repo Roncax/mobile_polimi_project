@@ -53,30 +53,38 @@ class LoginFragment : Fragment() {
                 val email = binding.usernameText.text.toString()
 
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener{
-                        viewModel.uploadUser(it.result!!.user!!.uid)
+                    .addOnCompleteListener {
+                        if (!it.isSuccessful) return@addOnCompleteListener
+                        var uid = it.result!!.user!!.uid
+                        Log.d(TAG, "Successfull logged user with uid: ${uid}")
+                        viewModel.uploadUser(uid)
                         requireView().findNavController()
                             .navigate(R.id.action_loginFragment_to_chatActivity)
                     }
+                    .addOnFailureListener {
+                        Log.d(TAG, "Failed to login user: ${it.message}")
+                    }
             }
 
-            registerButton.setOnClickListener {
-                requireView().findNavController()
-                    .navigate(R.id.action_loginFragment_to_registerFragment)
-            }
+                registerButton.setOnClickListener {
+                    requireView().findNavController()
+                        .navigate(R.id.action_loginFragment_to_registerFragment)
+                }
 
-            facebookLoginButton.setOnClickListener {}
-            googleLoginButton.setOnClickListener {}
-            twitterLoginButton.setOnClickListener {}
+                facebookLoginButton.setOnClickListener {}
+                googleLoginButton.setOnClickListener {}
+                twitterLoginButton.setOnClickListener {}
+
+            return binding.root
         }
-        return binding.root
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout).setVisibility(View.GONE)
+        override fun onActivityCreated(savedInstanceState: Bundle?) {
+            super.onActivityCreated(savedInstanceState)
+            requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout)
+                .setVisibility(View.GONE)
+        }
+
+
     }
-
-
-}
