@@ -6,10 +6,8 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.iadvice.*
-import com.example.iadvice.database.AppDatabase
 import com.example.iadvice.database.Message
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.util.*
@@ -26,8 +24,9 @@ class ChatActivity : AppCompatActivity() {
 
     //take the chatId from the previous screen (home in this case)
     //TODO mettere in safeargs il chatID dalla home
-    val safeArgs: ChatActivityArgs by navArgs()
-    val chatId = safeArgs.chatId
+    //val safeArgs: ChatActivityArgs by navArgs()
+    //val chatId = safeArgs.chatId
+    val chatId = 123
     private lateinit var adapter: MessageAdapter
 
     private val pusherAppKey = "6e1f164ad49aa236076b"
@@ -38,10 +37,9 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat)
 
         val application = requireNotNull(this).application
-        val chatDataSource = AppDatabase.getInstance(application).chatDao
 
         messageList.layoutManager = LinearLayoutManager(this)
-        adapter = MessageAdapter(this, chatDataSource, chatId)
+        adapter = MessageAdapter(this, chatId)
         messageList.adapter = adapter
         messageList.scrollToPosition(adapter.itemCount - 1)
 
@@ -51,10 +49,10 @@ class ChatActivity : AppCompatActivity() {
                 val time = Calendar.getInstance().timeInMillis
 
                 val message = Message(
-                    chatId,
-                    App.user,
-                    txtMessage.text.toString(),
-                    time
+                    chatId = chatId,
+                    user = App.user,
+                    text = txtMessage.text.toString(),
+                    time = time
                 )
 
                 Log.i(TAG, "The user ${App.user} sent the message ${txtMessage.text} at time $time")
@@ -119,7 +117,7 @@ class ChatActivity : AppCompatActivity() {
             val jsonObject = JSONObject(data)
             val message = Message(
                 jsonObject["chatId"].toString().toInt(),
-                jsonObject["username"].toString(),
+                jsonObject["user"].toString(),
                 jsonObject["text"].toString(),
                 jsonObject["time"].toString().toLong()
             )

@@ -1,15 +1,11 @@
 package com.example.iadvice.database
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.google.firebase.database.IgnoreExtraProperties
 
-@Entity(tableName = "message_table")
+@IgnoreExtraProperties
 data class Message (
-    @ColumnInfo(name = "chatId") var chatId: Int,
-    @ColumnInfo(name = "message_sender") var user: String, //user a cui appartiene il messaggio
-    @ColumnInfo(name = "message_text") var text: String,
-    @ColumnInfo(name = "message_time") var time: Long
-) {
-    @PrimaryKey(autoGenerate = true) var messageId:Long = 0
-}
+     var chatId: Int? = -1,
+    var user: String? = "", //user a cui appartiene il messaggio
+    var text: String? = "",
+    var time: Long = 0
+)

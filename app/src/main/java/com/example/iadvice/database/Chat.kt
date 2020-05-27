@@ -1,23 +1,16 @@
 package com.example.iadvice.database
 
-import androidx.room.*
+import com.google.firebase.database.IgnoreExtraProperties
 
-@Entity(tableName = "chat_table")
+@IgnoreExtraProperties
+
 data class Chat(
-    @PrimaryKey(autoGenerate = true) var chatId: Int,
-    @ColumnInfo(name = "chat_owner") var user:String, //user a cui appartiene la chat
-    @ColumnInfo(name = "chat_question") var question: String?, //this is also the name of the chat
-    @ColumnInfo(name = "poll") var poll: Poll?,
-    @ColumnInfo(name = "active") var isActive:Boolean = true
+    var chatId: Int,
+    var user:String, //user (email) dello user a cui appartiene la chat
+    var question: String?, //this is also the name of the chat
+    var poll: Poll?,
+    var isActive:Boolean = true
 )
 
-data class ChatWithMessages(
-    @Embedded val chat: Chat,
-    @Relation(
-        parentColumn = "chatId",
-        entityColumn = "chatId"
-    )
-    val messages: List<Message>
-)
 
 

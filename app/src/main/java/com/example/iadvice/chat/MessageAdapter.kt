@@ -1,7 +1,7 @@
 package com.example.iadvice.chat
 
-import android.util.Log
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.App
 import com.example.iadvice.DateUtils
 import com.example.iadvice.R
-import com.example.iadvice.database.Chat
-import com.example.iadvice.database.ChatDao
 import com.example.iadvice.database.Message
-import com.example.iadvice.database.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.my_bubble.view.*
 import kotlinx.android.synthetic.main.other_bubble.view.*
 
@@ -23,28 +26,49 @@ private const val VIEW_TYPE_OTHER_MESSAGE = 2
 
 private const val TAG = "MessageAdapter"
 
-class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int) : RecyclerView.Adapter<MessageViewHolder>() {
+class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<MessageViewHolder>() {
 
     private val messages: ArrayList<Message> = ArrayList()
     val chatId = Id
+
 
     init {
         loadMessages()
     }
 
-    fun loadMessages(){
-        val oldMessages = chatDataSource.getChatWithMessagesFromId(chatId)
-        for (message in oldMessages.messages) {
-            messages.add(message)
+    fun loadMessages() {
+
+        var onlineDb = Firebase.database.reference
+
+        val messagesListener = object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError) {
+                //method that is called if the read is canceled (eg no permission)
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val children = p0!!.children
+                children.forEach {
+                    addMessage(it.getValue<Message>()!!
+                    )
+                }
+            }
+
+
         }
+
+        onlineDb.child("messages").child(chatId.toString())
+            .addValueEventListener(messagesListener)
     }
 
-    fun addNewMessage(message: Message){
-        chatDataSource.insert(message)
+    fun addNewMessage(message: Message) {
+        var onlineDb = Firebase.database.reference
+        onlineDb.child("messages").child(message.chatId.toString()).child(message.time.toString())
+            .setValue(message)
         addMessage(message)
     }
 
-    fun addMessage(message: Message){
+    fun addMessage(message: Message) {
         messages.add(message)
         notifyDataSetChanged()
     }
@@ -56,19 +80,22 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
 
-        return if(App.user == message.username) {
+        return if (App.user == message.user) {
             VIEW_TYPE_MY_MESSAGE
-        }
-        else {
+        } else {
             VIEW_TYPE_OTHER_MESSAGE
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        return if(viewType == VIEW_TYPE_MY_MESSAGE) {
-            MyMessageViewHolder(LayoutInflater.from(context).inflate(R.layout.my_bubble, parent, false))
+        return if (viewType == VIEW_TYPE_MY_MESSAGE) {
+            MyMessageViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.my_bubble, parent, false)
+            )
         } else {
-            OtherMessageViewHolder(LayoutInflater.from(context).inflate(R.layout.other_bubble, parent, false))
+            OtherMessageViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.other_bubble, parent, false)
+            )
         }
     }
 
@@ -78,7 +105,7 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int
         holder?.bind(message)
     }
 
-    inner class MyMessageViewHolder (view: View) : MessageViewHolder(view) {
+    inner class MyMessageViewHolder(view: View) : MessageViewHolder(view) {
         private var messageText: TextView = view.txtMyMessage
         private var timeText: TextView = view.txtMyMessageTime
 
@@ -86,25 +113,24 @@ class MessageAdapter (val context: Context, val chatDataSource: ChatDao, Id: Int
             messageText.text = message.text
             timeText.text =
                 DateUtils.fromMillisToTimeString(message.time!!.toLong())
-            Log.i(TAG, "Sono dentro al mio messaggio, ${message.text}")
         }
     }
 
-    inner class OtherMessageViewHolder (view: View) : MessageViewHolder(view) {
+    inner class OtherMessageViewHolder(view: View) : MessageViewHolder(view) {
         private var messageText: TextView = view.txtOtherMessage
         private var userText: TextView = view.txtOtherUser
-    private var timeText: TextView = view.txtOtherMessageTime
+        private var timeText: TextView = view.txtOtherMessageTime
 
         override fun bind(message: Message) {
             messageText.text = message.text
-            userText.text = message.username
+            userText.text = message.user
             timeText.text =
                 DateUtils.fromMillisToTimeString(message.time!!.toLong())
 
-            }
+        }
     }
 }
 
-open class MessageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
+open class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     open fun bind(message: Message) {}
 }
