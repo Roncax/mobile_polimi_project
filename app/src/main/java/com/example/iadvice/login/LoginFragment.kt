@@ -72,19 +72,7 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    /**
-     * Called when the fragment's activity has been created and this
-     * fragment's view hierarchy instantiated.  It can be used to do final
-     * initialization once these pieces are in place, such as retrieving
-     * views or restoring state.  It is also useful for fragments that use
-     * [.setRetainInstance] to retain their instance,
-     * as this callback tells the fragment when it is fully associated with
-     * the new activity instance.  This is called after [.onCreateView]
-     * and before [.onViewStateRestored].
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     * a previous saved state, this is the state.
-     */
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout).setVisibility(View.GONE)
@@ -125,7 +113,7 @@ class LoginFragment : Fragment() {
                 // Sign in failed. If response is null, the user canceled the
                 // sign-in flow using the back button. Otherwise, check
                 // the error code and handle the error.
-                Log.i(RegisterFragment.TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
+                Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
             }
         }
     }

@@ -40,15 +40,8 @@ class LoginViewModel(
     }
 
 
-    // TODO transfer the check of pw online
     fun loginUser(password: String, email: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
-
-
-
-
-
-
 
             val userListener = object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {

@@ -11,6 +11,7 @@ import com.example.iadvice.App
 import com.example.iadvice.DateUtils
 import com.example.iadvice.R
 import com.example.iadvice.database.Message
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -20,16 +21,20 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.my_bubble.view.*
 import kotlinx.android.synthetic.main.other_bubble.view.*
 
-//possono essere messi in un companion object
-private const val VIEW_TYPE_MY_MESSAGE = 1
-private const val VIEW_TYPE_OTHER_MESSAGE = 2
 
-private const val TAG = "MessageAdapter"
 
 class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<MessageViewHolder>() {
 
     private val messages: ArrayList<Message> = ArrayList()
     val chatId = Id
+
+    companion object{
+        //possono essere messi in un companion object
+        private const val VIEW_TYPE_MY_MESSAGE = 1
+        private const val VIEW_TYPE_OTHER_MESSAGE = 2
+
+        private const val TAG = "MessageAdapter"
+    }
 
 
     init {
@@ -40,17 +45,18 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
 
         var onlineDb = Firebase.database.reference
 
-        val messagesListener = object : ValueEventListener {
+        val messagesUploadListener = object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 //method that is called if the read is canceled (eg no permission)
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
 
             override fun onDataChange(p0: DataSnapshot) {
+
+
                 val children = p0!!.children
                 children.forEach {
-                    addMessage(it.getValue<Message>()!!
-                    )
+                    addMessage(it.getValue<Message>()!!)
                 }
             }
 
@@ -58,14 +64,44 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
         }
 
         onlineDb.child("messages").child(chatId.toString())
-            .addValueEventListener(messagesListener)
+            .addListenerForSingleValueEvent(messagesUploadListener)
+
+
+
+        val messagesListener = object : ChildEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                //TODO("Not yet implemented")
+            }
+
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+
+            }
+
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+                //TODO("Not yet implemented")
+            }
+
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                val message = p0.getValue<Message>()
+                addMessage(message!!)
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot) {
+                //TODO("Not yet implemented")
+            }
+
+
+        }
+
+        onlineDb.child("messages").child(chatId.toString())
+            .addChildEventListener(messagesListener)
+
     }
 
     fun addNewMessage(message: Message) {
         var onlineDb = Firebase.database.reference
         onlineDb.child("messages").child(message.chatId.toString()).child(message.time.toString())
             .setValue(message)
-        addMessage(message)
     }
 
     fun addMessage(message: Message) {
@@ -73,13 +109,11 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
         notifyDataSetChanged()
     }
 
-    override fun getItemCount(): Int {
-        return messages.size
-    }
+    override fun getItemCount()= messages.size
+
 
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
-
         return if (App.user == message.user) {
             VIEW_TYPE_MY_MESSAGE
         } else {
@@ -101,7 +135,6 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages.get(position)
-
         holder?.bind(message)
     }
 
