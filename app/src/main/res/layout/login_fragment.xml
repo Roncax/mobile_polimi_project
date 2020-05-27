@@ -81,12 +81,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/facebook_login_button"
             app:layout_constraintTop_toBottomOf="@+id/password_text"
-            app:srcCompat="@drawable/facebook_logo" />
+            app:srcCompat="@drawable/facebook_logo"
+            />
 
         <Button
             android:id="@+id/loginButton"
-            android:layout_width="149dp"
-            android:layout_height="42dp"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:background="@drawable/rounded_button"
             android:text="@string/login_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -97,8 +99,9 @@
 
         <Button
             android:id="@+id/registerButton"
-            android:layout_width="158dp"
+            android:layout_width="150dp"
             android:layout_height="45dp"
+            android:background="@drawable/rounded_button"
             android:text="@string/register_button"
             app:layout_constraintBaseline_toBaselineOf="@+id/loginButton"
             app:layout_constraintEnd_toStartOf="@+id/loginButton"

@@ -43,7 +43,7 @@ class ChatActivity : AppCompatActivity() {
 
                 val message = Message(
                     chatId = chatId,
-                    user = App.user,
+                    user = App.user.username,
                     text = txtMessage.text.toString(),
                     time = time
                 )

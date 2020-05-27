@@ -24,43 +24,45 @@ class LoginViewModel(
 
     // register the user with the selected parameters
     fun registerUser(
+        uid: String,
         username: String,
-        email: String,
-        password: String,
         age: Int,
         gender: String
     ) {
 
 
         val categories = "ONE"
-        val user = User(email = email, password = password, username = username, gender = gender, categories = categories, age = age)
+        val user = User(
+            uid = uid,
+            username = username,
+            gender = gender,
+            categories = categories,
+            age = age
+        )
 
-        Firebase.database.reference.child("users").child(user.email!!).setValue(user)
+        Firebase.database.reference.child("users").child(uid).setValue(user)
 
     }
 
 
-    fun loginUser(password: String, email: String) {
-        if (email.isNotEmpty() && password.isNotEmpty()) {
+    fun uploadUser(uid: String) {
 
             val userListener = object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {
-                    //method that is called if the read is canceled (eg no permission)
                     Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
                     var retrivedUser = snapshot.getValue<User>()!!
-                    App.user = retrivedUser.email.toString()
-                    Log.i(TAG, "L'utente caricato é: ${App.user}")
+                    App.user = retrivedUser
+                    Log.d(TAG, "L'utente caricato é AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: ${App.user.username}")
                 }
             }
 
-            Firebase.database.reference.child("users").child(email).addListenerForSingleValueEvent(userListener)
+            Firebase.database.reference.child("users").child(uid)
+                .addListenerForSingleValueEvent(userListener)
 
-        } else {
-            Log.i(TAG, "Empty username or password")
-        }
+
     }
 
 }

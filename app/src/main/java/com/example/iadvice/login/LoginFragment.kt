@@ -39,7 +39,7 @@ class LoginFragment : Fragment() {
         val binding = DataBindingUtil.inflate<LoginFragmentBinding>(
             inflater,
             R.layout.login_fragment, container, false
-    )
+        )
 
         val application = requireNotNull(this.activity).application
         val viewModelFactory = LoginViewModelFactory(application)
@@ -47,22 +47,22 @@ class LoginFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
 
         binding.apply {
+
             loginButton.setOnClickListener {
-                val user = username_text.text.toString()
-                App.user = user
-                viewModel.loginUser(
-                    binding.passwordText.text.toString(),
-                    binding.usernameText.text.toString()
-                )
+                val password = binding.passwordText.text.toString()
+                val email = binding.usernameText.text.toString()
 
-
-                launchSignInFlow()
-
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener{
+                        viewModel.uploadUser(it.result!!.user!!.uid)
+                        requireView().findNavController()
+                            .navigate(R.id.action_loginFragment_to_chatActivity)
+                    }
             }
 
             registerButton.setOnClickListener {
-               requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-                //requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                requireView().findNavController()
+                    .navigate(R.id.action_loginFragment_to_registerFragment)
             }
 
             facebookLoginButton.setOnClickListener {}
@@ -78,43 +78,5 @@ class LoginFragment : Fragment() {
         requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout).setVisibility(View.GONE)
     }
 
-    private fun launchSignInFlow() {
-        // Give users the option to sign in / register with their email
-        // If users choose to register with their email,
-        // they will need to create a password as well
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build()
-            //
-        )
 
-        // Create and launch sign-in intent.
-        // We listen to the response of this activity with the
-        // SIGN_IN_RESULT_CODE code
-        startActivityForResult(
-            AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
-                providers
-            ).build(), SIGN_IN_RESULT_CODE
-        )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SIGN_IN_RESULT_CODE) {
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {
-                // User successfully signed in.
-                Log.i(RegisterFragment.TAG, "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!")
-
-                //to pass the safeargs id to chat activity
-//                val action = LoginFragmentDirections.actionLoginFragmentToChatActivity(321)
-//                requireView().findNavController().navigate(action)
-                requireView().findNavController().navigate(R.id.action_loginFragment_to_chatActivity)
-            } else {
-                // Sign in failed. If response is null, the user canceled the
-                // sign-in flow using the back button. Otherwise, check
-                // the error code and handle the error.
-                Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
-            }
-        }
-    }
 }
