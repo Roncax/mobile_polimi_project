@@ -29,9 +29,6 @@
             android:name="chatId"
             android:defaultValue="123"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_chatActivity_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </activity>
 
     <fragment
@@ -49,6 +46,12 @@
         android:name="com.example.iadvice.Home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/home_fragment">
+        <!-- TODO prendere user corrente come default value -->
+        <argument
+            android:name="userId"
+            android:defaultValue="123"
+            app:argType="string" />
+
         <action
             android:id="@+id/action_homeFragment_to_chatActivity"
             app:destination="@id/chatActivity" />

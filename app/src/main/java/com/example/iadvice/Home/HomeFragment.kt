@@ -3,6 +3,7 @@ package com.example.iadvice.Home
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.example.iadvice.R
 import com.google.android.material.appbar.AppBarLayout
@@ -19,11 +20,13 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+            val safeArgs: HomeFragmentArgs by navArgs()
+            val userId = safeArgs.userId
 
-        val layout: View
-        //Inflate the layout for this fragment
-        layout = inflater.inflate(R.layout.home_fragment, container, false)
-        return layout
+            val layout: View
+            //Inflate the layout for this fragment
+            layout = inflater.inflate(R.layout.home_fragment, container, false)
+            return layout
     }
 
 

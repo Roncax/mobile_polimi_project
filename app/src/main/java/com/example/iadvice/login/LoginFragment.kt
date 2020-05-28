@@ -1,7 +1,5 @@
 package com.example.iadvice.login
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,11 +9,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.iadvice.App
 import com.example.iadvice.R
 import com.example.iadvice.databinding.LoginFragmentBinding
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.login_fragment.*
@@ -57,8 +54,10 @@ class LoginFragment : Fragment() {
                         var uid = it.result!!.user!!.uid
                         Log.d(TAG, "Successfull logged user with uid: ${uid}")
                         viewModel.uploadUser(uid)
-                        requireView().findNavController()
-                            .navigate(R.id.action_loginFragment_to_homeFragment)
+                        //requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment,)
+                        val userId = "123"
+                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment(userId)
+                        findNavController().navigate(action)
                     }
                     .addOnFailureListener {
                         Log.d(TAG, "Failed to login user: ${it.message}")
