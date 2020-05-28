@@ -47,11 +47,25 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.iadvice.Home.HomeFragment"
-        android:label="HomeFragment" />
-
+        android:label="HomeFragment"
+        tools:layout="@layout/home_fragment"/>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.iadvice.settings.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/your_questions_fragment"
+        android:name="com.example.iadvice.Home.YourQuestionsFragment"
+        android:label="your_questions_fragment"
+        tools:layout="@layout/your_questions_fragment">
+        <action
+            android:id="@+id/action_your_questions_fragment_to_newQuestionFragment"
+            app:destination="@id/newQuestionFragment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/newQuestionFragment"
+        android:name="com.example.iadvice.NewQuestion.NewQuestionFragment"
+        android:label="newQuestionFragment"
+        tools:layout="@layout/new_question_fragment"/>
 </navigation>

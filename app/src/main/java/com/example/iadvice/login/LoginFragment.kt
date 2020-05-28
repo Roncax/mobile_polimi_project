@@ -52,15 +52,12 @@ class LoginFragment : Fragment() {
                     binding.passwordText.text.toString(),
                     binding.usernameText.text.toString()
                 )
-
-                //to pass the safeargs id to chat activity
-//                val action = LoginFragmentDirections.actionLoginFragmentToChatActivity(321)
-//                requireView().findNavController().navigate(action)
-                requireView().findNavController().navigate(R.id.action_loginFragment_to_chatActivity)
+                //requireView().findNavController().navigate(R.id.action_loginFragment_to_chatActivity)
+                requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
 
             registerButton.setOnClickListener {
-               requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+                requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
                 //requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
 

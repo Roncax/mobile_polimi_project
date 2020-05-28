@@ -9,12 +9,12 @@
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            app:key="reply"
+            app:key="@string/nickname_title"
             app:title="@string/nickname_title"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            app:key="reply"
+            app:key="@string/bio_title"
             app:title="@string/bio_title"
             app:useSimpleSummaryProvider="true" />
 
