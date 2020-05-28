@@ -22,13 +22,12 @@ import kotlinx.android.synthetic.main.my_bubble.view.*
 import kotlinx.android.synthetic.main.other_bubble.view.*
 
 
-
 class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<MessageViewHolder>() {
 
     private val messages: ArrayList<Message> = ArrayList()
     val chatId = Id
 
-    companion object{
+    companion object {
         //possono essere messi in un companion object
         private const val VIEW_TYPE_MY_MESSAGE = 1
         private const val VIEW_TYPE_OTHER_MESSAGE = 2
@@ -53,7 +52,6 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
 
             override fun onDataChange(p0: DataSnapshot) {
 
-
                 val children = p0!!.children
                 children.forEach {
                     addMessage(it.getValue<Message>()!!)
@@ -65,7 +63,6 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
 
         onlineDb.child("messages").child(chatId.toString())
             .addListenerForSingleValueEvent(messagesUploadListener)
-
 
 
         val messagesListener = object : ChildEventListener {
@@ -109,7 +106,7 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
         notifyDataSetChanged()
     }
 
-    override fun getItemCount()= messages.size
+    override fun getItemCount() = messages.size
 
 
     override fun getItemViewType(position: Int): Int {
