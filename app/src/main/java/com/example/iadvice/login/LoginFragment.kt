@@ -58,7 +58,7 @@ class LoginFragment : Fragment() {
                         Log.d(TAG, "Successfull logged user with uid: ${uid}")
                         viewModel.uploadUser(uid)
                         requireView().findNavController()
-                            .navigate(R.id.action_loginFragment_to_chatActivity)
+                            .navigate(R.id.action_loginFragment_to_homeFragment)
                     }
                     .addOnFailureListener {
                         Log.d(TAG, "Failed to login user: ${it.message}")
