@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
                         Log.d(TAG, "Successfull logged user with uid: ${uid}")
                         viewModel.uploadUser(uid)
                         //requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment,)
-                        val userId = "123"
+                        val userId = uid
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment(userId)
                         findNavController().navigate(action)
                     }
