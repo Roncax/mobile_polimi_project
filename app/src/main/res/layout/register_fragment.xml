@@ -4,155 +4,147 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0"
-        android:text="@string/register_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/facebook_register_button"
-        app:layout_constraintStart_toStartOf="@+id/facebook_register_button"
-        app:layout_constraintTop_toBottomOf="@+id/facebook_register_button"></Button>
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:background="@drawable/rounded_button"
+            android:text="@string/register_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.535"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/facebook_register_button"></Button>
 
-    <EditText
-        android:id="@+id/email_register_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/first_pw_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_register_text" />
+        <EditText
+            android:id="@+id/email_register_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/first_pw_text"
+            app:layout_constraintEnd_toEndOf="@+id/nickname_text"
+            app:layout_constraintStart_toStartOf="@+id/nickname_text"
+            app:layout_constraintTop_toBottomOf="@+id/nickname_text" />
 
-    <EditText
-        android:id="@+id/first_pw_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/second_pw_text"
-        app:layout_constraintEnd_toEndOf="@+id/email_register_text"
-        app:layout_constraintStart_toStartOf="@+id/email_register_text"
-        app:layout_constraintTop_toBottomOf="@+id/email_register_text" />
+        <EditText
+            android:id="@+id/first_pw_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/google_register_button"
+            app:layout_constraintEnd_toEndOf="@+id/email_register_text"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/email_register_text"
+            app:layout_constraintTop_toBottomOf="@+id/email_register_text" />
 
-    <EditText
-        android:id="@+id/second_pw_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/facebook_register_button"
-        app:layout_constraintEnd_toEndOf="@+id/first_pw_text"
-        app:layout_constraintStart_toStartOf="@+id/first_pw_text"
-        app:layout_constraintTop_toBottomOf="@+id/first_pw_text" />
+        <EditText
+            android:id="@+id/nickname_text"
+            android:layout_width="193dp"
+            android:layout_height="43dp"
+            android:ems="10"
+            android:hint="Nickname"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/email_register_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.522"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/age_register_text" />
 
-    <EditText
-        android:id="@+id/name_register_text"
-        android:layout_width="153dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="40dp"
-        android:ems="10"
-        android:hint="Name here"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/nickname_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        <ImageView
+            android:id="@+id/google_register_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toBottomOf="@+id/facebook_register_button"
+            app:layout_constraintEnd_toStartOf="@+id/facebook_register_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/facebook_register_button"
+            app:srcCompat="@drawable/google_logo" />
 
-    <EditText
-        android:id="@+id/nickname_text"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:ems="10"
-        android:hint="Nickname here"
-        android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/name_register_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name_register_text" />
+        <ImageView
+            android:id="@+id/facebook_register_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
 
-    <ImageView
-        android:id="@+id/google_register_button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="@+id/facebook_register_button"
-        app:layout_constraintEnd_toStartOf="@+id/facebook_register_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/facebook_register_button"
-        app:srcCompat="@drawable/google_logo" />
+            app:layout_constraintBottom_toBottomOf="@+id/twitter_register_button"
+            app:layout_constraintEnd_toStartOf="@+id/twitter_register_button"
+            app:layout_constraintStart_toEndOf="@+id/google_register_button"
+            app:layout_constraintTop_toTopOf="@+id/twitter_register_button"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/facebook_logo" />
 
-    <ImageView
-        android:id="@+id/facebook_register_button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        <ImageView
+            android:id="@+id/twitter_register_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/register_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.516"
+            app:layout_constraintStart_toEndOf="@+id/facebook_register_button"
+            app:layout_constraintTop_toBottomOf="@+id/first_pw_text"
+            app:srcCompat="@drawable/twitter_logo" />
 
-        app:layout_constraintBottom_toBottomOf="@+id/twitter_register_button"
-        app:layout_constraintEnd_toStartOf="@+id/twitter_register_button"
-        app:layout_constraintStart_toEndOf="@+id/google_register_button"
-        app:layout_constraintTop_toTopOf="@+id/twitter_register_button"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/facebook_logo" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="211dp"
+            android:layout_height="127dp"
+            android:layout_marginTop="68dp"
+            app:layout_constraintEnd_toStartOf="@+id/add_image_register_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/unnamed" />
 
-    <ImageView
-        android:id="@+id/twitter_register_button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/facebook_register_button"
-        app:layout_constraintTop_toBottomOf="@+id/second_pw_text"
-        app:layout_constraintVertical_bias="0.158"
-        app:srcCompat="@drawable/twitter_logo" />
+        <Button
+            android:id="@+id/add_image_register_button"
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        app:layout_constraintEnd_toStartOf="@+id/add_image_register_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+            android:layout_width="202dp"
+            android:layout_height="44dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/add_image_button"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
 
-    <Button
-        android:id="@+id/add_image_register_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_image_button"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        <Switch
+            android:id="@+id/gender_choice"
+            android:layout_width="128dp"
+            android:layout_height="49dp"
+            android:showText="true"
+            android:textAlignment="center"
+            android:textOff="Male"
+            android:textOn="Female"
+            app:layout_constraintBottom_toTopOf="@+id/nickname_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/age_register_text"
+            app:layout_constraintTop_toBottomOf="@+id/add_image_register_button"
+            app:layout_constraintVertical_bias="0.401"
+            tools:checked="false" />
 
-    <Switch
-        android:id="@+id/gender_choice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="M/F"
-        app:layout_constraintBottom_toTopOf="@+id/nickname_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/age_register_text"
-        app:layout_constraintTop_toBottomOf="@+id/add_image_register_button" />
+        <EditText
+            android:id="@+id/age_register_text"
+            android:layout_width="84dp"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:hint="Age"
+            android:inputType="number"
+            android:textAlignment="center"
+            app:layout_constraintBaseline_toBaselineOf="@+id/gender_choice"
+            app:layout_constraintEnd_toStartOf="@+id/gender_choice"
+            app:layout_constraintStart_toEndOf="@+id/imageView" />
 
-    <EditText
-        android:id="@+id/age_register_text"
-        android:layout_width="84dp"
-        android:layout_height="40dp"
-        android:ems="10"
-        android:hint="Age"
-        android:inputType="number"
-        app:layout_constraintBaseline_toBaselineOf="@+id/gender_choice"
-        app:layout_constraintEnd_toStartOf="@+id/gender_choice"
-        app:layout_constraintStart_toEndOf="@+id/imageView" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

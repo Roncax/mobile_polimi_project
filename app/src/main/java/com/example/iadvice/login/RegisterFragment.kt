@@ -8,17 +8,18 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.iadvice.R
-import com.example.iadvice.database.AppDatabase
 import com.example.iadvice.databinding.RegisterFragmentBinding
+import com.google.firebase.auth.FirebaseAuth
 
 //TODO aggiungere possibilitá di mettere dentro immagine personale
 class RegisterFragment : Fragment() {
 
-    private var TAG = "LoginViewModel" //used for the logs
+    companion object {
+        const val TAG = "RegisterFragment"
+    }
+
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(
@@ -33,58 +34,54 @@ class RegisterFragment : Fragment() {
 
         // viewModelProviders used to not destroy the viewmodel until detached
         val application = requireNotNull(this.activity).application
-        val userDataSource = AppDatabase.getInstance(application).userDao
-        val viewModelFactory = LoginViewModelFactory(userDataSource, application)
+        val viewModelFactory = LoginViewModelFactory(application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
 
         binding.apply {
             registerButton.setOnClickListener {
-                //userRegistration(it)
-                val gender: String
-                //TODO add personal photo handling
-                if (binding.firstPwText.text.toString() == binding.secondPwText.text.toString()) {
-                    if (binding.genderChoice.isChecked) {
-                        gender = "female"
-                    } else {
-                        gender = "male"
-                    }
-                    Log.i(TAG, "Password accettate, inizio il login")
-                    viewModel.registerUser(
-                        binding.nameRegisterText.text.toString(),
-                        binding.nicknameText.text.toString(),
-                        binding.emailRegisterText.text.toString(),
-                        binding.firstPwText.text.toString(),
-                        "foto personale",
-                        binding.ageRegisterText.text.toString().toInt(),
-                        gender
-                    )
-                    userRegistration(it)
-                } else {
-                    Log.i(TAG, "Le due password non sono identiche")
-                }
+                performRegister(binding)
 
             }
-            facebookRegisterButton.setOnClickListener { facebookRegister(it) }
-            googleRegisterButton.setOnClickListener { googleRegister(it) }
-            twitterRegisterButton.setOnClickListener { twitterRegister(it) }
+            facebookRegisterButton.setOnClickListener {  }
+            googleRegisterButton.setOnClickListener { }
+            twitterRegisterButton.setOnClickListener { }
         }
 
         return binding.root
     }
 
-    private fun twitterRegister(it: View?) {
-        TODO("Not yet implemented")
-    }
 
-    private fun googleRegister(it: View?) {
-        TODO("Not yet implemented")
-    }
+fun performRegister(binding: RegisterFragmentBinding) {
+    //TODO handle empty fields
 
-    private fun facebookRegister(it: View?) {
-        TODO("Not yet implemented")
-    }
+    val gender: String
 
-    private fun userRegistration(it: View?) {
+        if (binding.genderChoice.isChecked) {
+            gender = "female"
+        } else {
+            gender = "male"
+        }
+
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(
+            binding.emailRegisterText.text.toString(),
+            binding.firstPwText.text.toString()
+        )
+            .addOnCompleteListener {
+                if (!it.isSuccessful) return@addOnCompleteListener
+                var uid = it.result!!.user!!.uid
+                Log.d(TAG, "Successfull created user with uid: ${uid}")
+                viewModel.registerUser(
+                    username = binding.nicknameText.text.toString(),
+                    uid = uid,
+                    age = binding.ageRegisterText.text.toString().toInt(),
+                    gender = gender
+                )
+            }
+            .addOnFailureListener{
+                Log.d(TAG, "Failed to create user: ${it.message}")
+            }
         requireView().findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-    }
+
+}
+
 }

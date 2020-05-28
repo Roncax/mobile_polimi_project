@@ -2,53 +2,66 @@ package com.example.iadvice.login
 
 import android.app.Application
 import android.util.Log
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.ViewModel
-import androidx.navigation.findNavController
 import com.example.iadvice.App
-import com.example.iadvice.R
 import com.example.iadvice.database.User
-import com.example.iadvice.database.UserDao
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 
 private const val TAG = "LoginViewModel"
 
 class LoginViewModel(
-    val database: UserDao,
     application: Application
 ) : ViewModel() {
 
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.i("LoginViewModel", "LoginViewModel destroyed!")
-    }
-
-
     // register the user with the selected parameters
     fun registerUser(
-        name: String,
-        nickname: String,
-        email: String,
-        password: String,
-        personalPhoto: String,
+        uid: String,
+        username: String,
         age: Int,
         gender: String
     ) {
-        val user = User(name, email, age, gender, personalPhoto, nickname, password)
-        database.insert(user)
-        Log.i(TAG, "Ricevuto e inserito l'utente $nickname con pw $password")
+
+        val categories = "ONE"
+        val user = User(
+            uid = uid,
+            username = username,
+            gender = gender,
+            categories = categories,
+            age = age
+        )
+
+        Firebase.database.reference.child("users").child(uid).setValue(user)
+
     }
 
 
-    // TODO transfer the check of pw online
-    fun loginUser(password: String, email: String) {
-        Log.i(TAG, "Ricevuto login di user $email con pw $password")
-        if (email.isNotEmpty() && password.isNotEmpty()) {
-            val retrivedUser = database.findByEmail(email)
-            Log.i(TAG,"Login riuscito! name: ${retrivedUser.firstName} e genre: ${retrivedUser.gender}")
-            App.user = email
-        } else {
-            Log.i(TAG, "Empty username or password")
-        }
+    fun uploadUser(uid: String) {
+
+            val userListener = object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var retrivedUser = snapshot.getValue<User>()!!
+                    App.user = retrivedUser
+                    Log.d(TAG, "L'utente caricato é: ${App.user.username}")
+                }
+            }
+
+            Firebase.database.reference.child("users").child(uid)
+                .addListenerForSingleValueEvent(userListener)
+
+
     }
 
 }

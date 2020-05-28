@@ -1,29 +1,31 @@
 package com.example.iadvice.login
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.iadvice.App
 import com.example.iadvice.R
-import com.example.iadvice.chat.ChatActivity
-import com.example.iadvice.database.AppDatabase
 import com.example.iadvice.databinding.LoginFragmentBinding
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.home_fragment.*
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.login_fragment.*
 
-private const val TAG = "LoginViewModel" //used for the logs
 
-//TODO use livedata to observe the loginviewmodel
 class LoginFragment : Fragment() {
-    //private lateinit var binding: LoginFragmentBinding //class created by the compiler for the binding
+
+    companion object {
+        const val TAG = "LoginFragment"
+    }
 
     private lateinit var viewModel: LoginViewModel
 
@@ -36,53 +38,52 @@ class LoginFragment : Fragment() {
         val binding = DataBindingUtil.inflate<LoginFragmentBinding>(
             inflater,
             R.layout.login_fragment, container, false
-    )
+        )
 
         val application = requireNotNull(this.activity).application
-        val userDataSource = AppDatabase.getInstance(application).userDao
-        val viewModelFactory = LoginViewModelFactory(userDataSource, application)
+        val viewModelFactory = LoginViewModelFactory(application)
         // viewModelProviders used to not destroy the viewmodel until detached
         viewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
 
         binding.apply {
+
             loginButton.setOnClickListener {
-                val user = username_text.text.toString()
-                App.user = user
-                viewModel.loginUser(
-                    binding.passwordText.text.toString(),
-                    binding.usernameText.text.toString()
-                )
-                //requireView().findNavController().navigate(R.id.action_loginFragment_to_chatActivity)
-                requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                val password = binding.passwordText.text.toString()
+                val email = binding.usernameText.text.toString()
+
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener {
+                        if (!it.isSuccessful) return@addOnCompleteListener
+                        var uid = it.result!!.user!!.uid
+                        Log.d(TAG, "Successfull logged user with uid: ${uid}")
+                        viewModel.uploadUser(uid)
+                        requireView().findNavController()
+                            .navigate(R.id.action_loginFragment_to_chatActivity)
+                    }
+                    .addOnFailureListener {
+                        Log.d(TAG, "Failed to login user: ${it.message}")
+                    }
             }
 
-            registerButton.setOnClickListener {
-                requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-                //requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            }
+                registerButton.setOnClickListener {
+                    requireView().findNavController()
+                        .navigate(R.id.action_loginFragment_to_registerFragment)
+                }
 
-            facebookLoginButton.setOnClickListener {}
-            googleLoginButton.setOnClickListener {}
-            twitterLoginButton.setOnClickListener {}
+                facebookLoginButton.setOnClickListener {}
+                googleLoginButton.setOnClickListener {}
+                twitterLoginButton.setOnClickListener {}
+
+            return binding.root
         }
-        return binding.root
     }
 
-    /**
-     * Called when the fragment's activity has been created and this
-     * fragment's view hierarchy instantiated.  It can be used to do final
-     * initialization once these pieces are in place, such as retrieving
-     * views or restoring state.  It is also useful for fragments that use
-     * [.setRetainInstance] to retain their instance,
-     * as this callback tells the fragment when it is fully associated with
-     * the new activity instance.  This is called after [.onCreateView]
-     * and before [.onViewStateRestored].
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     * a previous saved state, this is the state.
-     */
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout).setVisibility(View.GONE)
+
+        override fun onActivityCreated(savedInstanceState: Bundle?) {
+            super.onActivityCreated(savedInstanceState)
+            requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout)
+                .setVisibility(View.GONE)
+        }
+
+
     }
-}
