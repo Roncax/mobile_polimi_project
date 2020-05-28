@@ -44,7 +44,7 @@ class LoginViewModel(
     }
 
 
-    fun uploadUser(uid: String) {
+    fun downloadUser(uid: String) {
 
             val userListener = object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {

@@ -8,5 +8,7 @@ data class User(
     var username: String = "",
     var age: Int = 0,
     var gender: String = "",
-    var categories: String = ""
+    var categories: String = "",
+    var country: String = "",
+    var chatList: MutableList<String> = mutableListOf()
 )

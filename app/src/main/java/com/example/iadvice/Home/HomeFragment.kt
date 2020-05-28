@@ -5,10 +5,12 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import com.example.iadvice.App
 import com.example.iadvice.R
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment() {
 
@@ -20,13 +22,13 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-            val safeArgs: HomeFragmentArgs by navArgs()
-            val userId = safeArgs.userId
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
-            val layout: View
-            //Inflate the layout for this fragment
-            layout = inflater.inflate(R.layout.home_fragment, container, false)
-            return layout
+
+        val layout: View
+        //Inflate the layout for this fragment
+        layout = inflater.inflate(R.layout.home_fragment, container, false)
+        return layout
     }
 
 
@@ -45,19 +47,7 @@ class HomeFragment : Fragment() {
         }.attach()
     }
 
-    /**
-     * Called when the fragment's activity has been created and this
-     * fragment's view hierarchy instantiated.  It can be used to do final
-     * initialization once these pieces are in place, such as retrieving
-     * views or restoring state.  It is also useful for fragments that use
-     * [.setRetainInstance] to retain their instance,
-     * as this callback tells the fragment when it is fully associated with
-     * the new activity instance.  This is called after [.onCreateView]
-     * and before [.onViewStateRestored].
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     * a previous saved state, this is the state.
-     */
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout)

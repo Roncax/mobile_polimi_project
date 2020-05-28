@@ -28,10 +28,8 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
     val chatId = Id
 
     companion object {
-        //possono essere messi in un companion object
         private const val VIEW_TYPE_MY_MESSAGE = 1
         private const val VIEW_TYPE_OTHER_MESSAGE = 2
-
         private const val TAG = "MessageAdapter"
     }
 

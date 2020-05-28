@@ -10,12 +10,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.iadvice.App
 import com.example.iadvice.R
 import com.example.iadvice.databinding.LoginFragmentBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.login_fragment.*
 
 
 class LoginFragment : Fragment() {
@@ -53,10 +51,10 @@ class LoginFragment : Fragment() {
                         if (!it.isSuccessful) return@addOnCompleteListener
                         var uid = it.result!!.user!!.uid
                         Log.d(TAG, "Successfull logged user with uid: ${uid}")
-                        viewModel.uploadUser(uid)
+                        viewModel.downloadUser(uid)
                         //requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment,)
-                        val userId = uid
-                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment(userId)
+
+                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         findNavController().navigate(action)
                     }
                     .addOnFailureListener {

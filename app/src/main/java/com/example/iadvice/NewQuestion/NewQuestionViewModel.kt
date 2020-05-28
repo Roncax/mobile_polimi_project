@@ -59,11 +59,9 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     }
 
 
-
     lateinit var durationSpinner: Spinner
     lateinit var genderSpinner: Spinner
     lateinit var categorySpinner: Spinner
-
 
 
     /**
@@ -126,7 +124,7 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     }
 
     fun onCreateNewQuestion() {
-    //TODO to implment the creation and the call to the Repository for DB
+    //TODO to implement the creation and the call to the Repository for DB
     }
 
 }
