@@ -48,12 +48,13 @@ class LoginFragment : Fragment() {
                     binding.passwordText.text.toString(),
                     binding.usernameText.text.toString()
                 )
-                requireView().findNavController().navigate(R.id.action_loginFragment_to_chatActivity)
+                //requireView().findNavController().navigate(R.id.action_loginFragment_to_chatActivity)
+                requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
 
             registerButton.setOnClickListener {
-               // requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-                requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                requireView().findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+                //requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
 
             facebookLoginButton.setOnClickListener {}

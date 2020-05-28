@@ -60,15 +60,4 @@ class HomeFragment : Fragment() {
         requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout)
             .setVisibility(View.VISIBLE)
     }
-
 }
-
-
-
-
-
-
-//TODO TabLayoutMediator
-// - onPageChanceCallback --> adjust tab when viewpager2 change
-// - InTabSelectedListener --> adjust viewpager2 when tab moves (useful?)
-// - AdapterDataObserver --> recreate tab content when dataset change
