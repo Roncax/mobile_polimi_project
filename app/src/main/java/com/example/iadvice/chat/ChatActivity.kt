@@ -41,7 +41,7 @@ class ChatActivity : AppCompatActivity() {
                 val time = Calendar.getInstance().timeInMillis
 
                 val message = Message(
-                    chatId = chatId,
+                    chatId = chatId.toString(),
                     user = App.user.username,
                     text = txtMessage.text.toString(),
                     time = time
