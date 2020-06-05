@@ -26,11 +26,6 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var yourQuestionsView: View
-    private lateinit var userId: String
-    private var chatList = ArrayList<String>()
-
-    /* Used for JSON mamagement in the innerClass */
-    private var dataList = ArrayList<HashMap<String, String>>()
 
 
 
@@ -39,7 +34,6 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        userId = FirebaseAuth.getInstance().currentUser!!.uid
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -63,7 +57,7 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        findChats()
+//        findChats()
 
         binding.fab.setOnClickListener { onFabClick() }
 
@@ -219,7 +213,7 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
 
     private fun findChats() {
 
-        FirebaseDatabase.getInstance().reference
+       /* FirebaseDatabase.getInstance().reference
             .child("users")
             .child(userId)
             .child("chatlist")
@@ -234,19 +228,21 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
                     Log.i("PORK-VALUES","${chatList}")
                     processData()
                 }
-            })
+            })*/
     }
 
 
     private fun processData() {
 
-        for (i in 0 until chatList.size) {
+        /*for (i in 0 until chatList.size) {
             val map = HashMap<String, String>()
             map["title"] = chatList.get(i)
             map["info"] = "pirupiru"
             dataList.add(map)
-        }
+        }*/
 
+        //TODO VA RICHIAMATA
+/*
         viewAdapter =  QuestionsAdapter(dataList,this@YourQuestionsFragment)
 
         recyclerView = binding.RecyclerView.apply {
@@ -254,6 +250,8 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
             setHasFixedSize(true)
             adapter = viewAdapter
         }
+
+ */
     }
 
 
