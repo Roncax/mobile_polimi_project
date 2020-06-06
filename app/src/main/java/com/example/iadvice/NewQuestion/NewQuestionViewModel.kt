@@ -1,6 +1,7 @@
 package com.example.iadvice.NewQuestion
 
 import android.app.Application
+import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -8,6 +9,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.iadvice.R
+import com.example.iadvice.database.Chat
+import com.example.iadvice.database.Poll
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class NewQuestionViewModel(private val application: Application) : ViewModel() {
@@ -50,7 +58,6 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     private val _visibility = MutableLiveData<Boolean>()
     val visibility: LiveData<Boolean>
         get() = _visibility
-
 
 
     init {
@@ -101,21 +108,20 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     }
 
 
-
-    fun onShowCountry(isChecked : Boolean) {
+    fun onShowCountry(isChecked: Boolean) {
         _visibility.value = isChecked
     }
 
-    fun onShowPoll(isChecked : Boolean) {
+    fun onShowPoll(isChecked: Boolean) {
         _poll.value = isChecked
     }
 
-    fun onSelectedCountry(selectedCountry : String) {
+    fun onSelectedCountry(selectedCountry: String) {
         _selectedCountry.value = selectedCountry
     }
 
-    fun onItemSelected(parent : AdapterView<*>?, selectedItem: String ){
-        when(parent?.id){
+    fun onItemSelected(parent: AdapterView<*>?, selectedItem: String) {
+        when (parent?.id) {
             R.id.gender_spinner -> _category.value = selectedItem
             R.id.duration_spinner -> _target.value = selectedItem
             R.id.gender_spinner -> _duration.value = selectedItem
@@ -124,8 +130,38 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     }
 
     fun onCreateNewQuestion() {
-    //TODO to implement the creation and the call to the Repository for DB
-    }
+        //TODO to implement the creation and the call to the Repository for DB
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        val question = _title.value.toString()
+        val userList: MutableList<String> = mutableListOf()
+        userList.add("pippicalzelunghe")
+        val poll = Poll(question, userId)
+        val newChat = Chat("id", userId, question, poll, true, userList)
 
+
+        FirebaseDatabase.getInstance().reference
+            .child("users")
+            .child(userId)
+
+        /*
+        .addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val porkiddio = p0.value.toString()
+                chatList.add(porkiddio)
+                Log.i("PORK-VALUES","${chatList}")
+                processData()
+            }
+        })
+*/
+
+
+
+
+
+    }
 }
 

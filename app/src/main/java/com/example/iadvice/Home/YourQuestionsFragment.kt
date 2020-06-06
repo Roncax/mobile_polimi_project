@@ -2,15 +2,15 @@ package com.example.iadvice.Home
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener
 
 
 class YourQuestionsFragment : Fragment(), OnItemClickListener {
-
 
     private lateinit var binding: YourQuestionsFragmentBinding
     private lateinit var recyclerView: RecyclerView
@@ -224,18 +223,55 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
             .child(userId)
             .child("chatlist")
             .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
+                override fun onCancelled(dataSnapshot: DatabaseError) {
                     TODO("Not yet implemented")
                 }
 
-                override fun onDataChange(p0: DataSnapshot) {
-                    val porkiddio = p0.value.toString()
-                    chatList.add(porkiddio)
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    /*val chats = dataSnapshot.value.toString()
+                    chatList.add(chats)
                     Log.i("PORK-VALUES","${chatList}")
+                    processData() */
+
+                    for (snapshot in dataSnapshot.getChildren()) {
+                        val key = snapshot.key
+                        /* val path = "comments/$key/comments"
+                         val comment: List<*> = ArrayList<CommentNew>(Arrays.asList(commentNew))
+                         val result: MutableMap<String, Any> = HashMap()
+                         result["comments"] = commentNew
+                         mFirebase.child(path).updateChildren(result)*/
+                        chatList.add(key.toString())
+                        Log.i("CICLO","${key}")
+                        Log.i("CICLO","${chatList}")
+
+                    }
                     processData()
+
                 }
             })
     }
+
+/* TODO FROM STACKOVERFLOW: CHECK IF WORKS
+    fun saveComment(postIdKey: String?, commentNew: CommentNew) {
+        val queryRef: Query = mFirebase.child("comments").orderByChild("postid").equalTo(postIdKey)
+        queryRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val key = snapshot.key
+                    val path = "comments/$key/comments"
+                    val comment: List<*> =
+                        ArrayList<CommentNew>(Arrays.asList(commentNew))
+                    val result: MutableMap<String, Any> =
+                        HashMap()
+                    result["comments"] = commentNew
+                    mFirebase.child(path).updateChildren(result)
+                }
+            }
+            fun onCancelled(firebaseError: FirebaseError?) {}
+        })
+    }
+   */
+
 
 
     private fun processData() {
