@@ -228,22 +228,9 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    /*val chats = dataSnapshot.value.toString()
-                    chatList.add(chats)
-                    Log.i("PORK-VALUES","${chatList}")
-                    processData() */
-
                     for (snapshot in dataSnapshot.getChildren()) {
                         val key = snapshot.key
-                        /* val path = "comments/$key/comments"
-                         val comment: List<*> = ArrayList<CommentNew>(Arrays.asList(commentNew))
-                         val result: MutableMap<String, Any> = HashMap()
-                         result["comments"] = commentNew
-                         mFirebase.child(path).updateChildren(result)*/
                         chatList.add(key.toString())
-                        Log.i("CICLO","${key}")
-                        Log.i("CICLO","${chatList}")
-
                     }
                     processData()
 

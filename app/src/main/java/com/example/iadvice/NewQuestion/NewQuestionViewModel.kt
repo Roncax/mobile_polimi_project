@@ -12,10 +12,9 @@ import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.database.Poll
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 
 
 class NewQuestionViewModel(private val application: Application) : ViewModel() {
@@ -130,37 +129,31 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     }
 
     fun onCreateNewQuestion() {
-        //TODO to implement the creation and the call to the Repository for DB
+
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        val mDatabase: DatabaseReference
+        mDatabase = FirebaseDatabase.getInstance().reference
+
+/*TODO COSI FUNZIONA
+        val listaRef = mDatabase.child("users")
+            .child(userId)
+            .child("chatlist")
+
+           var newPostRef = listaRef.push()
+           newPostRef.setValue("maracaibo")   //TODO cosi sovrascrive, non aggiunge
+*/
+
+
+
+/*TODO COSI FUNZIONA INSERIMENTO NUOVE CHATS
         val question = _title.value.toString()
         val userList: MutableList<String> = mutableListOf()
         userList.add("pippicalzelunghe")
         val poll = Poll(question, userId)
         val newChat = Chat("id", userId, question, poll, true, userList)
-
-
-        FirebaseDatabase.getInstance().reference
-            .child("users")
-            .child(userId)
-
-        /*
-        .addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                val porkiddio = p0.value.toString()
-                chatList.add(porkiddio)
-                Log.i("PORK-VALUES","${chatList}")
-                processData()
-            }
-        })
+        mDatabase.child("chats")
+            .child(newChat.chatId).setValue(newChat)
 */
-
-
-
-
 
     }
 }
