@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
+import com.example.iadvice.database.Chat
 
-class QuestionsAdapter (private val myDataset: ArrayList<HashMap<String, String>>, val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
+
+class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
 
     private val listener: OnItemClickListener = itemClickListener
 
@@ -28,11 +30,6 @@ class QuestionsAdapter (private val myDataset: ArrayList<HashMap<String, String>
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = myDataset.size
 
-
-
-
-
-
     /**
      *
      *  Holder for the view of the single item
@@ -45,9 +42,9 @@ class QuestionsAdapter (private val myDataset: ArrayList<HashMap<String, String>
         //  val questionChat: ImageView = itemView.findViewById(R.id.questionChat_image)
 
 
-        fun bind(item: HashMap<String,String>, clickListener: OnItemClickListener){
-            questionTitle.text = item.getValue("title")
-            questionSubtitle.text = item.getValue("owner")
+        fun bind(item: Chat, clickListener: OnItemClickListener){
+            questionTitle.text = item.question
+            questionSubtitle.text = item.owner
 
             itemView.setOnClickListener{
                 clickListener.onItemClick(item)
@@ -60,7 +57,6 @@ class QuestionsAdapter (private val myDataset: ArrayList<HashMap<String, String>
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.question_chat, parent, false)
-
                 return QuestionChatViewHolder(view)
             }
         }

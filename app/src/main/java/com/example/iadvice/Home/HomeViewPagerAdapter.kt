@@ -2,10 +2,12 @@ package com.example.iadvice.Home
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.iadvice.database.Chat
 
-class HomeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class HomeViewPagerAdapter(fragment: Fragment,lista_chat: MutableList<Chat>) : FragmentStateAdapter(fragment) {
 
     private val numOfPages: Int = 2
+    var lista_chat:MutableList<Chat> = lista_chat
 
     /**
      * Provide a new Fragment associated with the specified position.
@@ -22,7 +24,7 @@ class HomeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
      */
     override fun createFragment(position: Int): Fragment {
         when(position) {
-            0 -> return YourQuestionsFragment()
+            0 -> return YourQuestionsFragment(lista_chat)
             else -> return OtherQuestionsFragment()
         }
     }

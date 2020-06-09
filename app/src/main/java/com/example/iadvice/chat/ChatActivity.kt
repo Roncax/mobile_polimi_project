@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.iadvice.*
 import com.example.iadvice.database.Message
@@ -18,9 +19,9 @@ class ChatActivity : AppCompatActivity() {
 
     //take the chatId from the previous screen (home in this case)
     //TODO mettere in safeargs il chatID dalla home
-    //val safeArgs: ChatActivityArgs by navArgs()
-    //val chatId = safeArgs.chatId
-    val chatId = 123
+    val safeArgs: ChatActivityArgs by navArgs()
+    val chatId = safeArgs.chatId
+    //val chatId = 123
     private lateinit var adapter: MessageAdapter
 
 

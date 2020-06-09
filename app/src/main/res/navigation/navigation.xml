@@ -68,6 +68,9 @@
         <action
             android:id="@+id/action_your_questions_fragment_to_newQuestionFragment"
             app:destination="@id/newQuestionFragment" />
+        <action
+            android:id="@+id/action_your_questions_fragment_to_chatActivity"
+            app:destination="@id/chatActivity" />
     </fragment>
 
     <fragment
