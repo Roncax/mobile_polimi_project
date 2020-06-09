@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
+import com.example.iadvice.database.Chat
+import com.example.iadvice.database.Poll
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -24,12 +26,21 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: YourQuestionsFragmentBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var yourQuestionsView: View
-    private lateinit var userId: String
-    private var chatList = ArrayList<String>()
+    private  var menu: MutableList<Chat> = mutableListOf()
 
-    /* Used for JSON mamagement in the innerClass */
+    private lateinit var userId: String
+
+    // private var chatList = ArrayList<String>() //TODO CANCELLA
+    var chatList: MutableList<String> = mutableListOf()
+    var mie_chat: MutableList<Chat> = mutableListOf()
+
+    var owners:MutableList<Chat> = mutableListOf()
+
     private var dataList = ArrayList<HashMap<String, String>>()
+
+
+
+    var lista_chat:MutableList<Chat> = mutableListOf()
 
 
 
@@ -62,7 +73,7 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        findChats()
+        findChats() //Todo va spostato da qui, altrimenti ogni volta che ritorno al frame mi ricarica tutto.
 
         binding.fab.setOnClickListener { onFabClick() }
 
@@ -229,48 +240,128 @@ class YourQuestionsFragment : Fragment(), OnItemClickListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.getChildren()) {
-                        val key = snapshot.key
-                        chatList.add(key.toString())
+                        val value = snapshot.value
+                        chatList.add(value.toString())
                     }
                     processData()
-
                 }
             })
     }
 
-/* TODO FROM STACKOVERFLOW: CHECK IF WORKS
-    fun saveComment(postIdKey: String?, commentNew: CommentNew) {
-        val queryRef: Query = mFirebase.child("comments").orderByChild("postid").equalTo(postIdKey)
-        queryRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    val key = snapshot.key
-                    val path = "comments/$key/comments"
-                    val comment: List<*> =
-                        ArrayList<CommentNew>(Arrays.asList(commentNew))
-                    val result: MutableMap<String, Any> =
-                        HashMap()
-                    result["comments"] = commentNew
-                    mFirebase.child(path).updateChildren(result)
-                }
-            }
-            fun onCancelled(firebaseError: FirebaseError?) {}
-        })
+    /**
+     * dato il nome della chat ne vado a prendere l'oggetto vero e proprio
+
+    private fun takeTheChat() {
+
+        Log.i("TAKETHECHAT", "${chatList}")
+
+        for (chat in chatList) {
+            Log.i("TAKETHECHAT", "${chat}")
+
+            FirebaseDatabase.getInstance().reference
+                .child("chats")
+                .child(chat)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(dataSnapshot: DatabaseError) {}
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                       /* val value = dataSnapshot.value
+                        Log.i("VALUE", "${value}")
+            */          Log.i("VALUE", "${dataSnapshot.value}")
+                        val chatty = HashMap<String,String>()
+
+
+
+                   /*     for(ds:DataSnapshot  in  dataSnapshot.getChildren()) {
+                            val owner= ds.child("owner").toString()
+                            chatty.put(chat,owner)
+                            Log.i("CHATTY","${chatty.get("owner")}")
+                        }
+                    */
+
+
+                    }
+                })
+        }
+
+
     }
-   */
+
+    */
+
+
+    private fun takeTheChat() {
+        Log.i("CHATLIST","${chatList}")
+        for (chat in chatList) {
+        FirebaseDatabase.getInstance().reference
+            .child("chats")
+            .child(chat)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(dataSnapshot: DatabaseError) {
+                    //println("loadPost:onCancelled ${databaseError.toException()}")
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    //dataSnapshot.children.mapNotNullTo(menu) { it.getValue<Chat>(Chat::class.java) }
+                   // for(ds:DataSnapshot  in  dataSnapshot.getChildren().filterNotNull()) {
+
+                        lista_chat.clear()
+                        //Log.i("KEY-VALUE","${ds.key} -- ${ds.value}")
+
+
+                        val chat: Chat? = dataSnapshot.getValue(Chat::class.java)
+                    if (chat != null) {
+                        lista_chat.add(chat)
+                    }
+                    Log.i("LISTA CHAT", "${lista_chat}")
+
+
+
+                       /* val chatid = ds.child("chatid").getValue(String::class.java)
+                        Log.i("chatid","${chatid}")
+                        val isActive = ds.child("isActive").getValue(String()::class.java)
+                        Log.i("isActive","${isActive}")
+                        val owner = ds.child("owner").getValue(String::class.java)
+                        Log.i("owner","${owner}")
+                        val question = ds.child("question").getValue(String::class.java)
+                        Log.i("question","${question}")
+                        val userlist = ds.child("userlist").getValue(ArrayList<String>()::class.java)
+                        Log.i("userList","${userlist}")
+                        //val poll = ds.child("question").getValue(String::class.java)
+                        val poll = Poll("prova","prova")
+
+                       // var aaa: MutableList<String> = mutableListOf("a","b","c")
+                        //val chat = Chat("dsdasadsdasdasdasda" ,owner,question ,true,aaa)
+                        //Log.i("CHATTTT","${chat}")
+
+*/
+
+                    }
+
+               // }
+            })
+        }
+
+    }
+
+
+
+
 
 
 
     private fun processData() {
+      takeTheChat()
 
         for (i in 0 until chatList.size) {
             val map = HashMap<String, String>()
             map["title"] = chatList.get(i)
-            map["info"] = "pirupiru"
+            map["owner"] = "pirupiru"
             dataList.add(map)
         }
 
-        viewAdapter =  QuestionsAdapter(dataList,this@YourQuestionsFragment)
+        viewAdapter = QuestionsAdapter(dataList, this@YourQuestionsFragment)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances

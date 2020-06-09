@@ -3,7 +3,6 @@ package com.example.iadvice.Home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
@@ -41,14 +40,14 @@ class QuestionsAdapter (private val myDataset: ArrayList<HashMap<String, String>
      **/
     class QuestionChatViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val questionTitle: TextView = itemView.findViewById(R.id.questionChatTitle_text)
-        val questionSubtitle: TextView = itemView.findViewById(R.id.questionChatSubtitle_text)
+        val questionSubtitle: TextView = itemView.findViewById(R.id.questionChatOwner_text)
         // todo implement image
         //  val questionChat: ImageView = itemView.findViewById(R.id.questionChat_image)
 
 
         fun bind(item: HashMap<String,String>, clickListener: OnItemClickListener){
             questionTitle.text = item.getValue("title")
-            questionSubtitle.text = item.getValue("info")
+            questionSubtitle.text = item.getValue("owner")
 
             itemView.setOnClickListener{
                 clickListener.onItemClick(item)

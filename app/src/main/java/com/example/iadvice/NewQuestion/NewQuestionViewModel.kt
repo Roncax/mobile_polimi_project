@@ -1,7 +1,6 @@
 package com.example.iadvice.NewQuestion
 
 import android.app.Application
-import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -14,7 +13,6 @@ import com.example.iadvice.database.Poll
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 
 
 class NewQuestionViewModel(private val application: Application) : ViewModel() {
@@ -143,18 +141,14 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
            newPostRef.setValue("maracaibo")   //TODO cosi sovrascrive, non aggiunge
 */
 
-
-
-/*TODO COSI FUNZIONA INSERIMENTO NUOVE CHATS
         val question = _title.value.toString()
-        val userList: MutableList<String> = mutableListOf()
-        userList.add("pippicalzelunghe")
-        val poll = Poll(question, userId)
-        val newChat = Chat("id", userId, question, poll, true, userList)
-        mDatabase.child("chats")
-            .child(newChat.chatId).setValue(newChat)
-*/
-
+        val userlist: MutableList<String> = mutableListOf()
+        userlist.add("pinocchio")
+        val poll = Poll(question, userId) //todo implementare seriamente
+        val chatid:String = "idChat22"
+        val  isActive = true
+        val newChat = Chat(chatid, userId, question, poll, isActive, userlist)
+        mDatabase.child("chats").child(newChat.chatId).setValue(newChat)
     }
 }
 
