@@ -1,6 +1,7 @@
 package com.example.iadvice.Home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,7 +97,11 @@ class HomeFragment : Fragment() {
                         /**
                          * Prima era in onViewCreated
                          */
+
+                        //TODO IL PROBLEMA E' QUI!!!!!! già da qui chatID è vuoto!!!
+
                         homeViewPagerAdapter = HomeViewPagerAdapter(this@HomeFragment, chatList)
+                        Log.d("HOME","chatID del primo ${chatList[0].chatId}")
                         viewPager = requireView().findViewById(R.id.pager)
                         viewPager.adapter = homeViewPagerAdapter
 
@@ -109,6 +114,7 @@ class HomeFragment : Fragment() {
                         }.attach()
 
                     }
+
                 })
         }
     }

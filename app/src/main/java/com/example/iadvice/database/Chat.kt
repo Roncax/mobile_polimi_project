@@ -1,9 +1,9 @@
 package com.example.iadvice.database
 
+import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
-
 data class Chat(
     var chatId: String = "",
     var owner: String = "", //user (email) dello user a cui appartiene la chat  //todo rimettere a user
@@ -12,6 +12,4 @@ data class Chat(
     var isActive: Boolean = true,
     var userList: MutableList<String> = mutableListOf()
 )
-
-
 

@@ -1,6 +1,7 @@
 package com.example.iadvice.Home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,13 +17,13 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 
-class YourQuestionsFragment(lista_chat: MutableList<Chat>) : Fragment(), OnItemClickListener {
+class YourQuestionsFragment(chatList: MutableList<Chat>) : Fragment(), OnItemClickListener {
 
     private lateinit var binding: YourQuestionsFragmentBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
 
-    var lista_chat:MutableList<Chat> = lista_chat
+    var chatList:MutableList<Chat> = chatList
 
     private lateinit var userId: String
 
@@ -66,7 +67,9 @@ class YourQuestionsFragment(lista_chat: MutableList<Chat>) : Fragment(), OnItemC
 
 
     private fun attachAdapter() {
-        viewAdapter = QuestionsAdapter(lista_chat, this@YourQuestionsFragment)
+
+        Log.d("YOURQUESTION","chatID del primo ${chatList[0].chatId}")
+        viewAdapter = QuestionsAdapter(chatList, this@YourQuestionsFragment)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances
@@ -83,6 +86,15 @@ class YourQuestionsFragment(lista_chat: MutableList<Chat>) : Fragment(), OnItemC
         val action = YourQuestionsFragmentDirections.actionYourQuestionsFragmentToChatActivity()
         findNavController().navigate(action)
         */
+
+       /* Log.i("ACTION","${item.chatId}")
+        val action = YourQuestionsFragmentDirections.actionYourQuestionsFragmentToChatActivity(123)
+        findNavController().navigate(action)
+        */
+
+        Log.d("TOAST","dsadsasda ${item.chatId}")
+        Toast.makeText(activity, "${item.chatId} selected", Toast.LENGTH_SHORT).show()
+
     }
 
     fun onFabClick() {

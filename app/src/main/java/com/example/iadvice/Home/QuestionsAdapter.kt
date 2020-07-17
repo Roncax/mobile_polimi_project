@@ -1,5 +1,6 @@
 package com.example.iadvice.Home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,7 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
         fun bind(item: Chat, clickListener: OnItemClickListener){
             questionTitle.text = item.question
             questionSubtitle.text = item.owner
+            Log.i("BIND","${item.chatId}")
 
             itemView.setOnClickListener{
                 clickListener.onItemClick(item)

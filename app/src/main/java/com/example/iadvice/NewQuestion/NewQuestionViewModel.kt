@@ -1,6 +1,7 @@
 package com.example.iadvice.NewQuestion
 
 import android.app.Application
+import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.database.Poll
+import com.example.iadvice.login.LoginFragment.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -132,23 +134,23 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
         val mDatabase: DatabaseReference
         mDatabase = FirebaseDatabase.getInstance().reference
 
-/*TODO COSI FUNZIONA
-        val listaRef = mDatabase.child("users")
-            .child(userId)
-            .child("chatlist")
 
-           var newPostRef = listaRef.push()
-           newPostRef.setValue("maracaibo")   //TODO cosi sovrascrive, non aggiunge
-*/
+        //TODO: ogni volta che vuoi aggiungere ad una lista devi prima rileggerla tutta da firebase, aggiungere e ricaricare
+        //TODO potrebbe essere troppo pesante per quello che dobbiamo fare...in quel caso ogni elemento diventa un child e poi usare childByAutoId
+
+        //look at https://firebase.google.com/docs/database/android/read-and-write#kotlin+ktx_5
+
 
         val question = _title.value.toString()
         val userlist: MutableList<String> = mutableListOf()
         userlist.add("pinocchio")
+        userlist.add(userId)
         val poll = Poll(question, userId) //todo implementare seriamente
-        val chatid:String = "idChat22"
+        val chatid:String = "idPROVA"
         val  isActive = true
         val newChat = Chat(chatid, userId, question, poll, isActive, userlist)
         mDatabase.child("chats").child(newChat.chatId).setValue(newChat)
+
     }
 }
 

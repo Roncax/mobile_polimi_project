@@ -1,13 +1,14 @@
 package com.example.iadvice.Home
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.iadvice.database.Chat
 
-class HomeViewPagerAdapter(fragment: Fragment,lista_chat: MutableList<Chat>) : FragmentStateAdapter(fragment) {
+class HomeViewPagerAdapter(fragment: Fragment, chatList: MutableList<Chat>) : FragmentStateAdapter(fragment) {
 
     private val numOfPages: Int = 2
-    var lista_chat:MutableList<Chat> = lista_chat
+    var chatList:MutableList<Chat> = chatList
 
     /**
      * Provide a new Fragment associated with the specified position.
@@ -23,8 +24,10 @@ class HomeViewPagerAdapter(fragment: Fragment,lista_chat: MutableList<Chat>) : F
      * @see ViewPager2.setOffscreenPageLimit
      */
     override fun createFragment(position: Int): Fragment {
+
+        Log.d("HOMEADAPTER","chatID del primo ${chatList[0].chatId}")
         when(position) {
-            0 -> return YourQuestionsFragment(lista_chat)
+            0 -> return YourQuestionsFragment(chatList)
             else -> return OtherQuestionsFragment()
         }
     }
