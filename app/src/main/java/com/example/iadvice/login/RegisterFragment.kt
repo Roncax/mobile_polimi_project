@@ -42,7 +42,7 @@ class RegisterFragment : Fragment() {
                 performRegister(binding)
 
             }
-            facebookRegisterButton.setOnClickListener {  }
+            facebookRegisterButton.setOnClickListener { }
             googleRegisterButton.setOnClickListener { }
             twitterRegisterButton.setOnClickListener { }
         }
@@ -51,10 +51,10 @@ class RegisterFragment : Fragment() {
     }
 
 
-fun performRegister(binding: RegisterFragmentBinding) {
-    //TODO handle empty fields
+    fun performRegister(binding: RegisterFragmentBinding) {
+        //TODO handle empty fields
 
-    val gender: String
+        val gender: String
 
         if (binding.genderChoice.isChecked) {
             gender = "female"
@@ -77,11 +77,11 @@ fun performRegister(binding: RegisterFragmentBinding) {
                     gender = gender
                 )
             }
-            .addOnFailureListener{
+            .addOnFailureListener {
                 Log.d(TAG, "Failed to create user: ${it.message}")
             }
         requireView().findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
 
-}
+    }
 
 }

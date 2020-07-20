@@ -1,7 +1,6 @@
 package com.example.iadvice.Home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +14,13 @@ import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
 
+val TAG = "YOURQUESTION"
 
-
-class YourQuestionsFragment(chatList: MutableList<Chat>) : Fragment(), OnItemClickListener {
+class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnItemClickListener {
 
     private lateinit var binding: YourQuestionsFragmentBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
-
-    var chatList:MutableList<Chat> = chatList
 
     private lateinit var userId: String
 
@@ -43,7 +40,6 @@ class YourQuestionsFragment(chatList: MutableList<Chat>) : Fragment(), OnItemCli
         )
 
         attachAdapter()
-
 
         return binding.root
     }
@@ -65,10 +61,8 @@ class YourQuestionsFragment(chatList: MutableList<Chat>) : Fragment(), OnItemCli
     }
 
 
-
     private fun attachAdapter() {
 
-        Log.d("YOURQUESTION","chatID del primo ${chatList[0].chatId}")
         viewAdapter = QuestionsAdapter(chatList, this@YourQuestionsFragment)
 
         recyclerView = binding.RecyclerView.apply {
@@ -80,20 +74,10 @@ class YourQuestionsFragment(chatList: MutableList<Chat>) : Fragment(), OnItemCli
 
 
     override fun onItemClick(item: Chat) {
-        //Toast.makeText(activity, "${item.question} selected", Toast.LENGTH_SHORT).show()
-
-/* TODO NAVIGATION
-        val action = YourQuestionsFragmentDirections.actionYourQuestionsFragmentToChatActivity()
-        findNavController().navigate(action)
-        */
-
-       /* Log.i("ACTION","${item.chatId}")
-        val action = YourQuestionsFragmentDirections.actionYourQuestionsFragmentToChatActivity(123)
-        findNavController().navigate(action)
-        */
-
-        Log.d("TOAST","dsadsasda ${item.chatId}")
+        val action =
+            YourQuestionsFragmentDirections.actionYourQuestionsFragmentToChatActivity(chatId = item.chatId)
         Toast.makeText(activity, "${item.chatId} selected", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(action)
 
     }
 

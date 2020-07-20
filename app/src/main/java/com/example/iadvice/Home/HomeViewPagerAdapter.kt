@@ -25,7 +25,6 @@ class HomeViewPagerAdapter(fragment: Fragment, chatList: MutableList<Chat>) : Fr
      */
     override fun createFragment(position: Int): Fragment {
 
-        Log.d("HOMEADAPTER","chatID del primo ${chatList[0].chatId}")
         when(position) {
             0 -> return YourQuestionsFragment(chatList)
             else -> return OtherQuestionsFragment()

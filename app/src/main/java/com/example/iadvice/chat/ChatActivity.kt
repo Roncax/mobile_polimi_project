@@ -9,6 +9,7 @@ import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.iadvice.*
 import com.example.iadvice.database.Message
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.util.*
 
@@ -18,10 +19,9 @@ private const val TAG = "ChatActivity"
 class ChatActivity : AppCompatActivity() {
 
     //take the chatId from the previous screen (home in this case)
-    //TODO mettere in safeargs il chatID dalla home
     val safeArgs: ChatActivityArgs by navArgs()
     val chatId = safeArgs.chatId
-    //val chatId = 123
+
     private lateinit var adapter: MessageAdapter
 
 
@@ -42,8 +42,8 @@ class ChatActivity : AppCompatActivity() {
                 val time = Calendar.getInstance().timeInMillis
 
                 val message = Message(
-                    chatId = chatId.toString(),
-                    user = App.user.username,
+                    chatId = chatId,
+                    user = FirebaseAuth.getInstance().currentUser!!.uid,
                     text = txtMessage.text.toString(),
                     time = time
                 )
@@ -53,7 +53,11 @@ class ChatActivity : AppCompatActivity() {
                 messageList.scrollToPosition(adapter.itemCount - 1)
                 resetInput()
             } else {
-                Toast.makeText(applicationContext, "Message should not be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "Message should not be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

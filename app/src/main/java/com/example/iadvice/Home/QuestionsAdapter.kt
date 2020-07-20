@@ -16,7 +16,7 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
 
 
     /* Create new views (invoked by the layout manager) */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionsAdapter.QuestionChatViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionChatViewHolder {
         return QuestionChatViewHolder.from(parent)
     }
 
@@ -39,7 +39,7 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
     class QuestionChatViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val questionTitle: TextView = itemView.findViewById(R.id.questionChatTitle_text)
         val questionSubtitle: TextView = itemView.findViewById(R.id.questionChatOwner_text)
-        // todo implement image
+        // TODO implement image
         //  val questionChat: ImageView = itemView.findViewById(R.id.questionChat_image)
 
 

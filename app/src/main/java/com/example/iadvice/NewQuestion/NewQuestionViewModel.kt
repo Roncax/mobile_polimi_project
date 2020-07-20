@@ -132,25 +132,25 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         val mDatabase: DatabaseReference
+        val userlist: MutableList<String> = mutableListOf()
+
         mDatabase = FirebaseDatabase.getInstance().reference
 
 
         //TODO: ogni volta che vuoi aggiungere ad una lista devi prima rileggerla tutta da firebase, aggiungere e ricaricare
         //TODO potrebbe essere troppo pesante per quello che dobbiamo fare...in quel caso ogni elemento diventa un child e poi usare childByAutoId
 
-        //look at https://firebase.google.com/docs/database/android/read-and-write#kotlin+ktx_5
-
+        val key = mDatabase.child("chats").push().key
 
         val question = _title.value.toString()
-        val userlist: MutableList<String> = mutableListOf()
-        userlist.add("pinocchio")
         userlist.add(userId)
         val poll = Poll(question, userId) //todo implementare seriamente
-        val chatid:String = "idPROVA"
+        val chatid = key!!
         val  isActive = true
         val newChat = Chat(chatid, userId, question, poll, isActive, userlist)
-        mDatabase.child("chats").child(newChat.chatId).setValue(newChat)
 
+        mDatabase.child("chats").child(key!!).setValue(newChat)
+        mDatabase.child("users").child("chatlist").child(key).setValue(key)
     }
 }
 
