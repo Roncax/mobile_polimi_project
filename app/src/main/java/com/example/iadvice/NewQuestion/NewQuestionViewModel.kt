@@ -1,6 +1,7 @@
 package com.example.iadvice.NewQuestion
 
 import android.app.Application
+import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -8,6 +9,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.iadvice.R
+import com.example.iadvice.database.Chat
+import com.example.iadvice.database.Poll
+import com.example.iadvice.login.LoginFragment.Companion.TAG
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class NewQuestionViewModel(private val application: Application) : ViewModel() {
@@ -50,7 +57,6 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     private val _visibility = MutableLiveData<Boolean>()
     val visibility: LiveData<Boolean>
         get() = _visibility
-
 
 
     init {
@@ -101,21 +107,20 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     }
 
 
-
-    fun onShowCountry(isChecked : Boolean) {
+    fun onShowCountry(isChecked: Boolean) {
         _visibility.value = isChecked
     }
 
-    fun onShowPoll(isChecked : Boolean) {
+    fun onShowPoll(isChecked: Boolean) {
         _poll.value = isChecked
     }
 
-    fun onSelectedCountry(selectedCountry : String) {
+    fun onSelectedCountry(selectedCountry: String) {
         _selectedCountry.value = selectedCountry
     }
 
-    fun onItemSelected(parent : AdapterView<*>?, selectedItem: String ){
-        when(parent?.id){
+    fun onItemSelected(parent: AdapterView<*>?, selectedItem: String) {
+        when (parent?.id) {
             R.id.gender_spinner -> _category.value = selectedItem
             R.id.duration_spinner -> _target.value = selectedItem
             R.id.gender_spinner -> _duration.value = selectedItem
@@ -124,8 +129,28 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     }
 
     fun onCreateNewQuestion() {
-    //TODO to implement the creation and the call to the Repository for DB
-    }
 
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        val mDatabase: DatabaseReference
+        val userlist: MutableList<String> = mutableListOf()
+
+        mDatabase = FirebaseDatabase.getInstance().reference
+
+
+        //TODO: ogni volta che vuoi aggiungere ad una lista devi prima rileggerla tutta da firebase, aggiungere e ricaricare
+        //TODO potrebbe essere troppo pesante per quello che dobbiamo fare...in quel caso ogni elemento diventa un child e poi usare childByAutoId
+
+        val key = mDatabase.child("chats").push().key
+
+        val question = _title.value.toString()
+        userlist.add(userId)
+        val poll = Poll(question, userId) //todo implementare seriamente
+        val chatid = key!!
+        val  isActive = true
+        val newChat = Chat(chatid, userId, question, poll, isActive, userlist)
+
+        mDatabase.child("chats").child(key!!).setValue(newChat)
+        mDatabase.child("users").child("chatlist").child(key).setValue(key)
+    }
 }
 

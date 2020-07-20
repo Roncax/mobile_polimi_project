@@ -43,16 +43,20 @@ class LoginFragment : Fragment() {
         binding.apply {
 
             loginButton.setOnClickListener {
+                /* TODO DA RIMETTERE
                 val password = binding.passwordText.text.toString()
                 val email = binding.usernameText.text.toString()
+                 */
+
+                val password = "123456"
+                val email = "tasca@gmail.com"
+
 
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener {
                         if (!it.isSuccessful) return@addOnCompleteListener
                         var uid = it.result!!.user!!.uid
                         Log.d(TAG, "Successfull logged user with uid: ${uid}")
-                        viewModel.downloadUser(uid)
-                        //requireView().findNavController().navigate(R.id.action_loginFragment_to_homeFragment,)
 
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         findNavController().navigate(action)
@@ -62,25 +66,25 @@ class LoginFragment : Fragment() {
                     }
             }
 
-                registerButton.setOnClickListener {
-                    requireView().findNavController()
-                        .navigate(R.id.action_loginFragment_to_registerFragment)
-                }
+            registerButton.setOnClickListener {
+                requireView().findNavController()
+                    .navigate(R.id.action_loginFragment_to_registerFragment)
+            }
 
-                facebookLoginButton.setOnClickListener {}
-                googleLoginButton.setOnClickListener {}
-                twitterLoginButton.setOnClickListener {}
+            facebookLoginButton.setOnClickListener {}
+            googleLoginButton.setOnClickListener {}
+            twitterLoginButton.setOnClickListener {}
 
             return binding.root
         }
     }
 
 
-        override fun onActivityCreated(savedInstanceState: Bundle?) {
-            super.onActivityCreated(savedInstanceState)
-            requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout)
-                .setVisibility(View.GONE)
-        }
-
-
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout)
+            .setVisibility(View.GONE)
     }
+
+
+}

@@ -27,8 +27,7 @@
         tools:layout="@layout/activity_chat">
         <argument
             android:name="chatId"
-            android:defaultValue="123"
-            app:argType="integer" />
+            app:argType="string" />
     </activity>
 
     <fragment
@@ -52,9 +51,6 @@
             android:defaultValue="123"
             app:argType="string" />
 
-        <action
-            android:id="@+id/action_homeFragment_to_chatActivity"
-            app:destination="@id/chatActivity" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -68,6 +64,9 @@
         <action
             android:id="@+id/action_your_questions_fragment_to_newQuestionFragment"
             app:destination="@id/newQuestionFragment" />
+        <action
+            android:id="@+id/action_your_questions_fragment_to_chatActivity"
+            app:destination="@id/chatActivity" />
     </fragment>
 
     <fragment

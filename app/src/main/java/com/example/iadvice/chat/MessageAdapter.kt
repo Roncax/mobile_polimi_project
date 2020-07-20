@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.iadvice.App
 import com.example.iadvice.DateUtils
 import com.example.iadvice.R
 import com.example.iadvice.database.Message
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.my_bubble.view.*
 import kotlinx.android.synthetic.main.other_bubble.view.*
 
 
-class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<MessageViewHolder>() {
+class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<MessageViewHolder>() {
 
     private val messages: ArrayList<Message> = ArrayList()
     val chatId = Id
@@ -59,8 +59,7 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
 
         }
 
-        onlineDb.child("messages").child(chatId.toString())
-            .addListenerForSingleValueEvent(messagesUploadListener)
+        onlineDb.child("messages").child(chatId).addListenerForSingleValueEvent(messagesUploadListener)
 
 
         val messagesListener = object : ChildEventListener {
@@ -88,15 +87,13 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
 
         }
 
-        onlineDb.child("messages").child(chatId.toString())
-            .addChildEventListener(messagesListener)
+        onlineDb.child("messages").child(chatId).addChildEventListener(messagesListener)
 
     }
 
     fun addNewMessage(message: Message) {
         var onlineDb = Firebase.database.reference
-        onlineDb.child("messages").child(message.chatId.toString()).child(message.time.toString())
-            .setValue(message)
+        onlineDb.child("messages").child(message.chatId).push().setValue(message)
     }
 
     fun addMessage(message: Message) {
@@ -109,7 +106,7 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
 
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
-        return if (App.user.username == message.user) {
+        return if (FirebaseAuth.getInstance().currentUser!!.uid == message.user) {
             VIEW_TYPE_MY_MESSAGE
         } else {
             VIEW_TYPE_OTHER_MESSAGE
@@ -130,7 +127,7 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages.get(position)
-        holder?.bind(message)
+        holder.bind(message)
     }
 
     inner class MyMessageViewHolder(view: View) : MessageViewHolder(view) {
@@ -140,7 +137,7 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
         override fun bind(message: Message) {
             messageText.text = message.text
             timeText.text =
-                DateUtils.fromMillisToTimeString(message.time!!.toLong())
+                DateUtils.fromMillisToTimeString(message.time)
         }
     }
 
@@ -153,7 +150,7 @@ class MessageAdapter(val context: Context, Id: Int) : RecyclerView.Adapter<Messa
             messageText.text = message.text
             userText.text = message.user
             timeText.text =
-                DateUtils.fromMillisToTimeString(message.time!!.toLong())
+                DateUtils.fromMillisToTimeString(message.time)
 
         }
     }

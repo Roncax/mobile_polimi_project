@@ -32,7 +32,7 @@
         tools:text="Question_chat Title" />
 
     <TextView
-        android:id="@+id/questionChatSubtitle_text"
+        android:id="@+id/questionChatOwner_text"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginTop="8dp"
