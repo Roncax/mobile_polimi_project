@@ -70,7 +70,7 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
             adapter = viewAdapter
         }
 
- */
+ 
     }
 
 
