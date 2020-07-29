@@ -98,6 +98,9 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         Toast.makeText( context, "Updated " + binding.countrySpinner!!.getSelectedCountryName(), Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * used for element selected inside the spinners
+     */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val selected: String = parent?.getItemAtPosition(position).toString()
         viewModel.onItemSelected(parent,selected)
@@ -106,6 +109,7 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     private fun onCreateNewQuestion() {
+        viewModel.question = binding.boxArgument.text.toString()
         viewModel.onCreateNewQuestion()
     }
 }

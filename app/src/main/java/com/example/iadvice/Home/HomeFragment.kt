@@ -1,5 +1,6 @@
 package com.example.iadvice.Home
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,7 +51,6 @@ class HomeFragment : Fragment() {
         findChats()
         displayHomeChats()
     }
-
 
     private fun findChats() {
         FirebaseDatabase.getInstance().reference

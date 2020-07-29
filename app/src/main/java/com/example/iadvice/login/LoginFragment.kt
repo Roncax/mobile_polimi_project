@@ -43,14 +43,14 @@ class LoginFragment : Fragment() {
         binding.apply {
 
             loginButton.setOnClickListener {
-                /* TODO DA RIMETTERE
+                // TODO DA RIMETTERE
                 val password = binding.passwordText.text.toString()
                 val email = binding.usernameText.text.toString()
-                 */
 
+/*
                 val password = "123456"
                 val email = "tasca@gmail.com"
-
+*/
 
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener {
