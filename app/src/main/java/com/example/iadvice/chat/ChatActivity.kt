@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.iadvice.*
+import com.example.iadvice.MainActivity
+import com.example.iadvice.R
 import com.example.iadvice.database.Message
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_chat.*
@@ -19,8 +19,9 @@ private const val TAG = "ChatActivity"
 class ChatActivity : AppCompatActivity() {
 
     //take the chatId from the previous screen (home in this case)
-    val safeArgs: ChatActivityArgs by navArgs()
+   /* val safeArgs: ChatActivityArgs by navArgs()
     val chatId = safeArgs.chatId
+*/
 
     private lateinit var adapter: MessageAdapter
 
@@ -29,6 +30,9 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+        val intent = intent
+        val chatId = intent.getStringExtra("chatId")
+        
         val application = requireNotNull(this).application
 
         messageList.layoutManager = LinearLayoutManager(this)

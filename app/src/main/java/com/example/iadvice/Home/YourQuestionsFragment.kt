@@ -1,5 +1,6 @@
 package com.example.iadvice.Home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
+import com.example.iadvice.chat.ChatActivity
+import com.example.iadvice.chat.ChatActivityArgs
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
-import com.google.firebase.auth.FirebaseAuth
+
 
 val TAG = "YOURQUESTION"
 
@@ -70,7 +73,7 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
             adapter = viewAdapter
         }
 
- 
+
     }
 
 
@@ -78,7 +81,11 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
         val action =
             YourQuestionsFragmentDirections.actionYourQuestionsFragmentToChatActivity(chatId = item.chatId)
         Toast.makeText(activity, "${item.chatId} selected", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(action)
+       // findNavController().navigate(action)
+        val intent = Intent(activity, ChatActivity::class.java)
+        intent.putExtra("chatId",item.chatId)
+        startActivity(intent)
+
 
     }
 
