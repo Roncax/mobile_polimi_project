@@ -81,7 +81,7 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
         val action =
             YourQuestionsFragmentDirections.actionYourQuestionsFragmentToChatActivity(chatId = item.chatId)
         Toast.makeText(activity, "${item.chatId} selected", Toast.LENGTH_SHORT).show()
-       // findNavController().navigate(action)
+
         val intent = Intent(activity, ChatActivity::class.java)
         intent.putExtra("chatId",item.chatId)
         startActivity(intent)

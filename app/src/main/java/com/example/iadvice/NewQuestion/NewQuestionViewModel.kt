@@ -68,6 +68,7 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     lateinit var durationSpinner: Spinner
     lateinit var genderSpinner: Spinner
     lateinit var categorySpinner: Spinner
+    lateinit var question: String
 
 
     /**
@@ -141,8 +142,11 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
         //TODO potrebbe essere troppo pesante per quello che dobbiamo fare...in quel caso ogni elemento diventa un child e poi usare childByAutoId
 
         val key = mDatabase.child("chats").push().key
+        Log.i("NEW KEY","${key}")
 
-        val question = _title.value.toString()
+       // val question = _title.value.toString() //TODO non viene settato il titolo dall'altra parte
+        //val question = "una questione privata"
+
         userlist.add(userId)
         val poll = Poll(question, userId) //todo implementare seriamente
         val chatid = key!!
@@ -150,7 +154,7 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
         val newChat = Chat(chatid, userId, question, poll, isActive, userlist)
 
         mDatabase.child("chats").child(key!!).setValue(newChat)
-        mDatabase.child("users").child("chatlist").child(key).setValue(key)
+        mDatabase.child("users").child(userId).child("chatlist").child(key).setValue(key)
     }
 }
 

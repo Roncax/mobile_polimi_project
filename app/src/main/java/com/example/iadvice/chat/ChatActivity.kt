@@ -32,7 +32,7 @@ class ChatActivity : AppCompatActivity() {
 
         val intent = intent
         val chatId = intent.getStringExtra("chatId")
-        
+
         val application = requireNotNull(this).application
 
         messageList.layoutManager = LinearLayoutManager(this)
