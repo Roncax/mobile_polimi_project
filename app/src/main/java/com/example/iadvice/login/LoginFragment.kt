@@ -6,11 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.example.iadvice.MainActivity
 import com.example.iadvice.R
+import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.databinding.LoginFragmentBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -43,21 +46,15 @@ class LoginFragment : Fragment() {
         binding.apply {
 
             loginButton.setOnClickListener {
-                // TODO DA RIMETTERE
                 val password = binding.passwordText.text.toString()
                 val email = binding.usernameText.text.toString()
 
-/*
-                val password = "123456"
-                val email = "tasca@gmail.com"
-*/
 
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener {
                         if (!it.isSuccessful) return@addOnCompleteListener
                         var uid = it.result!!.user!!.uid
                         Log.d(TAG, "Successfull logged user with uid: ${uid}")
-
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         findNavController().navigate(action)
                     }

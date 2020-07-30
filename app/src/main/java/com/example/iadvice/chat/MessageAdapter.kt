@@ -50,7 +50,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
 
             override fun onDataChange(p0: DataSnapshot) {
 
-                val children = p0!!.children
+                val children = p0.children
                 children.forEach {
                     addMessage(it.getValue<Message>()!!)
                 }
@@ -148,7 +148,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
 
         override fun bind(message: Message) {
             messageText.text = message.text
-            userText.text = message.user
+            userText.text = message.nickname
             timeText.text =
                 DateUtils.fromMillisToTimeString(message.time)
 

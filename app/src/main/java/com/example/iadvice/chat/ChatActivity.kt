@@ -6,13 +6,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.iadvice.MainActivity
 import com.example.iadvice.R
 import com.example.iadvice.database.Message
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.util.*
-
 
 private const val TAG = "ChatActivity"
 
@@ -48,6 +46,7 @@ class ChatActivity : AppCompatActivity() {
                 val message = Message(
                     chatId = chatId,
                     user = FirebaseAuth.getInstance().currentUser!!.uid,
+                    nickname = this.getSharedPreferences(),
                     text = txtMessage.text.toString(),
                     time = time
                 )
@@ -56,12 +55,9 @@ class ChatActivity : AppCompatActivity() {
                 // scroll the RecyclerView to the last added element
                 messageList.scrollToPosition(adapter.itemCount - 1)
                 resetInput()
+
             } else {
-                Toast.makeText(
-                    applicationContext,
-                    "Message should not be empty",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(applicationContext, "Message should not be empty", Toast.LENGTH_SHORT).show()
             }
         }
 
