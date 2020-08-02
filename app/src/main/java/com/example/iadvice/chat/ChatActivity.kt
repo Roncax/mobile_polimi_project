@@ -16,13 +16,7 @@ private const val TAG = "ChatActivity"
 
 class ChatActivity : AppCompatActivity() {
 
-    //take the chatId from the previous screen (home in this case)
-   /* val safeArgs: ChatActivityArgs by navArgs()
-    val chatId = safeArgs.chatId
-*/
-
     private lateinit var adapter: MessageAdapter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +24,6 @@ class ChatActivity : AppCompatActivity() {
 
         val intent = intent
         val chatId = intent.getStringExtra("chatId")
-
-        val application = requireNotNull(this).application
 
         messageList.layoutManager = LinearLayoutManager(this)
         adapter = MessageAdapter(this, chatId)
@@ -42,11 +34,13 @@ class ChatActivity : AppCompatActivity() {
         btnSend.setOnClickListener {
             if (txtMessage.text.isNotEmpty()) {
                 val time = Calendar.getInstance().timeInMillis
+                val sharedPreference =  getSharedPreferences("USERS",Context.MODE_PRIVATE)
+                val user_nick = sharedPreference.getString("username","defaultName")
 
                 val message = Message(
                     chatId = chatId,
                     user = FirebaseAuth.getInstance().currentUser!!.uid,
-                    nickname = this.getSharedPreferences(),
+                    nickname = user_nick!!,
                     text = txtMessage.text.toString(),
                     time = time
                 )

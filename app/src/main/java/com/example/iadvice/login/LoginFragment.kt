@@ -1,22 +1,25 @@
 package com.example.iadvice.login
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.iadvice.MainActivity
 import com.example.iadvice.R
-import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.databinding.LoginFragmentBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class LoginFragment : Fragment() {
@@ -54,7 +57,7 @@ class LoginFragment : Fragment() {
                     .addOnCompleteListener {
                         if (!it.isSuccessful) return@addOnCompleteListener
                         var uid = it.result!!.user!!.uid
-                        Log.d(TAG, "Successfull logged user with uid: ${uid}")
+                        retriveUser(uid)
                         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         findNavController().navigate(action)
                     }
@@ -83,5 +86,37 @@ class LoginFragment : Fragment() {
             .setVisibility(View.GONE)
     }
 
+    fun retriveUser(uid: String) {
 
+        var onlineDb = Firebase.database.reference
+
+        val messagesUploadListener = object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError) {
+                //method that is called if the read is canceled (eg no permission)
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val children = p0.children
+                var child = ""
+                children.forEach {
+                    child = it.value.toString()
+                }
+                Log.d(TAG, "Ho tirato giú l'utente $child")
+
+                val sharedPreference = activity?.getSharedPreferences("USERS", Context.MODE_PRIVATE) ?: return
+                var editor = sharedPreference.edit()
+                editor.putString("username",child)
+                editor.commit()
+            }
+
+
+        }
+
+        onlineDb.child("users").child(uid).addListenerForSingleValueEvent(messagesUploadListener)
+
+
+
+
+    }
 }

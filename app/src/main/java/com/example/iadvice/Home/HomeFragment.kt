@@ -57,6 +57,7 @@ class HomeFragment : Fragment() {
             .child("users")
             .child(userId)
             .child("chatlist")
+            .child("your")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(dataSnapshot: DatabaseError) {
                     TODO("Not yet implemented")

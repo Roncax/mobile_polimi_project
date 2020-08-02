@@ -153,8 +153,8 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
         val  isActive = true
         val newChat = Chat(chatid, userId, question, poll, isActive, userlist)
 
-        mDatabase.child("chats").child(key!!).setValue(newChat)
-        mDatabase.child("users").child(userId).child("chatlist").child(key).setValue(key)
+        mDatabase.child("chats").child(key).setValue(newChat)
+        mDatabase.child("users").child(userId).child("chatlist").child("your").child(key).setValue(key)
     }
 }
 
