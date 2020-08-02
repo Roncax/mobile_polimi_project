@@ -12,6 +12,12 @@ import androidx.navigation.findNavController
 import com.example.iadvice.R
 import com.example.iadvice.databinding.RegisterFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.register_fragment.*
+import java.io.File
+import java.io.FileInputStream
+
 
 //TODO aggiungere possibilitá di mettere dentro immagine personale
 class RegisterFragment : Fragment() {
@@ -42,12 +48,32 @@ class RegisterFragment : Fragment() {
                 performRegister(binding)
 
             }
+
+            add_image_register_button.setOnClickListener {
+                uploadImage()
+
+            }
             facebookRegisterButton.setOnClickListener { }
             googleRegisterButton.setOnClickListener { }
             twitterRegisterButton.setOnClickListener { }
         }
 
         return binding.root
+    }
+
+    private fun uploadImage() {
+        val storage = FirebaseStorage.getInstance().reference
+        val imagesRef: StorageReference = storage.child("avatar_images")
+        val stream = FileInputStream(File("path/to/images/rivers.jpg"))
+
+        val uploadTask = imagesRef.putStream(stream)
+        uploadTask.addOnFailureListener {
+            // Handle unsuccessful uploads
+        }.addOnSuccessListener {
+            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+            // ...
+        }
+
     }
 
 
@@ -67,7 +93,9 @@ class RegisterFragment : Fragment() {
             binding.firstPwText.text.toString()
         )
             .addOnCompleteListener {
-                if (!it.isSuccessful) return@addOnCompleteListener
+                if (!it.isSuccessful) {
+                    Log.e(TAG,"La registrazione non é andata a buon fine")
+                }
                 var uid = it.result!!.user!!.uid
                 Log.d(TAG, "Successfull created user with uid: ${uid}")
                 viewModel.registerUser(

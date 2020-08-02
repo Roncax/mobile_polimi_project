@@ -40,6 +40,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
 
     fun loadMessages() {
 
+
         var onlineDb = Firebase.database.reference
 
         val messagesUploadListener = object : ValueEventListener {
@@ -93,7 +94,8 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
 
     fun addNewMessage(message: Message) {
         var onlineDb = Firebase.database.reference
-        onlineDb.child("messages").child(message.chatId).push().setValue(message)
+        val key = onlineDb.child("messages").child(chatId).push().key
+        onlineDb.child("messages").child(message.chatId).child(key!!).setValue(message)
     }
 
     fun addMessage(message: Message) {
