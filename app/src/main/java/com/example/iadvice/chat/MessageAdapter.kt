@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.DateUtils
@@ -147,13 +148,14 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
         private var messageText: TextView = view.txtOtherMessage
         private var userText: TextView = view.txtOtherUser
         private var timeText: TextView = view.txtOtherMessageTime
+        private  var user_image: ImageView = view.other_image_chat
 
         override fun bind(message: Message) {
             messageText.text = message.text
             userText.text = message.nickname
             timeText.text =
                 DateUtils.fromMillisToTimeString(message.time)
-
+            // TODO agginugere gestione immagine degli altri
         }
     }
 }

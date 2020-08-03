@@ -1,10 +1,19 @@
 package com.example.iadvice.login
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,11 +21,7 @@ import androidx.navigation.findNavController
 import com.example.iadvice.R
 import com.example.iadvice.databinding.RegisterFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.register_fragment.*
-import java.io.File
-import java.io.FileInputStream
 
 
 //TODO aggiungere possibilitá di mettere dentro immagine personale
@@ -24,6 +29,12 @@ class RegisterFragment : Fragment() {
 
     companion object {
         const val TAG = "RegisterFragment"
+        //image pick code
+        private val IMAGE_PICK_CODE = 1000;
+        //Permission code
+        private val PERMISSION_CODE = 1001;
+        //image URI
+        lateinit var imageUri: Uri
     }
 
     private lateinit var viewModel: LoginViewModel
@@ -49,31 +60,41 @@ class RegisterFragment : Fragment() {
 
             }
 
-            add_image_register_button.setOnClickListener {
-                uploadImage()
-
+            addImageRegisterButton.setOnClickListener {
+                //BUTTON CLICK
+                //check runtime permission
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(application.applicationContext , Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_DENIED
+                    ) {
+                        //permission denied
+                        val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
+                        //show popup to request runtime permission
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    } else {
+                        //permission already granted
+                        pickImageFromGallery();
+                    }
+                } else {
+                    //system OS is < Marshmallow
+                    pickImageFromGallery();
+                }
             }
+
+
+
             facebookRegisterButton.setOnClickListener { }
             googleRegisterButton.setOnClickListener { }
-            twitterRegisterButton.setOnClickListener { }
         }
 
         return binding.root
     }
 
-    private fun uploadImage() {
-        val storage = FirebaseStorage.getInstance().reference
-        val imagesRef: StorageReference = storage.child("avatar_images")
-        val stream = FileInputStream(File("path/to/images/rivers.jpg"))
-
-        val uploadTask = imagesRef.putStream(stream)
-        uploadTask.addOnFailureListener {
-            // Handle unsuccessful uploads
-        }.addOnSuccessListener {
-            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-            // ...
-        }
-
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
 
@@ -102,7 +123,8 @@ class RegisterFragment : Fragment() {
                     username = binding.nicknameText.text.toString(),
                     uid = uid,
                     age = binding.ageRegisterText.text.toString().toInt(),
-                    gender = gender
+                    gender = gender,
+                    uri = imageUri
                 )
             }
             .addOnFailureListener {
@@ -111,5 +133,31 @@ class RegisterFragment : Fragment() {
         requireView().findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
 
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when(requestCode){
+            PERMISSION_CODE -> {
+                if (grantResults.size >0 && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED){
+                    //permission from popup granted
+                    pickImageFromGallery()
+                }
+                else{
+                    //permission from popup denied
+                    Toast.makeText(this.context, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    //handle result of picked image
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+            imageUri = data!!.data!!
+            add_image_register_button.setImageURI(imageUri)
+        }
+    }
+
 
 }

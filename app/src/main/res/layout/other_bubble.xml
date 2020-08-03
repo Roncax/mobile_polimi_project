@@ -44,7 +44,7 @@
         android:layout_marginLeft="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/txtOtherMessage" />
 
-    <Button
+    <ImageView
         android:id="@+id/other_image_chat"
         style="@style/FirebaseUI.Button.AccountChooser"
         android:layout_width="69dp"
