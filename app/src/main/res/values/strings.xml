@@ -5,7 +5,7 @@
     <string name="username_text">Insert Email here</string>
     <string name="logo_description">Main logo of the app</string>
     <string name="password_hint">Insert Password</string>
-    <string name="add_image_button">Click to add an image</string>
+    <string name="add_image_button">Image</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

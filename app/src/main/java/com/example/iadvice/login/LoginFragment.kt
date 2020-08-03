@@ -73,8 +73,6 @@ class LoginFragment : Fragment() {
 
             facebookLoginButton.setOnClickListener {}
             googleLoginButton.setOnClickListener {}
-            twitterLoginButton.setOnClickListener {}
-
             return binding.root
         }
     }
