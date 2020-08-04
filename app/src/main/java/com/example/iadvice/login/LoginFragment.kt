@@ -47,7 +47,7 @@ class LoginFragment : Fragment() {
                 val password = binding.passwordText.text.toString()
                 val email = binding.usernameText.text.toString()
 
-/*
+/* hardcoded for tests
                 val password = "123456"
                 val email = "tasca@gmail.com"
 */

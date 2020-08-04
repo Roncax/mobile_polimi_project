@@ -17,8 +17,6 @@ import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
 
 
-val TAG = "YOURQUESTION"
-
 class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnItemClickListener {
 
     private lateinit var binding: YourQuestionsFragmentBinding
@@ -32,7 +30,6 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -78,10 +75,6 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
 
 
     override fun onItemClick(item: Chat) {
-        val action =
-            YourQuestionsFragmentDirections.actionYourQuestionsFragmentToChatActivity(chatId = item.chatId)
-        Toast.makeText(activity, "${item.chatId} selected", Toast.LENGTH_SHORT).show()
-
         val intent = Intent(activity, ChatActivity::class.java)
         intent.putExtra("chatId",item.chatId)
         startActivity(intent)
