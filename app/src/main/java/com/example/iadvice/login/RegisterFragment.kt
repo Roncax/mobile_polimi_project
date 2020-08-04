@@ -80,7 +80,8 @@ class RegisterFragment : Fragment() {
                 }
             }
 
-
+            binding.countrySpinner.visibility = View.VISIBLE
+            binding.countrySpinner.setOnCountryChangeListener { onSelectedCountry(binding.countrySpinner) }
 
             facebookRegisterButton.setOnClickListener { }
             googleRegisterButton.setOnClickListener { }
@@ -156,6 +157,11 @@ class RegisterFragment : Fragment() {
             imageUri = data!!.data!!
             add_image_register_button.setImageURI(imageUri)
         }
+    }
+
+    private fun onSelectedCountry(countrySpinner: com.hbb20.CountryCodePicker){
+        viewModel.onSelectedCountry(countrySpinner!!.getSelectedCountryName().toString())
+        Toast.makeText( context, "Updated " + countrySpinner!!.getSelectedCountryName(), Toast.LENGTH_SHORT).show()
     }
 
 

@@ -48,7 +48,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.522"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/age_register_text" />
+            app:layout_constraintTop_toBottomOf="@+id/country_spinner" />
 
         <ImageView
             android:id="@+id/google_register_button"
@@ -106,6 +106,26 @@
             app:layout_constraintStart_toEndOf="@+id/age_register_text"
             app:layout_constraintTop_toBottomOf="@+id/add_image_register_button"
             tools:checked="false" />
+
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/country_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:ccp_countryPreference="IT,GB,FR,US,DE"
+            android:visibility="gone"
+            app:ccp_showFullName="true"
+            app:ccp_showNameCode="false"
+            app:ccp_showPhoneCode="false"
+            app:layout_constraintBottom_toTopOf="@+id/nickname_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gender_choice" />
+
 
 
         <EditText

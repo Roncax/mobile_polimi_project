@@ -72,6 +72,10 @@ class RegisterViewModel: ViewModel() {
     lateinit var genderSpinner: Spinner
     lateinit var categorySpinner: Spinner
 
+    fun onSelectedCountry(selectedCountry: String) {
+       //TODO qui poi salvarlo a db
+    }
+
 
 //    fun fillSPinners() {
 //
