@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -43,7 +44,8 @@ class LoginFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
         val viewModelFactory = LoginViewModelFactory(application)
-        // viewModelProviders used to not destroy the viewmodel until detached
+
+        // viewModelProviders used to not destroy the viewModel until detached
         viewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
 
         binding.apply {
@@ -51,19 +53,21 @@ class LoginFragment : Fragment() {
             loginButton.setOnClickListener {
                 val password = binding.passwordText.text.toString()
                 val email = binding.usernameText.text.toString()
-
-
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener {
-                        if (!it.isSuccessful) return@addOnCompleteListener
-                        var uid = it.result!!.user!!.uid
-                        retriveUser(uid)
-                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                        findNavController().navigate(action)
-                    }
-                    .addOnFailureListener {
-                        Log.d(TAG, "Failed to login user: ${it.message}")
-                    }
+                if (password.isEmpty()){
+                    Toast.makeText(
+                        context, "Password field cannot be empty, try again.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                if (email.isEmpty()){
+                    Toast.makeText(
+                        context, "Email field cannot be empty, try again.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                performLogin(email, password)
             }
 
             registerButton.setOnClickListener {
@@ -73,20 +77,49 @@ class LoginFragment : Fragment() {
 
             facebookLoginButton.setOnClickListener {}
             googleLoginButton.setOnClickListener {}
+
             return binding.root
         }
+    }
+
+    private fun performLogin(email: String, password: String) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                if (!it.isSuccessful) return@addOnCompleteListener
+
+                Log.d(TAG, "signInWithCustomToken:success")
+                val uid = it.result!!.user!!.uid
+                retrieveUser(uid)
+
+                val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                findNavController().navigate(action)
+
+                Toast.makeText(
+                    this.context, "Login successful",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+            .addOnFailureListener {
+                Toast.makeText(
+                    this.context, "Authentication failed, try again.",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout)
-            .setVisibility(View.GONE)
+        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE
     }
 
-    fun retriveUser(uid: String) {
+    // Download the user's info from the database and put it into the preferences(now only the nickname)
+    private fun retrieveUser(uid: String) {
 
-        var onlineDb = Firebase.database.reference
+        val onlineDb = Firebase.database.reference
 
         val messagesUploadListener = object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
@@ -100,21 +133,16 @@ class LoginFragment : Fragment() {
                 children.forEach {
                     child = it.value.toString()
                 }
-                Log.d(TAG, "Ho tirato giú l'utente $child")
 
-                val sharedPreference = activity?.getSharedPreferences("USERS", Context.MODE_PRIVATE) ?: return
-                var editor = sharedPreference.edit()
-                editor.putString("username",child)
-                editor.commit()
+                val sharedPreference =
+                    activity?.getSharedPreferences("USERS", Context.MODE_PRIVATE) ?: return
+                val editor = sharedPreference.edit()
+                editor.putString("username", child)
+                editor.apply()
             }
-
-
         }
 
-        onlineDb.child("users").child(uid).addListenerForSingleValueEvent(messagesUploadListener)
-
-
-
-
+        onlineDb.child("users").child(uid).addValueEventListener(messagesUploadListener)
     }
+
 }
