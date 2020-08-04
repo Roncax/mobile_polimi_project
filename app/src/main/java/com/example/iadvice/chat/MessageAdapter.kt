@@ -40,33 +40,11 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
     }
 
     fun loadMessages() {
-
-
-        var onlineDb = Firebase.database.reference
-
-        val messagesUploadListener = object : ValueEventListener {
-            override fun onCancelled(databaseError: DatabaseError) {
-                //method that is called if the read is canceled (eg no permission)
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-
-                val children = p0.children
-                children.forEach {
-                    addMessage(it.getValue<Message>()!!)
-                }
-            }
-
-
-        }
-
-        onlineDb.child("messages").child(chatId).addListenerForSingleValueEvent(messagesUploadListener)
-
+        val onlineDb = Firebase.database.reference
 
         val messagesListener = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                //TODO("Not yet implemented")
+                Log.w(TAG, "loadPost:onCancelled", p0.toException())
             }
 
             override fun onChildMoved(p0: DataSnapshot, p1: String?) {
@@ -98,6 +76,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
         val key = onlineDb.child("messages").child(chatId).push().key
         onlineDb.child("messages").child(message.chatId).child(key!!).setValue(message)
     }
+
 
     fun addMessage(message: Message) {
         messages.add(message)
@@ -148,14 +127,16 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
         private var messageText: TextView = view.txtOtherMessage
         private var userText: TextView = view.txtOtherUser
         private var timeText: TextView = view.txtOtherMessageTime
-        private  var user_image: ImageView = view.other_image_chat
+        private var user_image: ImageView = view.other_image_chat
+
+
 
         override fun bind(message: Message) {
             messageText.text = message.text
             userText.text = message.nickname
             timeText.text =
                 DateUtils.fromMillisToTimeString(message.time)
-            // TODO agginugere gestione immagine degli altri
+            // TODO aggiungere gestione immagine degli altri
         }
     }
 }

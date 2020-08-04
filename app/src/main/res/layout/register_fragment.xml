@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/first_pw_text"
@@ -79,15 +79,19 @@
             android:layout_height="100dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/round_button"
+            android:contextClickable="true"
             android:gravity="center_vertical|center_horizontal"
+            android:scaleType="fitStart"
             android:text="@string/add_image_button"
-            android:textColor="#fff"
+            android:textAlignment="center"
+            android:textColor="#121010"
             app:layout_constraintBottom_toTopOf="@+id/age_register_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.416" />
+            app:layout_constraintVertical_bias="0.416"
+            app:srcCompat="@drawable/fui_ic_anonymous_white_24dp" />
 
         <Switch
             android:id="@+id/gender_choice"
@@ -102,6 +106,7 @@
             app:layout_constraintStart_toEndOf="@+id/age_register_text"
             app:layout_constraintTop_toBottomOf="@+id/add_image_register_button"
             tools:checked="false" />
+
 
         <EditText
             android:id="@+id/age_register_text"
@@ -127,7 +132,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"></Button>
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

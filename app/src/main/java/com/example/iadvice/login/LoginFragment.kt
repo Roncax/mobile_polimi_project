@@ -42,11 +42,8 @@ class LoginFragment : Fragment() {
             R.layout.login_fragment, container, false
         )
 
-        val application = requireNotNull(this.activity).application
-        val viewModelFactory = LoginViewModelFactory(application)
-
         // viewModelProviders used to not destroy the viewModel until detached
-        viewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         binding.apply {
 

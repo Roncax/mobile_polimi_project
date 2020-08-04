@@ -5,7 +5,7 @@
     <string name="username_text">Email</string>
     <string name="logo_description">Main logo of the app</string>
     <string name="password_hint">Password</string>
-    <string name="add_image_button">Image</string>
+    <string name="add_image_button">Select image</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -46,6 +46,7 @@
     <string name="question_duration">Self destruct timer</string>
     <string name="specify_country">Restrict to a specific country</string>
     <string name="category">Category</string>
+    <string name="email">Email</string>
 
 </resources>
 
