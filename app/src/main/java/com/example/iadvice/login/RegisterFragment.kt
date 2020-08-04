@@ -37,12 +37,13 @@ class RegisterFragment : Fragment() {
         lateinit var imageUri: Uri
     }
 
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
 
         val binding = DataBindingUtil.inflate<RegisterFragmentBinding>(
             inflater,
@@ -51,8 +52,6 @@ class RegisterFragment : Fragment() {
 
         // viewModelProviders used to not destroy the viewmodel until detached
         val application = requireNotNull(this.activity).application
-        val viewModelFactory = LoginViewModelFactory(application)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
 
         binding.apply {
             registerButton.setOnClickListener {
