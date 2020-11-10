@@ -3,6 +3,7 @@ package com.example.iadvice.login
 import android.net.Uri
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.iadvice.R
 import com.example.iadvice.database.User
@@ -17,26 +18,30 @@ class RegisterViewModel: ViewModel() {
         private const val TAG = "LoginViewModel"
     }
 
-
     // register the user with the selected parameters
     fun registerUser(
         uid: String,
         username: String,
         age: Int,
         gender: String,
-        uri: Uri
+        uri: Uri,
+        country: String,
+        categories:MutableList<String>
     ) {
 
-        val categories = "ONE"
         val user = User(
             uid = uid,
             username = username,
             gender = gender,
-            categories = categories,
-            age = age
+            age = age,
+            country = country
         )
 
         Firebase.database.reference.child("users").child(uid).setValue(user)
+
+        for (category in categories) {
+            Firebase.database.reference.child("users").child(uid).child("categories").child(category).setValue("true")
+        }
 
         // Create an instance of the storage
         val storage = FirebaseStorage.getInstance()
@@ -69,37 +74,8 @@ class RegisterViewModel: ViewModel() {
         }
     }
 
-    lateinit var genderSpinner: Spinner
-    lateinit var categorySpinner: Spinner
-
-    fun onSelectedCountry(selectedCountry: String) {
-       //TODO qui poi salvarlo a db
-    }
 
 
-//    fun fillSPinners() {
-//
-//        //category spinner
-//        ArrayAdapter.createFromResource(
-//            application,
-//            R.array.category_array,
-//            android.R.layout.simple_spinner_item
-//        ).also { adapter ->
-//            // Specify the layout to use when the list of choices appears
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//            // Apply the adapter to the spinner
-//            categorySpinner.adapter = adapter
-//        }
-//
-//        //genderSpinner
-//        ArrayAdapter.createFromResource(
-//            application,
-//            R.array.gender_array,
-//            android.R.layout.simple_spinner_item
-//        ).also { adapter ->
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//            genderSpinner.adapter = adapter
-//        }
-//
-//    }
+
+
 }

@@ -18,19 +18,19 @@
             android:inputType="textEmailAddress"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/first_pw_text"
-            app:layout_constraintEnd_toEndOf="@+id/nickname_text"
-            app:layout_constraintStart_toStartOf="@+id/nickname_text"
-            app:layout_constraintTop_toBottomOf="@+id/nickname_text" />
+            app:layout_constraintEnd_toEndOf="@+id/categories_button"
+            app:layout_constraintStart_toStartOf="@+id/country_spinner"
+            app:layout_constraintTop_toBottomOf="@+id/categories_button" />
 
         <EditText
             android:id="@+id/first_pw_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
             android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/google_register_button"
+            app:layout_constraintBottom_toTopOf="@+id/nickname_text"
             app:layout_constraintEnd_toEndOf="@+id/email_register_text"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/email_register_text"
@@ -38,46 +38,22 @@
 
         <EditText
             android:id="@+id/nickname_text"
-            android:layout_width="193dp"
+            android:layout_width="0dp"
             android:layout_height="43dp"
             android:ems="10"
             android:hint="Nickname"
             android:inputType="textPersonName"
             android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/email_register_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.522"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/country_spinner" />
-
-        <ImageView
-            android:id="@+id/google_register_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:layout_constraintBottom_toBottomOf="@+id/facebook_register_button"
-            app:layout_constraintEnd_toStartOf="@+id/facebook_register_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/facebook_register_button"
-            app:srcCompat="@drawable/google_logo" />
-
-        <ImageView
-            android:id="@+id/facebook_register_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-
-            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/register_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/google_register_button"
-            app:layout_constraintTop_toBottomOf="@+id/first_pw_text"
-            app:layout_constraintVertical_bias="0.745"
-            app:srcCompat="@drawable/facebook_logo" />
+            app:layout_constraintEnd_toEndOf="@+id/first_pw_text"
+            app:layout_constraintStart_toStartOf="@+id/first_pw_text"
+            app:layout_constraintTop_toBottomOf="@+id/first_pw_text" />
+
 
         <ImageView
             android:id="@+id/add_image_register_button"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="4dp"
             android:background="@drawable/round_button"
             android:contextClickable="true"
             android:gravity="center_vertical|center_horizontal"
@@ -87,72 +63,74 @@
             android:textColor="#121010"
             app:layout_constraintBottom_toTopOf="@+id/age_register_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.416"
             app:srcCompat="@drawable/fui_ic_anonymous_white_24dp" />
-
-        <Switch
-            android:id="@+id/gender_choice"
-            android:layout_width="128dp"
-            android:layout_height="49dp"
-            android:showText="true"
-            android:textAlignment="center"
-            android:textOff="Male"
-            android:textOn="Female"
-            app:layout_constraintBottom_toTopOf="@+id/nickname_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/age_register_text"
-            app:layout_constraintTop_toBottomOf="@+id/add_image_register_button"
-            tools:checked="false" />
-
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/country_spinner"
-            android:layout_width="match_parent"
+            android:layout_width="143dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:visibility="visible"
             app:ccp_countryPreference="IT,GB,FR,US,DE"
-            android:visibility="gone"
             app:ccp_showFullName="true"
             app:ccp_showNameCode="false"
             app:ccp_showPhoneCode="false"
-            app:layout_constraintBottom_toTopOf="@+id/nickname_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintBottom_toTopOf="@+id/email_register_text"
+            app:layout_constraintEnd_toStartOf="@+id/categories_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gender_choice" />
+            app:layout_constraintTop_toBottomOf="@+id/age_register_text">
 
-
-
-        <EditText
-            android:id="@+id/age_register_text"
-            android:layout_width="84dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="104dp"
-            android:ems="10"
-            android:hint="Age"
-            android:inputType="number"
-            android:textAlignment="center"
-            app:layout_constraintBaseline_toBaselineOf="@+id/gender_choice"
-            app:layout_constraintStart_toStartOf="parent" />
+        </com.hbb20.CountryCodePicker>
 
         <Button
             android:id="@+id/register_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="277dp"
+            android:layout_height="53dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="40dp"
             android:layout_weight="0"
             android:background="@drawable/rounded_button"
             android:text="@string/register_button"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/nickname_text"
+            app:layout_constraintStart_toStartOf="@+id/nickname_text"
+            app:layout_constraintTop_toBottomOf="@+id/nickname_text" />
+
+        <Spinner
+            android:id="@+id/gender_spinner"
+            android:layout_width="124dp"
+            android:layout_height="0dp"
+            android:entries="@array/gender_array"
+            android:spinnerMode="dropdown"
+            app:layout_constraintBottom_toBottomOf="@+id/age_register_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/age_register_text"
+            app:layout_constraintTop_toTopOf="@+id/age_register_text"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/categories_button"
+            android:layout_width="110dp"
+            android:layout_height="0dp"
+            android:background="@drawable/rounded_button"
+            android:text="Categories"
+            app:layout_constraintBottom_toBottomOf="@+id/country_spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/country_spinner"
+            app:layout_constraintTop_toTopOf="@+id/country_spinner" />
+
+        <EditText
+            android:id="@+id/age_register_text"
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Age"
+            android:inputType="number"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/country_spinner"
+            app:layout_constraintEnd_toStartOf="@+id/gender_spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_image_register_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

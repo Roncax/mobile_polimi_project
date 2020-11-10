@@ -8,17 +8,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.request.RequestOptions
 import com.example.iadvice.DateUtils
+import com.example.iadvice.GlideApp
 import com.example.iadvice.R
 import com.example.iadvice.database.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.my_bubble.view.*
 import kotlinx.android.synthetic.main.other_bubble.view.*
 
@@ -127,8 +130,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
         private var messageText: TextView = view.txtOtherMessage
         private var userText: TextView = view.txtOtherUser
         private var timeText: TextView = view.txtOtherMessageTime
-        private var user_image: ImageView = view.other_image_chat
-
+        private var userImage: ImageView = view.other_image_chat
 
 
         override fun bind(message: Message) {
@@ -136,7 +138,23 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
             userText.text = message.nickname
             timeText.text =
                 DateUtils.fromMillisToTimeString(message.time)
-            // TODO aggiungere gestione immagine degli altri
+
+
+            // Create an instance of the storage
+            val storage = FirebaseStorage.getInstance()
+
+            // Create a storage reference from our app
+            val storageRef = storage.reference
+
+            // Create a child reference
+            var imageRef: StorageReference? = storageRef.child("avatar_images/" + message.user)
+
+
+            GlideApp.with(context)
+                .load(imageRef)
+                .fitCenter()
+                .circleCrop()
+                .into(userImage)
         }
     }
 }

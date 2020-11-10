@@ -72,9 +72,6 @@ class LoginFragment : Fragment() {
                     .navigate(R.id.action_loginFragment_to_registerFragment)
             }
 
-            facebookLoginButton.setOnClickListener {}
-            googleLoginButton.setOnClickListener {}
-
             return binding.root
         }
     }

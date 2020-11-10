@@ -17,9 +17,8 @@
 
 
     <string-array name="gender_array">
-        <item>Males</item>
-        <item>Females</item>
-        <item>Both</item>
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
 
 </resources>
