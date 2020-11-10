@@ -6,25 +6,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.iadvice.MainActivity
 import com.example.iadvice.R
 import com.example.iadvice.database.Message
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.util.*
 
-
 private const val TAG = "ChatActivity"
 
 class ChatActivity : AppCompatActivity() {
 
-    //take the chatId from the previous screen (home in this case)
-   /* val safeArgs: ChatActivityArgs by navArgs()
-    val chatId = safeArgs.chatId
-*/
-
     private lateinit var adapter: MessageAdapter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +24,6 @@ class ChatActivity : AppCompatActivity() {
 
         val intent = intent
         val chatId = intent.getStringExtra("chatId")
-
-        val application = requireNotNull(this).application
 
         messageList.layoutManager = LinearLayoutManager(this)
         adapter = MessageAdapter(this, chatId)
@@ -44,10 +34,13 @@ class ChatActivity : AppCompatActivity() {
         btnSend.setOnClickListener {
             if (txtMessage.text.isNotEmpty()) {
                 val time = Calendar.getInstance().timeInMillis
+                val sharedPreference =  getSharedPreferences("USERS",Context.MODE_PRIVATE)
+                val user_nick = sharedPreference.getString("username","defaultName")
 
                 val message = Message(
                     chatId = chatId,
                     user = FirebaseAuth.getInstance().currentUser!!.uid,
+                    nickname = user_nick!!,
                     text = txtMessage.text.toString(),
                     time = time
                 )
@@ -56,12 +49,9 @@ class ChatActivity : AppCompatActivity() {
                 // scroll the RecyclerView to the last added element
                 messageList.scrollToPosition(adapter.itemCount - 1)
                 resetInput()
+
             } else {
-                Toast.makeText(
-                    applicationContext,
-                    "Message should not be empty",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(applicationContext, "Message should not be empty", Toast.LENGTH_SHORT).show()
             }
         }
 

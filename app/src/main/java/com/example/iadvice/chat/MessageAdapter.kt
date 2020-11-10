@@ -5,19 +5,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.request.RequestOptions
 import com.example.iadvice.DateUtils
+import com.example.iadvice.GlideApp
 import com.example.iadvice.R
 import com.example.iadvice.database.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.my_bubble.view.*
 import kotlinx.android.synthetic.main.other_bubble.view.*
 
@@ -39,32 +43,11 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
     }
 
     fun loadMessages() {
-
-        var onlineDb = Firebase.database.reference
-
-        val messagesUploadListener = object : ValueEventListener {
-            override fun onCancelled(databaseError: DatabaseError) {
-                //method that is called if the read is canceled (eg no permission)
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-
-                val children = p0!!.children
-                children.forEach {
-                    addMessage(it.getValue<Message>()!!)
-                }
-            }
-
-
-        }
-
-        onlineDb.child("messages").child(chatId).addListenerForSingleValueEvent(messagesUploadListener)
-
+        val onlineDb = Firebase.database.reference
 
         val messagesListener = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                //TODO("Not yet implemented")
+                Log.w(TAG, "loadPost:onCancelled", p0.toException())
             }
 
             override fun onChildMoved(p0: DataSnapshot, p1: String?) {
@@ -93,8 +76,10 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
 
     fun addNewMessage(message: Message) {
         var onlineDb = Firebase.database.reference
-        onlineDb.child("messages").child(message.chatId).push().setValue(message)
+        val key = onlineDb.child("messages").child(chatId).push().key
+        onlineDb.child("messages").child(message.chatId).child(key!!).setValue(message)
     }
+
 
     fun addMessage(message: Message) {
         messages.add(message)
@@ -145,13 +130,31 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
         private var messageText: TextView = view.txtOtherMessage
         private var userText: TextView = view.txtOtherUser
         private var timeText: TextView = view.txtOtherMessageTime
+        private var userImage: ImageView = view.other_image_chat
+
 
         override fun bind(message: Message) {
             messageText.text = message.text
-            userText.text = message.user
+            userText.text = message.nickname
             timeText.text =
                 DateUtils.fromMillisToTimeString(message.time)
 
+
+            // Create an instance of the storage
+            val storage = FirebaseStorage.getInstance()
+
+            // Create a storage reference from our app
+            val storageRef = storage.reference
+
+            // Create a child reference
+            var imageRef: StorageReference? = storageRef.child("avatar_images/" + message.user)
+
+
+            GlideApp.with(context)
+                .load(imageRef)
+                .fitCenter()
+                .circleCrop()
+                .into(userImage)
         }
     }
 }

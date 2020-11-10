@@ -40,7 +40,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.1.7'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.firebaseui:firebase-ui-auth:5.0.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
 
+    // FirebaseUI for Cloud Storage
+    implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
+    // Find the latest Glide releases here: https://goo.gl/LpksbR
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    // If you're using Kotlin (and therefore, kapt), use kapt instead of annotationProcessor
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -54,10 +61,6 @@ dependencies {
     //lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-
-    //Room
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
 
     //Junit test
     testImplementation 'junit:junit:4.12'
@@ -74,8 +77,6 @@ dependencies {
     //Material
     implementation 'com.google.android.material:material:1.1.0'
 
-    //pusher (for the end API)
-    implementation 'com.pusher:pusher-java-client:1.8.0'
 
     //MOSHI for json
     implementation "com.squareup.moshi:moshi:1.9.2"
