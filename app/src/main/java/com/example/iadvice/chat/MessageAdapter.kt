@@ -147,7 +147,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
             val storageRef = storage.reference
 
             // Create a child reference
-            var imageRef: StorageReference? = storageRef.child("avatar_images/" + message.user)
+            val imageRef: StorageReference? = storageRef.child("avatar_images/" + message.user)
 
 
             GlideApp.with(context)

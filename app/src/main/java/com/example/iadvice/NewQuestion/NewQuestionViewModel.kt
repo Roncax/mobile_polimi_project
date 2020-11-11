@@ -11,12 +11,13 @@ import androidx.lifecycle.ViewModel
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.database.Poll
-import com.example.iadvice.login.LoginFragment.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-
+private const val TAG = "NewQuestionViewModel"
 class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
     /*TODO mettere in LiveData
@@ -132,29 +133,65 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     fun onCreateNewQuestion() {
 
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        val mDatabase: DatabaseReference
         val userlist: MutableList<String> = mutableListOf()
 
-        mDatabase = FirebaseDatabase.getInstance().reference
+        val mDatabase = FirebaseDatabase.getInstance().reference
 
 
         //TODO: ogni volta che vuoi aggiungere ad una lista devi prima rileggerla tutta da firebase, aggiungere e ricaricare
         //TODO potrebbe essere troppo pesante per quello che dobbiamo fare...in quel caso ogni elemento diventa un child e poi usare childByAutoId
 
         val key = mDatabase.child("chats").push().key
-        Log.i("NEW KEY","${key}")
+        Log.i(TAG,"${key}")
 
        // val question = _title.value.toString() //TODO non viene settato il titolo dall'altra parte
         //val question = "una questione privata"
 
         userlist.add(userId)
-        val poll = Poll(question, userId) //todo implementare seriamente
         val chatid = key!!
-        val  isActive = true
-        val newChat = Chat(chatid, userId, question, poll, isActive, userlist)
 
-        mDatabase.child("chats").child(key).setValue(newChat)
         mDatabase.child("users").child(userId).child("chatlist").child("your").child(key).setValue(key)
+        Log.d(TAG, chatid)
+        chooseChatUsers(chatid, userlist)
+
+    }
+
+    private fun chooseChatUsers(
+        chatId: String,
+        userlist: MutableList<String>
+    ) {
+        val mDatabase = FirebaseDatabase.getInstance().reference
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+
+        val poll = Poll(question, userId) //todo implementare seriamente
+        val chatid = chatId!!
+        val  isActive = true
+
+
+
+
+        val userListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val children = dataSnapshot!!.children
+                children.forEach {
+                    if (it.child("gender").getValue().toString() == "Male") {
+                        Log.d(TAG, "Children of user")
+                        mDatabase.child("users").child(it.key!!).child("chatlist").child("other").child(chatid).setValue(chatid)
+                        mDatabase.child("chats").child(chatid).child("userList").child(it.key!!).setValue(it.key!!)
+                        userlist.add(it.key!!)
+                    }
+                }
+                val newChat = Chat(chatid, userId, question, poll, isActive, userlist)
+                mDatabase.child("chats").child(chatId).setValue(newChat)
+
+            }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+
+                }
+
+        }
+        mDatabase.child("users").addListenerForSingleValueEvent(userListener)
     }
 }
 
