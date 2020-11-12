@@ -66,7 +66,7 @@ class HomeFragment : Fragment() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.getChildren()) {
                         val value = snapshot.value
-                        yourChatNameList.add(value.toString())
+                        chatToRetrieve.add(value.toString())
                     }
                     retrieveChats(chatToRetrieve)
                 }
@@ -150,31 +150,6 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun retrieveOtherChats() {
-        for (chatName in otherChatNameList) {
-            FirebaseDatabase.getInstance().reference
-                .child("chats")
-                .child(chatName)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(dataSnapshot: DatabaseError) {
-                        //TODO To implement
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val chat: Chat? = dataSnapshot.getValue(Chat::class.java)
-                        if (chat != null) {
-                            otherChats.add(chat)
-                        }
-                        displayHomeChats()
-
-                    }
-
-                })
-
-        }
-
-    }
-
 
 
 
@@ -182,14 +157,13 @@ class HomeFragment : Fragment() {
     private fun displayHomeChats() {
         homeViewPagerAdapter = HomeViewPagerAdapter(this@HomeFragment, yourChatList, otherChatList)
         viewPager = requireView().findViewById(R.id.pager)
-        homeViewPagerAdapter = HomeViewPagerAdapter(this@HomeFragment, yourChats, otherChats)
         viewPager.adapter = homeViewPagerAdapter
 
         val tabLayout = requireView().findViewById<TabLayout>(R.id.tabLayout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "My chats"
-                else -> tab.text = "From the world"  //todo export the names of the tabs
+                else -> tab.text = "From the world"
             }
         }.attach()
     }

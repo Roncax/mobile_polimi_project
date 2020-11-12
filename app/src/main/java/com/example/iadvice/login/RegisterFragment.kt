@@ -89,13 +89,6 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
-    private fun pickImageFromGallery() {
-        //Intent to pick image
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
-    }
-
     // Method to show an alert dialog with multiple choice list items for the categories
 // Method to show an alert dialog with multiple choice list items
     private fun showCategoriesDialog() {
