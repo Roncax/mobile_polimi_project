@@ -1,4 +1,4 @@
-package com.example.iadvice.Home
+package com.example.iadvice.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
 import com.example.iadvice.chat.ChatActivity
-import com.example.iadvice.chat.ChatActivityArgs
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
 
@@ -22,9 +21,6 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
     private lateinit var binding: YourQuestionsFragmentBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
-
-    private lateinit var userId: String
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

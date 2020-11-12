@@ -1,4 +1,4 @@
-package com.example.iadvice.Home
+package com.example.iadvice.home
 
 import com.example.iadvice.database.Chat
 

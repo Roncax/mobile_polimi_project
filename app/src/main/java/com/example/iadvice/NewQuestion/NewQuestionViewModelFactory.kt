@@ -1,4 +1,4 @@
-package com.example.iadvice.NewQuestion
+package com.example.iadvice.newQuestion
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

@@ -1,13 +1,16 @@
-package com.example.iadvice.Home
+package com.example.iadvice.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.iadvice.GlideApp
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 
 class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
@@ -39,14 +42,18 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
     class QuestionChatViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val questionTitle: TextView = itemView.findViewById(R.id.questionChatTitle_text)
         val questionSubtitle: TextView = itemView.findViewById(R.id.questionChatOwner_text)
-        // TODO implement image
-        //  val questionChat: ImageView = itemView.findViewById(R.id.questionChat_image)
+        val questionImage: ImageView = itemView.findViewById(R.id.questionChat_image)
 
 
         fun bind(item: Chat, clickListener: OnItemClickListener){
             questionTitle.text = item.question
             questionSubtitle.text = item.owner
-            Log.i("BIND","${item.chatId}")
+            val imageRef: StorageReference? = FirebaseStorage.getInstance().reference.child("chat_images/${item.chatId}/${item.coverId}" )
+            GlideApp.with(this.itemView)
+                .load(imageRef)
+                .fitCenter()
+                .circleCrop()
+                .into(questionImage)
 
             itemView.setOnClickListener{
                 clickListener.onItemClick(item)

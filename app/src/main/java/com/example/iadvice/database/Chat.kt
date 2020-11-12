@@ -7,8 +7,9 @@ data class Chat(
     var chatId: String = "",
     var owner: String = "",
     var question: String = "", //this is also the name of the chat
-    var poll: Poll = Poll("Testo", "Immagine"),
     var isActive: Boolean = true,
-    var userList: MutableList<String> = mutableListOf()
+    var userList: MutableList<String> = mutableListOf(),
+    var expiration: String = "",
+    var coverId:Int = -1
 )
 

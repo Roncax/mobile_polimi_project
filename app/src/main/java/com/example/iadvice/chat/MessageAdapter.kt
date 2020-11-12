@@ -140,16 +140,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
                 DateUtils.fromMillisToTimeString(message.time)
 
 
-            // Create an instance of the storage
-            val storage = FirebaseStorage.getInstance()
-
-            // Create a storage reference from our app
-            val storageRef = storage.reference
-
-            // Create a child reference
-            var imageRef: StorageReference? = storageRef.child("avatar_images/" + message.user)
-
-
+            val imageRef: StorageReference? = FirebaseStorage.getInstance().reference.child("avatar_images/" + message.user)
             GlideApp.with(context)
                 .load(imageRef)
                 .fitCenter()

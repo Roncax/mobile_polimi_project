@@ -32,21 +32,21 @@
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="feedback_header">Feedback</string>
     <string name="feedback_title">Send feedback</string>
-    <string name="argument_text">Argument</string>
-    <string name="question_argument_edit">Argument you want to discuss about</string>
-    <string name="default_country_text">By default, max  number of country of origin among participants is selected, to promote diversity \n (but if you want, you can select a specific country)</string>
-    <string name="question_target_gender">Sex of your target</string>
+    <string name="question_argument_edit">Title or question...</string>
     <string name="new_question_button">Create</string>
-    <string name="poll">Poll feature</string>
-    <string name="question_duration">Self destruct timer</string>
-    <string name="specify_country">Restrict to a specific country</string>
     <string name="category">Category</string>
     <string name="email">Email</string>
+    <string name="categories">Categories</string>
+    <string name="chat_cover">Chat cover</string>
+    <string name="reference_categories_and_sex">Reference categories and sex</string>
+    <string name="which_region_you_want_to_talk_to">Which region you want to talk to?</string>
+    <string name="how_long_should_the_chat_last">How long should the chat last?</string>
+    <string name="select_images">Select images</string>
+    <string name="todo">TODO</string>
 
 </resources>
 

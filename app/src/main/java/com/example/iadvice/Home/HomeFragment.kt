@@ -1,4 +1,4 @@
-package com.example.iadvice.Home
+package com.example.iadvice.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,12 +24,8 @@ class HomeFragment : Fragment() {
 
 
     private lateinit var userId: String
-    //used to retrieve the list of the chats that you need
-    var yourChatNameList: MutableList<String> = mutableListOf()
-    var otherChatNameList: MutableList<String> = mutableListOf()
-    //used to store the chats of interest
-    var yourChats: MutableList<Chat> = mutableListOf()
-    var otherChats: MutableList<Chat> = mutableListOf()
+    var yourChatList: MutableList<Chat> = mutableListOf()
+    var otherChatList: MutableList<Chat> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,11 +47,12 @@ class HomeFragment : Fragment() {
             .setVisibility(View.VISIBLE)
 
         findYourChats()
-        findOtherChats()
-        //displayHomeChats()
+        displayHomeChats()
     }
 
     private fun findYourChats() {
+        var chatToRetrieve: MutableList<String> = mutableListOf()
+
         FirebaseDatabase.getInstance().reference
             .child("users")
             .child(userId)
@@ -71,12 +68,14 @@ class HomeFragment : Fragment() {
                         val value = snapshot.value
                         yourChatNameList.add(value.toString())
                     }
-                    retrieveYourChats()
+                    retrieveChats(chatToRetrieve)
                 }
             })
     }
 
     private fun findOtherChats() {
+        var chatToRetrieve: MutableList<String> = mutableListOf()
+
         FirebaseDatabase.getInstance().reference
             .child("users")
             .child(userId)
@@ -90,16 +89,16 @@ class HomeFragment : Fragment() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.getChildren()) {
                         val value = snapshot.value
-                        otherChatNameList.add(value.toString())
+                        chatToRetrieve.add(value.toString())
                     }
-                    retrieveOtherChats()
+                    retrieveOtherChats(chatToRetrieve)
                 }
             })
     }
 
 
-    private fun retrieveYourChats() {
-        for (chatName in yourChatNameList) {
+    private fun retrieveChats(chatToRetrieve: MutableList<String>) {
+        for (chatName in chatToRetrieve) {
             FirebaseDatabase.getInstance().reference
                 .child("chats")
                 .child(chatName)
@@ -111,8 +110,35 @@ class HomeFragment : Fragment() {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val chat: Chat? = dataSnapshot.getValue(Chat::class.java)
                         if (chat != null) {
-                            yourChats.add(chat)
+                            yourChatList.add(chat)
                         }
+
+                        findOtherChats()
+
+                    }
+
+                })
+
+        }
+
+    }
+
+    private fun retrieveOtherChats(chatToRetrieve: MutableList<String>) {
+        for (chatName in chatToRetrieve) {
+            FirebaseDatabase.getInstance().reference
+                .child("chats")
+                .child(chatName)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(dataSnapshot: DatabaseError) {
+                        //TODO To implement
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val chat: Chat? = dataSnapshot.getValue(Chat::class.java)
+                        if (chat != null) {
+                            otherChatList.add(chat)
+                        }
+
                         displayHomeChats()
 
                     }
@@ -154,7 +180,7 @@ class HomeFragment : Fragment() {
 
     //TODO qua si stanno creando le tab quando vengon tirate giú le chat. Le tab devono essere giá presenti!
     private fun displayHomeChats() {
-
+        homeViewPagerAdapter = HomeViewPagerAdapter(this@HomeFragment, yourChatList, otherChatList)
         viewPager = requireView().findViewById(R.id.pager)
         homeViewPagerAdapter = HomeViewPagerAdapter(this@HomeFragment, yourChats, otherChats)
         viewPager.adapter = homeViewPagerAdapter
@@ -162,8 +188,8 @@ class HomeFragment : Fragment() {
         val tabLayout = requireView().findViewById<TabLayout>(R.id.tabLayout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "YOUR"
-                else -> tab.text = "OTHER"  //todo export the names of the tabs
+                0 -> tab.text = "My chats"
+                else -> tab.text = "From the world"  //todo export the names of the tabs
             }
         }.attach()
     }
