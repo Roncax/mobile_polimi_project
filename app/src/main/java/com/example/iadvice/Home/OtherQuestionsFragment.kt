@@ -1,4 +1,4 @@
-package com.example.iadvice.Home
+package com.example.iadvice.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

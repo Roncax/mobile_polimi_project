@@ -1,20 +1,25 @@
-package com.example.iadvice.NewQuestion
+package com.example.iadvice.newQuestion
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import com.example.iadvice.GlideApp
 import com.example.iadvice.R
 import com.example.iadvice.databinding.NewQuestionFragmentBinding
 
+private const val TAG = "NewQuestionFragment"
 
-class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class NewQuestionFragment : Fragment() {
 
     private lateinit var binding: NewQuestionFragmentBinding
     private lateinit var viewModel: NewQuestionViewModel
@@ -32,84 +37,61 @@ class NewQuestionFragment : Fragment(), AdapterView.OnItemSelectedListener {
         )
 
         val application = requireNotNull(this.activity).application
-        val viewModelFactory =
-            NewQuestionViewModelFactory(
-                application
-            )
+        val viewModelFactory = NewQuestionViewModelFactory(application)
         // viewModelProviders used to not destroy the viewmodel until detached
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewQuestionViewModel::class.java)
 
 
-        //Setting Listeners
-        binding.createButton.setOnClickListener { onCreateNewQuestion() }
-        binding.countrySpinner.setOnCountryChangeListener { onSelectedCountry() }
-
-        binding.countrySwitch.setOnCheckedChangeListener {  _, isChecked ->
-            onShowCountry() }
-
-        /* Setting up LiveData observation relationship */
-        viewModel.visibility.observe(viewLifecycleOwner, Observer { isChecked ->
-            if (isChecked) {
-                binding.countrySpinner.visibility = View.VISIBLE
-            } else {
-                binding.countrySpinner.visibility = View.GONE
+        binding.apply {
+            createButton.setOnClickListener {
+                if (titleTexbox.text.toString().isNotEmpty()) {
+                    onCreateNewQuestion()
+                } else {
+                    Toast.makeText(
+                        context, "You forgot to insert the title, please fill and retry",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
             }
-        })
 
-        binding.pollSwitch.setOnCheckedChangeListener { _, isChecked ->
-            onShowPoll() }
 
-        viewModel.poll.observe(viewLifecycleOwner, Observer { isChecked ->
-            if (isChecked) {
-                Toast.makeText(activity,"Poll feature on", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(activity,"Poll feature off", Toast.LENGTH_SHORT).show()
+            selectImagesNewchatButton.setOnClickListener {
+                val gallery =
+                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                startActivityForResult(gallery, 100)
             }
-        })
 
+        }
         return binding.root
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        //Set data to viewModel
-        viewModel.durationSpinner = binding.durationSpinner
-        viewModel.genderSpinner = binding.genderSpinner
-        viewModel.categorySpinner = binding.categorySpinner
-        viewModel.fillSPinners()
+    //Manage the result in pick image
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        var imageUri: Uri? = null
 
-        //TODO implement the interface on the ViewModel and move there the Spinners listener
-        viewModel.durationSpinner.onItemSelectedListener = this
-        viewModel.genderSpinner.onItemSelectedListener = this
-        viewModel.categorySpinner.onItemSelectedListener = this
+        if (resultCode == RESULT_OK && requestCode == 100) {
+            imageUri = data?.data
+            GlideApp.with(requireContext())
+                .load(imageUri)
+                .circleCrop()
+                .into(binding.coverImageView)
+        }
+
+        viewModel.images.add(imageUri)
     }
 
-
-    private fun onShowCountry() {
-        viewModel.onShowCountry( binding.countrySwitch.isChecked)
-    }
-
-    private fun onShowPoll() {
-        viewModel.onShowPoll( binding.pollSwitch.isChecked)
-    }
-
-    private fun onSelectedCountry(){
-        viewModel.onSelectedCountry(binding.countrySpinner!!.getSelectedCountryName().toString())
-        Toast.makeText( context, "Updated " + binding.countrySpinner!!.getSelectedCountryName(), Toast.LENGTH_SHORT).show()
-    }
-
-    /**
-     * used for element selected inside the spinners
-     */
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val selected: String = parent?.getItemAtPosition(position).toString()
-        viewModel.onItemSelected(parent,selected)
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     private fun onCreateNewQuestion() {
-        viewModel.question = binding.boxArgument.text.toString()
+        viewModel.expiration = binding.expirationSpinner.selectedItem.toString()
+        viewModel.region = binding.regionSpinner.selectedItem.toString()
+        viewModel.sex = binding.genderSpinner.selectedItem.toString()
+        viewModel.title = binding.titleTexbox.text.toString()
+        viewModel.categories = binding.categorySpinner.selectedItem.toString()
         viewModel.onCreateNewQuestion()
+        requireView().findNavController()
+            .navigate(R.id.action_newQuestionFragment_to_homeFragment)
     }
 }
