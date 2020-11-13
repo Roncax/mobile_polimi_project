@@ -1,6 +1,7 @@
 package com.example.iadvice.database
 
 import com.google.firebase.database.IgnoreExtraProperties
+import java.util.*
 
 @IgnoreExtraProperties
 data class Chat(
@@ -9,7 +10,7 @@ data class Chat(
     var question: String = "", //this is also the name of the chat
     var isActive: Boolean = true,
     var userList: MutableList<String> = mutableListOf(),
-    var expiration: String = "",
+    var expiration: Date = Date(),
     var coverId:Int = -1
 )
 

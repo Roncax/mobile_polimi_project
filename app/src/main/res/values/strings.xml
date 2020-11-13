@@ -42,8 +42,8 @@
     <string name="email">Email</string>
     <string name="categories">Categories</string>
     <string name="chat_cover">Chat cover</string>
-    <string name="reference_categories_and_sex">Reference categories and sex</string>
-    <string name="which_region_you_want_to_talk_to">Which region you want to talk to?</string>
+    <string name="reference_categories_and_sex">Choose the category, gender and country</string>
+    <string name="maximum_participants">Number of maximum participants</string>
     <string name="how_long_should_the_chat_last">How long should the chat last?</string>
     <string name="select_images">Select images</string>
     <string name="todo">TODO</string>
