@@ -85,8 +85,14 @@ class LoginFragment : Fragment() {
                 val uid = it.result!!.user!!.uid
                 retrieveUser(uid)
 
-                val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                findNavController().navigate(action)
+                if (!requireView().findNavController().popBackStack()) {
+                    Toast.makeText(
+                        this.context, "Go back from login",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+
 
                 Toast.makeText(
                     this.context, "Login successful",

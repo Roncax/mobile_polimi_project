@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.util.*
 
 private const val TAG = "NewQuestionViewModel"
 
@@ -19,8 +20,9 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
     lateinit var categories: String
     var images: MutableList<Uri?> = mutableListOf()
+    lateinit var coverImage:Uri
     lateinit var region: String
-    lateinit var expiration: String
+    lateinit var expiration: Date
     lateinit var sex: String
     lateinit var title: String
     var coverId = -1
@@ -99,8 +101,12 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
         coverId = (0..1000).random()
         val imagesRef: StorageReference? = FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/${coverId}")
 
-        if (imagesRef != null && images.isNotEmpty()) {
-            imagesRef.putFile(images[0]!!)
+        if (imagesRef != null) {
+            imagesRef.putFile(coverImage)
+        }
+
+        for (image in images) {
+                FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/${(0..1000).random()}")
         }
     }
 }

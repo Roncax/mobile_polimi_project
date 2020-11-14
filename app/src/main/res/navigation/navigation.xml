@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/mainHome_fragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -15,10 +15,6 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment" />
     </fragment>
 
     <activity
@@ -35,22 +31,16 @@
         android:id="@+id/registerFragment"
         android:name="com.example.iadvice.login.RegisterFragment"
         android:label="RegisterFragment"
-        tools:layout="@layout/register_fragment">
-        <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+        tools:layout="@layout/register_fragment"/>
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.iadvice.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/home_fragment">
-        <!-- TODO prendere user corrente come default value -->
-        <argument
-            android:name="userId"
-            android:defaultValue="123"
-            app:argType="string" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
 
     </fragment>
     <fragment
@@ -64,7 +54,8 @@
         tools:layout="@layout/your_questions_fragment">
         <action
             android:id="@+id/action_your_questions_fragment_to_newQuestionFragment"
-            app:destination="@id/newQuestionFragment" />
+            app:destination="@id/newQuestionFragment"
+            app:popUpTo="@id/your_questions_fragment" />
         <action
             android:id="@+id/action_your_questions_fragment_to_chatActivity"
             app:destination="@id/chatActivity"
@@ -75,10 +66,17 @@
         android:id="@+id/newQuestionFragment"
         android:name="com.example.iadvice.newQuestion.NewQuestionFragment"
         android:label="newQuestionFragment"
-        tools:layout="@layout/new_question_fragment">
+        tools:layout="@layout/new_question_fragment"/>
+    <fragment
+        android:id="@+id/mainHome_fragment"
+        android:name="com.example.iadvice.mainHome_fragment"
+        android:label="fragment_main_home_fragment"
+        tools:layout="@layout/fragment_main_home_fragment" >
         <action
-            android:id="@+id/action_newQuestionFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment" />
+            android:id="@+id/action_mainHome_fragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_mainHome_fragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

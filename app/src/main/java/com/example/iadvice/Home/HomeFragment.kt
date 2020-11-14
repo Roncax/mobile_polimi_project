@@ -1,13 +1,17 @@
 package com.example.iadvice.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
+import com.example.iadvice.databinding.HomeFragmentBinding
+import com.example.iadvice.databinding.LoginFragmentBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -16,7 +20,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 
+const val TAG = "HOME_FRAGMENT"
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
@@ -27,24 +33,37 @@ class HomeFragment : Fragment() {
     var yourChatList: MutableList<Chat> = mutableListOf()
     var otherChatList: MutableList<Chat> = mutableListOf()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "In onCreate")
+        userId = FirebaseAuth.getInstance().uid!!
+    }
+
+    override fun onStart() {
+        super.onStart()
+        userId = FirebaseAuth.getInstance().uid!!
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        userId = FirebaseAuth.getInstance().currentUser!!.uid
+        yourChatList= mutableListOf()
+        otherChatList= mutableListOf()
+        Log.d(TAG, "Binding in home fragment")
+        val binding = DataBindingUtil.inflate<HomeFragmentBinding>(
+            inflater,
+            R.layout.home_fragment, container, false
+        )
 
-        val layout: View
-        //Inflate the layout for this fragment
-        layout = inflater.inflate(R.layout.home_fragment, container, false)
-
-        return layout
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout)
-            .setVisibility(View.VISIBLE)
+        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
 
         findYourChats()
         displayHomeChats()
@@ -67,6 +86,7 @@ class HomeFragment : Fragment() {
                     for (snapshot in dataSnapshot.getChildren()) {
                         val value = snapshot.value
                         chatToRetrieve.add(value.toString())
+                        Log.d(TAG, "Messaggio recuperato:${value.toString()}")
                     }
                     retrieveChats(chatToRetrieve)
                 }
@@ -90,6 +110,7 @@ class HomeFragment : Fragment() {
                     for (snapshot in dataSnapshot.getChildren()) {
                         val value = snapshot.value
                         chatToRetrieve.add(value.toString())
+                        Log.d(TAG, "Messaggio recuperato:${value.toString()}")
                     }
                     retrieveOtherChats(chatToRetrieve)
                 }
@@ -155,6 +176,7 @@ class HomeFragment : Fragment() {
 
     //TODO qua si stanno creando le tab quando vengon tirate giú le chat. Le tab devono essere giá presenti!
     private fun displayHomeChats() {
+        Log.d(TAG, "Chats in Home uploading...")
         homeViewPagerAdapter = HomeViewPagerAdapter(this@HomeFragment, yourChatList, otherChatList)
         viewPager = requireView().findViewById(R.id.pager)
         viewPager.adapter = homeViewPagerAdapter

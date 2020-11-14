@@ -164,8 +164,15 @@ class RegisterFragment : Fragment() {
             .addOnFailureListener {
                 Log.d(TAG, "Failed to create user: ${it.message}")
             }
-        requireView().findNavController()
-            .navigate(R.id.action_registerFragment_to_loginFragment)
+
+        if (!requireView().findNavController().popBackStack()) {
+            Toast.makeText(
+                context, "Cannot go back to login, error!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+
 
 
     }
