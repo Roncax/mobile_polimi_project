@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -53,8 +54,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return item.onNavDestinationSelected(findNavController(R.id.myNavHostFragment))
-                || super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.logOutFragment -> {
+                FirebaseAuth.getInstance().signOut()
+                true
+            }
+            else -> item.onNavDestinationSelected(findNavController(R.id.myNavHostFragment))
+                    || super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

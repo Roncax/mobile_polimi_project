@@ -1,10 +1,13 @@
 package com.example.iadvice.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
@@ -16,7 +19,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 
+const val TAG = "HOME_FRAGMENT"
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
@@ -32,19 +37,24 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        userId = FirebaseAuth.getInstance().currentUser!!.uid
-
         val layout: View
-        //Inflate the layout for this fragment
-        layout = inflater.inflate(R.layout.home_fragment, container, false)
+
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            Log.d(TAG, "The user is already present with id ${user.uid}")
+            userId = FirebaseAuth.getInstance().currentUser!!.uid
+            layout = inflater.inflate(R.layout.home_fragment, container, true)
+        } else {
+            Log.d(TAG, "The user is not already present")
+            layout = inflater.inflate(R.layout.login_fragment, container, true)
+        }
 
         return layout
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        requireActivity()!!.findViewById<AppBarLayout>(R.id.appBarLayout)
-            .setVisibility(View.VISIBLE)
+        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
 
         findYourChats()
         displayHomeChats()

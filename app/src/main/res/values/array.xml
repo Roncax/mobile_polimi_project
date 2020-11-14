@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="duration_array">
-        <item>24 hours</item>
-        <item>48 hours</item>
-        <item>3 days</item>
-        <item>1 week</item>
-    </string-array>
 
     <string-array name="region_array">
         <item>My country</item>

@@ -3,6 +3,10 @@
 
     <group>
         <item
+            android:id="@+id/logOutFragment"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/logOutFragment" />
+        <item
             android:id="@+id/settingsFragment"
             android:icon="@drawable/ic_settings"
             android:title="@string/settingsFragment"/>
