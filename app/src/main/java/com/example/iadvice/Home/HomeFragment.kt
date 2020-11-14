@@ -5,12 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
+import com.example.iadvice.databinding.HomeFragmentBinding
+import com.example.iadvice.databinding.LoginFragmentBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -32,24 +33,32 @@ class HomeFragment : Fragment() {
     var yourChatList: MutableList<Chat> = mutableListOf()
     var otherChatList: MutableList<Chat> = mutableListOf()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "In onCreate")
+        userId = FirebaseAuth.getInstance().uid!!
+    }
+
+    override fun onStart() {
+        super.onStart()
+        userId = FirebaseAuth.getInstance().uid!!
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val layout: View
+        yourChatList= mutableListOf()
+        otherChatList= mutableListOf()
+        Log.d(TAG, "Binding in home fragment")
+        val binding = DataBindingUtil.inflate<HomeFragmentBinding>(
+            inflater,
+            R.layout.home_fragment, container, false
+        )
 
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            Log.d(TAG, "The user is already present with id ${user.uid}")
-            userId = FirebaseAuth.getInstance().currentUser!!.uid
-            layout = inflater.inflate(R.layout.home_fragment, container, true)
-        } else {
-            Log.d(TAG, "The user is not already present")
-            layout = inflater.inflate(R.layout.login_fragment, container, true)
-        }
-
-        return layout
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -77,6 +86,7 @@ class HomeFragment : Fragment() {
                     for (snapshot in dataSnapshot.getChildren()) {
                         val value = snapshot.value
                         chatToRetrieve.add(value.toString())
+                        Log.d(TAG, "Messaggio recuperato:${value.toString()}")
                     }
                     retrieveChats(chatToRetrieve)
                 }
@@ -100,6 +110,7 @@ class HomeFragment : Fragment() {
                     for (snapshot in dataSnapshot.getChildren()) {
                         val value = snapshot.value
                         chatToRetrieve.add(value.toString())
+                        Log.d(TAG, "Messaggio recuperato:${value.toString()}")
                     }
                     retrieveOtherChats(chatToRetrieve)
                 }
@@ -165,6 +176,7 @@ class HomeFragment : Fragment() {
 
     //TODO qua si stanno creando le tab quando vengon tirate giú le chat. Le tab devono essere giá presenti!
     private fun displayHomeChats() {
+        Log.d(TAG, "Chats in Home uploading...")
         homeViewPagerAdapter = HomeViewPagerAdapter(this@HomeFragment, yourChatList, otherChatList)
         viewPager = requireView().findViewById(R.id.pager)
         viewPager.adapter = homeViewPagerAdapter

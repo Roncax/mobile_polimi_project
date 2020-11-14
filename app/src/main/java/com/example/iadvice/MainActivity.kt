@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration( setOf(R.id.homeFragment, R.id.loginFragment), drawerLayout)
         setupActionBar(navController, appBarConfiguration)
         setupNavigationMenu(navController)
-
     }
 
     private fun setupActionBar(navController: NavController, appBarConfig : AppBarConfiguration) {
