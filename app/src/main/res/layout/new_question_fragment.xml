@@ -34,9 +34,10 @@
         <DatePicker
             android:id="@+id/datePicker"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:calendarViewShown="false"
             android:datePickerMode="spinner"
+            app:layout_constraintBottom_toTopOf="@+id/create_button"
             app:layout_constraintEnd_toEndOf="@+id/duration_textView"
             app:layout_constraintStart_toStartOf="@+id/duration_textView"
             app:layout_constraintTop_toBottomOf="@+id/duration_textView" />
@@ -44,7 +45,7 @@
         <Spinner
             android:id="@+id/gender_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:entries="@array/gender_choose_array"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="@+id/category_spinner"
@@ -62,13 +63,14 @@
             android:text="@string/new_question_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/title_texbox"
-            app:layout_constraintStart_toStartOf="@+id/title_texbox" />
+            app:layout_constraintStart_toStartOf="@+id/title_texbox"
+            app:layout_constraintTop_toBottomOf="@+id/datePicker" />
 
         <Spinner
             android:id="@+id/region_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="5dp"
             android:entries="@array/region_array"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@+id/reference_textView"
@@ -116,12 +118,11 @@
             android:text="@string/how_long_should_the_chat_last"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/create_button"
+            app:layout_constraintBottom_toTopOf="@+id/datePicker"
             app:layout_constraintEnd_toEndOf="@+id/title_texbox"
-            app:layout_constraintHorizontal_bias="0.521"
             app:layout_constraintStart_toStartOf="@+id/title_texbox"
             app:layout_constraintTop_toBottomOf="@+id/participants_textNumber"
-            app:layout_constraintVertical_bias="0.038" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/reference_textView"

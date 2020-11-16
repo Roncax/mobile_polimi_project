@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.logOutFragment -> {
                 FirebaseAuth.getInstance().signOut()
+                findNavController(R.id.myNavHostFragment).navigate(R.id.loginFragment)
                 true
             }
             else -> item.onNavDestinationSelected(findNavController(R.id.myNavHostFragment))

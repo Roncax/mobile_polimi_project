@@ -6,12 +6,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.iadvice.database.Chat
 
-class HomeViewPagerAdapter(fragment: Fragment, myChatList: MutableList<Chat>, otherChatList: MutableList<Chat>) : FragmentStateAdapter(fragment) {
+class HomeViewPagerAdapter(fragment: Fragment,
+                           private var myChatList: MutableList<Chat>,
+                           private var otherChatList: MutableList<Chat>
+) : FragmentStateAdapter(fragment) {
 
     private val numOfPages: Int = 2
-
-    private var myChatList:MutableList<Chat> = myChatList
-    private var otherChatList:MutableList<Chat> = otherChatList
 
     /**
      * Provide a new Fragment associated with the specified position.

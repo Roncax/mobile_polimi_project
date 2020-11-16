@@ -11,7 +11,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.HomeFragmentBinding
-import com.example.iadvice.databinding.LoginFragmentBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,9 +19,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
+import java.util.*
 
 const val TAG = "HOME_FRAGMENT"
+
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
@@ -30,28 +30,33 @@ class HomeFragment : Fragment() {
 
 
     private lateinit var userId: String
-    var yourChatList: MutableList<Chat> = mutableListOf()
+
+    var myChatId: MutableList<String> = mutableListOf()
+    var otherChatId: MutableList<String> = mutableListOf()
+    var myChatList: MutableList<Chat> = mutableListOf()
     var otherChatList: MutableList<Chat> = mutableListOf()
+    //TODO implementare l'archivio chat con questa lista
+    var archivedChatList: MutableList<Chat> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "In onCreate")
         userId = FirebaseAuth.getInstance().uid!!
-    }
-
-    override fun onStart() {
-        super.onStart()
-        userId = FirebaseAuth.getInstance().uid!!
 
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        yourChatList= mutableListOf()
-        otherChatList= mutableListOf()
+        //initialization of the lists
+        myChatId = mutableListOf()
+        otherChatId = mutableListOf()
+        myChatList = mutableListOf()
+        otherChatList = mutableListOf()
+
         Log.d(TAG, "Binding in home fragment")
         val binding = DataBindingUtil.inflate<HomeFragmentBinding>(
             inflater,
@@ -61,123 +66,95 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
+        findChatsId()
 
-        findYourChats()
-        displayHomeChats()
     }
 
-    private fun findYourChats() {
-        var chatToRetrieve: MutableList<String> = mutableListOf()
+    private fun findChatsId() {
 
         FirebaseDatabase.getInstance().reference
             .child("users")
             .child(userId)
             .child("chatlist")
-            .child("your")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(dataSnapshot: DatabaseError) {
                     TODO("Not yet implemented")
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (snapshot in dataSnapshot.getChildren()) {
-                        val value = snapshot.value
-                        chatToRetrieve.add(value.toString())
-                        Log.d(TAG, "Messaggio recuperato:${value.toString()}")
+                    for (snapshot in dataSnapshot.child("your").children) {
+                        myChatId.add(snapshot.value.toString())
+                        Log.d(
+                            TAG,
+                            "Messaggio recuperato in findChatsId - my chats:${snapshot.value.toString()}"
+                        )
                     }
-                    retrieveChats(chatToRetrieve)
+                    for (snapshot in dataSnapshot.child("other").children) {
+                        otherChatId.add(snapshot.value.toString())
+                        Log.d(
+                            TAG,
+                            "Messaggio recuperato in findChatsId - other chats:${snapshot.value.toString()}"
+                        )
+                    }
+                    retrieveChatsFromId()
                 }
             })
+
+
     }
 
-    private fun findOtherChats() {
-        var chatToRetrieve: MutableList<String> = mutableListOf()
 
+    private fun retrieveChatsFromId() {
+        val mDatabase = FirebaseDatabase.getInstance().reference
         FirebaseDatabase.getInstance().reference
-            .child("users")
-            .child(userId)
-            .child("chatlist")
-            .child("other")
+            .child("chats")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(dataSnapshot: DatabaseError) {
-                    TODO("Not yet implemented")
+                    //TODO To implement
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (snapshot in dataSnapshot.getChildren()) {
-                        val value = snapshot.value
-                        chatToRetrieve.add(value.toString())
-                        Log.d(TAG, "Messaggio recuperato:${value.toString()}")
-                    }
-                    retrieveOtherChats(chatToRetrieve)
-                }
-            })
-    }
+                    for (chatName in myChatId) {
 
-
-    private fun retrieveChats(chatToRetrieve: MutableList<String>) {
-        for (chatName in chatToRetrieve) {
-            FirebaseDatabase.getInstance().reference
-                .child("chats")
-                .child(chatName)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(dataSnapshot: DatabaseError) {
-                        //TODO To implement
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val chat: Chat? = dataSnapshot.getValue(Chat::class.java)
-                        if (chat != null) {
-                            yourChatList.add(chat)
+                        val chat: Chat? = dataSnapshot.child(chatName).getValue(Chat::class.java)
+                        if (chat?.expiration!!.before(Calendar.getInstance().time)){
+                            FirebaseDatabase.getInstance().reference.child("chats").child(chatName).setValue(chat)
+                            continue
                         }
-
-                        findOtherChats()
-
+                        if (chat.isActive) {
+                            myChatList.add(chat)
+                        } else {
+                            archivedChatList.add(chat)
+                        }
                     }
-
-                })
-
-        }
-
-    }
-
-    private fun retrieveOtherChats(chatToRetrieve: MutableList<String>) {
-        for (chatName in chatToRetrieve) {
-            FirebaseDatabase.getInstance().reference
-                .child("chats")
-                .child(chatName)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(dataSnapshot: DatabaseError) {
-                        //TODO To implement
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val chat: Chat? = dataSnapshot.getValue(Chat::class.java)
-                        if (chat != null) {
+                    for (chatName in otherChatId) {
+                        val chat: Chat? = dataSnapshot.child(chatName).getValue(Chat::class.java)
+                        if (chat?.expiration!!.before(Calendar.getInstance().time)){
+                            FirebaseDatabase.getInstance().reference.child("chats").child(chatName).setValue(chat)
+                            continue
+                        }
+                        if (chat.isActive) {
                             otherChatList.add(chat)
+                        } else {
+                            archivedChatList.add(chat)
                         }
-
-                        displayHomeChats()
-
                     }
+                    displayHomeChats()
+                }
 
-                })
-
-        }
+            })
 
     }
-
-
-
 
 
     //TODO qua si stanno creando le tab quando vengon tirate giú le chat. Le tab devono essere giá presenti!
     private fun displayHomeChats() {
         Log.d(TAG, "Chats in Home uploading...")
-        homeViewPagerAdapter = HomeViewPagerAdapter(this@HomeFragment, yourChatList, otherChatList)
+        homeViewPagerAdapter = HomeViewPagerAdapter(this@HomeFragment, myChatList, otherChatList)
         viewPager = requireView().findViewById(R.id.pager)
         viewPager.adapter = homeViewPagerAdapter
 

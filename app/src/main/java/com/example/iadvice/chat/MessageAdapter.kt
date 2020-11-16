@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.request.RequestOptions
 import com.example.iadvice.DateUtils
 import com.example.iadvice.GlideApp
 import com.example.iadvice.R
@@ -28,7 +27,7 @@ import kotlinx.android.synthetic.main.other_bubble.view.*
 
 class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<MessageViewHolder>() {
 
-    private val messages: ArrayList<Message> = ArrayList()
+    val messages: ArrayList<Message> = ArrayList()
     val chatId = Id
 
     companion object {
@@ -38,9 +37,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
     }
 
 
-    init {
-        loadMessages()
-    }
+
 
     fun loadMessages() {
         val onlineDb = Firebase.database.reference
@@ -75,7 +72,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
     }
 
     fun addNewMessage(message: Message) {
-        var onlineDb = Firebase.database.reference
+        val onlineDb = Firebase.database.reference
         val key = onlineDb.child("messages").child(chatId).push().key
         onlineDb.child("messages").child(message.chatId).child(key!!).setValue(message)
     }
@@ -90,7 +87,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
 
 
     override fun getItemViewType(position: Int): Int {
-        val message = messages.get(position)
+        val message = messages[position]
         return if (FirebaseAuth.getInstance().currentUser!!.uid == message.user) {
             VIEW_TYPE_MY_MESSAGE
         } else {
@@ -111,7 +108,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-        val message = messages.get(position)
+        val message = messages[position]
         holder.bind(message)
     }
 
@@ -143,7 +140,6 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
             val imageRef: StorageReference? = FirebaseStorage.getInstance().reference.child("avatar_images/" + message.user)
             GlideApp.with(context)
                 .load(imageRef)
-                .fitCenter()
                 .circleCrop()
                 .into(userImage)
         }

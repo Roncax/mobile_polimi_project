@@ -12,6 +12,11 @@ class mainHome_fragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user != null) {
