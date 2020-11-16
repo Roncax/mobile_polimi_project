@@ -3,18 +3,22 @@
 
     <group>
         <item
-            android:id="@+id/logOutFragment"
-            android:icon="@drawable/ic_logout"
-            android:title="@string/logOutFragment" />
-        <item
             android:id="@+id/settingsFragment"
             android:icon="@drawable/ic_settings"
-            android:title="@string/settingsFragment"/>
+            android:title="@string/settingsFragment" />
 
         <item
             android:id="@+id/faqFragment"
             android:icon="@drawable/ic_faq"
             android:title="@string/faqFragment"/>
+        <item
+            android:id="@+id/logOutFragment"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/logOutFragment" />
+        <item
+            android:id="@+id/archiveFragment"
+            android:icon="@android:drawable/ic_menu_save"
+            android:title="@string/archive" />
 
     </group>
 
