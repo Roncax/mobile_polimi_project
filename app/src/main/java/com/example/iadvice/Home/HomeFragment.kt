@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
             inflater,
             R.layout.home_fragment, container, false
         )
-
+        findChatsId()
         return binding.root
     }
 
@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
-        findChatsId()
+
 
     }
 
@@ -119,9 +119,10 @@ class HomeFragment : Fragment() {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (chatName in myChatId) {
-
                         val chat: Chat? = dataSnapshot.child(chatName).getValue(Chat::class.java)
                         if (chat?.expiration!!.before(Calendar.getInstance().time)){
+                            chat.isActive = false
+                            archivedChatList.add(chat)
                             FirebaseDatabase.getInstance().reference.child("chats").child(chatName).setValue(chat)
                             continue
                         }
@@ -134,6 +135,8 @@ class HomeFragment : Fragment() {
                     for (chatName in otherChatId) {
                         val chat: Chat? = dataSnapshot.child(chatName).getValue(Chat::class.java)
                         if (chat?.expiration!!.before(Calendar.getInstance().time)){
+                            chat.isActive = false
+                            archivedChatList.add(chat)
                             FirebaseDatabase.getInstance().reference.child("chats").child(chatName).setValue(chat)
                             continue
                         }

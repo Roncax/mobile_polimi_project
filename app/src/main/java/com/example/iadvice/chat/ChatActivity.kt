@@ -79,7 +79,7 @@ class ChatActivity : AppCompatActivity() {
         )
     }
 
-    fun loadMessages(chatId: String?, messageList: RecyclerView) {
+    private fun loadMessages(chatId: String?, messageList: RecyclerView) {
         val onlineDb = Firebase.database.reference
         val messagesListener = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {

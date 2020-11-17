@@ -121,7 +121,8 @@ class RegisterFragment : Fragment() {
 
         // Set the positive/yes button click listener
         builder.setPositiveButton("OK") { _, _ ->
-            // Do something when click positive button
+
+            viewModel.categories = mutableListOf()
             for (i in arrayCat.indices) {
                 val checked = arrayChecked[i]
                 if (checked) {

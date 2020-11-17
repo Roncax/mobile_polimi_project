@@ -20,12 +20,13 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
     lateinit var categories: String
     var images: MutableList<Uri?> = mutableListOf()
-    lateinit var coverImage:Uri
+    lateinit var coverImage: Uri
     lateinit var region: String
     lateinit var expiration: Date
     lateinit var sex: String
     lateinit var title: String
     var coverId = -1
+    var maxUsers = -1
 
     fun onCreateNewQuestion() {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
@@ -37,14 +38,9 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
         userlist.add(userId)
         val chatid = key!!
 
-        mDatabase.child("users").child(userId).child("chatlist").child("your").child(key).setValue(key)
-        //calculateExpiration()
+        mDatabase.child("users").child(userId).child("chatlist").child("your").child(key)
+            .setValue(key)
         chooseChatUsers(chatid, userlist)
-
-    }
-
-    private fun calculateExpiration() {
-        TODO("Not yet implemented")
     }
 
     private fun chooseChatUsers(
@@ -57,22 +53,33 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
         val userListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val children = dataSnapshot.children
-                children.forEach {
-                    if (it.child("uid").getValue().toString() != userId) {
+                kotlin.run loop@{
+                    children.forEach {
+                        if (userlist.size > maxUsers) {
+                            return@loop
+                        }
+                        if (it.child("uid").value.toString() != userId) {
+                            val validUser =
+                                checkCountry(it.child("country").value.toString()) && checkGender(
+                                    it.child("gender").value.toString()
+                                ) && checkCategory(listOf(it.child("categories").value))
 
-                        if (it.child("gender").getValue().toString() == sex) {
+                            if (validUser) {
+                                mDatabase.child("users").child(it.key!!).child("chatlist")
+                                    .child("other")
+                                    .child(chatId).setValue(chatId)
 
-                            mDatabase.child("users").child(it.key!!).child("chatlist")
-                                .child("other")
-                                .child(chatId).setValue(chatId)
+                                mDatabase.child("chats").child(chatId).child("userList")
+                                    .child(it.key!!)
+                                    .setValue(it.key!!)
 
-                            mDatabase.child("chats").child(chatId).child("userList").child(it.key!!)
-                                .setValue(it.key!!)
-
-                            userlist.add(it.key!!)
+                                userlist.add(it.key!!)
+                            }
                         }
                     }
                 }
+
+
                 uploadImages(chatId)
                 val newChat = Chat(
                     chatId = chatId,
@@ -88,6 +95,7 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
             }
 
+
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.i(TAG, "Error in choosing the chat users")
             }
@@ -96,18 +104,37 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
         mDatabase.child("users").addListenerForSingleValueEvent(userListener)
     }
 
-    private fun uploadImages(chatId:String) {
+
+    private fun uploadImages(chatId: String) {
 
         coverId = (0..1000).random()
-        val imagesRef: StorageReference? = FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/${coverId}")
+        val imagesRef: StorageReference? =
+            FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/${coverId}")
 
-        if (imagesRef != null) {
-            imagesRef.putFile(coverImage)
-        }
+        imagesRef?.putFile(coverImage)
 
         for (image in images) {
-                FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/${(0..1000).random()}")
+            FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/${(0..1000).random()}")
         }
+    }
+
+
+    private fun checkGender(gender: String): Boolean {
+        return when (sex) {
+            "Both" -> true
+            else -> (gender == sex)
+        }
+    }
+
+    private fun checkCountry(country: String): Boolean {
+        return when (country) {
+            "My country" -> (country == region)
+            else -> true
+        }
+    }
+
+    private fun checkCategory(categoryList: List<Any?>): Boolean {
+        return categoryList.contains(categories)
     }
 }
 
