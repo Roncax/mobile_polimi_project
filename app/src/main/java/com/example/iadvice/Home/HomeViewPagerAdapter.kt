@@ -4,11 +4,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.iadvice.ArchiveFragment
 import com.example.iadvice.database.Chat
 
-class HomeViewPagerAdapter(fragment: Fragment,
-                           private var myChatList: MutableList<Chat>,
-                           private var otherChatList: MutableList<Chat>
+class HomeViewPagerAdapter(
+    fragment: Fragment,
+    private var myChatList: MutableList<Chat>,
+    private var otherChatList: MutableList<Chat>
 ) : FragmentStateAdapter(fragment) {
 
     private val numOfPages: Int = 2
@@ -27,9 +29,9 @@ class HomeViewPagerAdapter(fragment: Fragment,
      * @see ViewPager2.setOffscreenPageLimit
      */
     override fun createFragment(position: Int): Fragment {
-        return when(position) {
-            0 -> YourQuestionsFragment(myChatList)
-            else -> YourQuestionsFragment(otherChatList)
+        return when (position) {
+            0 -> YourQuestionsFragment.newInstance(myChatList)
+            else -> YourQuestionsFragment.newInstance(otherChatList)
         }
     }
 

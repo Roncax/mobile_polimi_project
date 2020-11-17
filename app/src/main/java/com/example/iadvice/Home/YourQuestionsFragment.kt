@@ -9,17 +9,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.iadvice.ArchiveFragment
 import com.example.iadvice.R
 import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
 
 
-class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnItemClickListener {
+class YourQuestionsFragment() : Fragment(), OnItemClickListener {
 
     private lateinit var binding: YourQuestionsFragmentBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    var chatList: MutableList<Chat> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,5 +70,14 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
     fun onFabClick() {
         findNavController().navigate(R.id.newQuestionFragment, null)
     }
+
+    companion object {
+        fun newInstance(chatList: MutableList<Chat>): YourQuestionsFragment {
+            val fragment = YourQuestionsFragment()
+            fragment.chatList = chatList
+            return fragment
+        }
+    }
+
 
 }
