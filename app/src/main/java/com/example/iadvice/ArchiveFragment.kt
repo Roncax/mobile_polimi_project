@@ -1,4 +1,4 @@
-package com.example.iadvice.home
+package com.example.iadvice
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,19 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.iadvice.R
 import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.Chat
-import com.example.iadvice.databinding.YourQuestionsFragmentBinding
+import com.example.iadvice.databinding.ArchiveFragmentBinding
+import com.example.iadvice.home.OnItemClickListener
+import com.example.iadvice.home.QuestionsAdapter
 
 
-class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnItemClickListener {
+class ArchiveFragment() : Fragment(), OnItemClickListener {
 
-    private lateinit var binding: YourQuestionsFragmentBinding
+    private lateinit var binding: ArchiveFragmentBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    var chatList: MutableList<Chat> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +29,7 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
 
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.your_questions_fragment,
+            R.layout.archive_fragment,
             container,
             false
         )
@@ -38,16 +39,8 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
         return binding.root
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.fab.setOnClickListener { onFabClick() }
-
-    }
-
-
     private fun attachAdapter() {
-        viewAdapter = QuestionsAdapter(chatList, this@YourQuestionsFragment)
+        viewAdapter = QuestionsAdapter(chatList, this@ArchiveFragment)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances
@@ -55,9 +48,7 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
             adapter = viewAdapter
         }
 
- 
     }
-
 
     override fun onItemClick(item: Chat) {
         val intent = Intent(activity, ChatActivity::class.java)
@@ -65,8 +56,13 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
         startActivity(intent)
     }
 
-    fun onFabClick() {
-        findNavController().navigate(R.id.newQuestionFragment, null)
+    companion object {
+        fun newInstance(chatList: MutableList<Chat>): ArchiveFragment {
+            val fragment = ArchiveFragment()
+            fragment.chatList = chatList
+            return fragment
+        }
     }
+
 
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.example.iadvice.MainActivity
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.HomeFragmentBinding
@@ -72,6 +73,8 @@ class HomeFragment : Fragment() {
         requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
         findChatsId()
 
+
+        (activity as MainActivity?)?.setArchivedChats(archivedChatList)
     }
 
     private fun findChatsId() {
@@ -121,8 +124,11 @@ class HomeFragment : Fragment() {
                     for (chatName in myChatId) {
 
                         val chat: Chat? = dataSnapshot.child(chatName).getValue(Chat::class.java)
-                        if (chat?.expiration!!.before(Calendar.getInstance().time)){
-                            FirebaseDatabase.getInstance().reference.child("chats").child(chatName).setValue(chat)
+                        if (chat?.expiration!!.before(Calendar.getInstance().time)) {
+                            FirebaseDatabase.getInstance().reference.child("chats").child(chatName)
+                                .setValue(
+                                    chat
+                                )
                             continue
                         }
                         if (chat.isActive) {
@@ -133,17 +139,20 @@ class HomeFragment : Fragment() {
                     }
                     for (chatName in otherChatId) {
                         val chat: Chat? = dataSnapshot.child(chatName).getValue(Chat::class.java)
-                        if (chat?.expiration!!.before(Calendar.getInstance().time)){
+                        if (chat?.expiration!!.before(Calendar.getInstance().time)) {
                             chat.isActive = false
-                            FirebaseDatabase.getInstance().reference.child("chats").child(chatName).setValue(chat)
+                            FirebaseDatabase.getInstance().reference.child("chats").child(chatName)
+                                .setValue(
+                                    chat
+                                )
                             continue
                         }
                         if (chat.isActive) {
                             otherChatList.add(chat)
-                            Log.d(TAG,"OTHER --> ${otherChatList}")
+                            Log.d(TAG, "OTHER --> ${otherChatList}")
                         } else {
                             archivedChatList.add(chat)
-                            Log.d(TAG,"SCADUTE --> ${archivedChatList}")
+                            Log.d(TAG, "SCADUTE --> ${archivedChatList}")
                         }
                     }
                     displayHomeChats()

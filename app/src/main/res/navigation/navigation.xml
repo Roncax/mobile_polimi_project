@@ -82,4 +82,9 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/mainHome_fragment" />
     </fragment>
+    <fragment
+        android:id="@+id/archiveFragment"
+        android:name="com.example.iadvice.ArchiveFragment"
+        android:label="archive_fragment"
+        tools:layout="@layout/archive_fragment" />
 </navigation>

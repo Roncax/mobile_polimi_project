@@ -2,6 +2,7 @@ package com.example.iadvice
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
@@ -10,12 +11,21 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import androidx.recyclerview.widget.RecyclerView
+import com.example.iadvice.database.Chat
+import com.example.iadvice.home.QuestionsAdapter
+import com.example.iadvice.home.YourQuestionsFragment
+
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import java.lang.reflect.Array.newInstance
+import javax.xml.datatype.DatatypeFactory.newInstance
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private var archivedChatList: MutableList<Chat> = mutableListOf()
+    private lateinit var archiveFragment:ArchiveFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +69,13 @@ class MainActivity : AppCompatActivity() {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.loginFragment)
                 true
             }
+            R.id.archiveFragment -> {
+                //val questionsAdapter = QuestionsAdapter.QuestionChatViewHolder.Companion
+
+                findNavController(R.id.myNavHostFragment).navigate(R.id.archiveFragment)
+                true
+            }
+
             else -> item.onNavDestinationSelected(findNavController(R.id.myNavHostFragment))
                     || super.onOptionsItemSelected(item)
         }
@@ -66,6 +83,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.myNavHostFragment).navigateUp(appBarConfiguration)
+    }
+
+    fun setArchivedChats( archivedChats: MutableList<Chat> ){
+        this.archivedChatList = archivedChats
+        Log.d("MainActivity", "ARCHIVE PASSED ${archivedChatList}")
+        archiveFragment = ArchiveFragment.newInstance(archivedChatList)
     }
 
 }
