@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_archiveFragment"
+            app:destination="@id/archiveFragment" />
 
     </fragment>
     <fragment
@@ -86,5 +89,6 @@
         android:id="@+id/archiveFragment"
         android:name="com.example.iadvice.ArchiveFragment"
         android:label="archive_fragment"
-        tools:layout="@layout/archive_fragment" />
+        tools:layout="@layout/archive_fragment" >
+    </fragment>
 </navigation>

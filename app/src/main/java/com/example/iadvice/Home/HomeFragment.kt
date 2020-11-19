@@ -137,7 +137,7 @@ class HomeFragment : Fragment() {
                     for (chatName in otherChatId) {
                         val chat: Chat? = dataSnapshot.child(chatName).getValue(Chat::class.java)
                         if (chat?.expiration!!.before(Calendar.getInstance().time)) {
-                            //chat.isActive = false
+                            chat.isActive = false
                             FirebaseDatabase.getInstance().reference.child("chats").child(chatName)
                                 .setValue(
                                     chat
@@ -152,7 +152,7 @@ class HomeFragment : Fragment() {
                             Log.d(TAG, "SCADUTE --> ${archivedChatList}")
                         }
                     }
-                    Log.d(TAG, "Archived ${archivedChatList}")
+                    Log.d(TAG, "PASSO  ${myChatList}")
                    //Todo (activity as MainActivity?)?.setArchivedChats(archivedChatList)
                     (activity as MainActivity?)?.setArchivedChats(myChatList)
                     displayHomeChats()

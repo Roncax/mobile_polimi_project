@@ -7,25 +7,25 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.database.Chat
-import com.example.iadvice.home.QuestionsAdapter
-import com.example.iadvice.home.YourQuestionsFragment
+import com.example.iadvice.home.HomeFragmentDirections
 
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import java.lang.reflect.Array.newInstance
-import javax.xml.datatype.DatatypeFactory.newInstance
 
 class MainActivity : AppCompatActivity() {
 
+    val TAG = "MAIN_ACTIVITY"
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var archivedChatList: MutableList<Chat> = mutableListOf()
-    private lateinit var archiveFragment:ArchiveFragment
+    private lateinit var archiveFragment: ArchiveFragment
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val host: NavHostFragment = supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment? ?: return
         // Set up Action Bar
-        val navController = host.navController
+        navController = host.navController
         val drawerLayout : DrawerLayout? = findViewById(R.id.drawer_layout)
         //setOf() contains the top-level destinations of out application
         appBarConfiguration = AppBarConfiguration( setOf(R.id.homeFragment, R.id.loginFragment), drawerLayout)
@@ -70,9 +70,9 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.archiveFragment -> {
-                //val questionsAdapter = QuestionsAdapter.QuestionChatViewHolder.Companion
+               // findNavController(R.id.myNavHostFragment).navigate(R.id.your_questions_fragment)
 
-                findNavController(R.id.myNavHostFragment).navigate(R.id.archiveFragment)
+
                 true
             }
 
@@ -87,7 +87,8 @@ class MainActivity : AppCompatActivity() {
 
     fun setArchivedChats( archivedChats: MutableList<Chat> ){
         this.archivedChatList = archivedChats
-        Log.d("MainActivity", "ARCHIVE PASSED ${archivedChatList}")
+        Log.d(TAG, "ARCHIVE PASSED ${archivedChatList}")
+
         archiveFragment = ArchiveFragment.newInstance(archivedChatList)
     }
 

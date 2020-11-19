@@ -2,6 +2,7 @@ package com.example.iadvice.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +76,8 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
         fun newInstance(chatList: MutableList<Chat>): YourQuestionsFragment {
             val fragment = YourQuestionsFragment()
             fragment.chatList = chatList
+            val TAG = "YOUR_QUESTION_FRAGMENT"
+            Log.d("TAG","${chatList}")
             return fragment
         }
     }

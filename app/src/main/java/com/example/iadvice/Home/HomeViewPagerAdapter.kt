@@ -32,6 +32,7 @@ class HomeViewPagerAdapter(
         return when (position) {
             0 -> YourQuestionsFragment.newInstance(myChatList)
             else -> YourQuestionsFragment.newInstance(otherChatList)
+
         }
     }
 
