@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.iadvice.database.Chat
+import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -29,12 +30,12 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
     fun onCreateNewQuestion() {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        val userlist: MutableList<String> = mutableListOf()
+        val userlist: MutableMap<String,String> = mutableMapOf()
 
         val mDatabase = FirebaseDatabase.getInstance().reference
         val key = mDatabase.child("chats").push().key
 
-        userlist.add(userId)
+        userlist.put(userId, FirebaseAuth.getInstance().currentUser.toString()!!) //TODO
         val chatid = key!!
 
         mDatabase.child("users").child(userId).child("chatlist").child("your").child(key).setValue(key)
@@ -49,7 +50,7 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
     private fun chooseChatUsers(
         chatId: String,
-        userlist: MutableList<String>
+        userlist: MutableMap<String,String>
     ) {
         val mDatabase = FirebaseDatabase.getInstance().reference
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
@@ -69,7 +70,7 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
                             mDatabase.child("chats").child(chatId).child("userList").child(it.key!!)
                                 .setValue(it.key!!)
 
-                            userlist.add(it.key!!)
+                            userlist.put(it.key!!,"") //TODO va fixato
                         }
                     }
                 }

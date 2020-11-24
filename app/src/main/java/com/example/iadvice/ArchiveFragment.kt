@@ -6,8 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.Chat
@@ -15,7 +17,7 @@ import com.example.iadvice.databinding.ArchiveFragmentBinding
 import com.example.iadvice.home.OnItemClickListener
 import com.example.iadvice.home.QuestionsAdapter
 
-
+import java.util.*
 
 
 class ArchiveFragment() : Fragment(), OnItemClickListener {
@@ -25,28 +27,7 @@ class ArchiveFragment() : Fragment(), OnItemClickListener {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     var chatList: MutableList<Chat> = mutableListOf()
 
-    /**
-     * Called to do initial creation of a fragment.  This is called after
-     * [.onAttach] and before
-     * [.onCreateView].
-     *
-     *
-     * Note that this can be called while the fragment's activity is
-     * still in the process of being created.  As such, you can not rely
-     * on things like the activity's content view hierarchy being initialized
-     * at this point.  If you want to do work once the activity itself is
-     * created, see [.onActivityCreated].
-     *
-     *
-     * Any restored child fragments will be created before the base
-     * `Fragment.onCreate` method returns.
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     * a previous saved state, this is the state.
-     */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var viewModel: ArchiveViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,9 +41,15 @@ class ArchiveFragment() : Fragment(), OnItemClickListener {
             false
         )
 
+
+        val application = requireNotNull(this.activity).application
+        val viewModelFactory = ArchiveViewModelFactory(application)
+        // viewModelProviders used to not destroy the viewmodel until detached
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ArchiveViewModel::class.java)
+
+        viewModel.findChatsId()
+
         attachAdapter()
-
-
         return binding.root
     }
 

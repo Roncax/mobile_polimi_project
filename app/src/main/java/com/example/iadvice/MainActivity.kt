@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import com.example.iadvice.database.Chat
 import com.example.iadvice.home.HomeFragmentDirections
@@ -70,9 +71,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.archiveFragment -> {
-               // findNavController(R.id.myNavHostFragment).navigate(R.id.your_questions_fragment)
-
-
+                findNavController(R.id.myNavHostFragment).navigate(R.id.archiveFragment, null)
                 true
             }
 

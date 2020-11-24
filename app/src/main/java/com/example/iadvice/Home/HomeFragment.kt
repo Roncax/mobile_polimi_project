@@ -36,6 +36,7 @@ class HomeFragment : Fragment() {
     var otherChatId: MutableList<String> = mutableListOf()
     var myChatList: MutableList<Chat> = mutableListOf()
     var otherChatList: MutableList<Chat> = mutableListOf()
+
     //TODO implementare l'archivio chat con questa lista
     var archivedChatList: MutableList<Chat> = mutableListOf()
 
@@ -74,7 +75,7 @@ class HomeFragment : Fragment() {
         findChatsId()
     }
 
-    private fun findChatsId() {
+    fun findChatsId() {
 
         FirebaseDatabase.getInstance().reference
             .child("users")
@@ -153,8 +154,9 @@ class HomeFragment : Fragment() {
                         }
                     }
                     Log.d(TAG, "PASSO  ${myChatList}")
-                   //Todo (activity as MainActivity?)?.setArchivedChats(archivedChatList)
-                    (activity as MainActivity?)?.setArchivedChats(myChatList)
+                    /*Todo (activity as MainActivity?)?.setArchivedChats(archivedChatList)
+                     (activity as MainActivity?)?.setArchivedChats(myChatList)
+                     */
                     displayHomeChats()
                 }
 

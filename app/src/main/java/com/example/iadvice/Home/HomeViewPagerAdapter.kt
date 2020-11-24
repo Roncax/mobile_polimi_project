@@ -1,5 +1,6 @@
 package com.example.iadvice.home
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -7,11 +8,14 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.iadvice.ArchiveFragment
 import com.example.iadvice.database.Chat
 
+
 class HomeViewPagerAdapter(
     fragment: Fragment,
     private var myChatList: MutableList<Chat>,
     private var otherChatList: MutableList<Chat>
 ) : FragmentStateAdapter(fragment) {
+
+    val TAG = "HOME_VIEWPAGER_ADAPTER"
 
     private val numOfPages: Int = 2
 
@@ -31,7 +35,7 @@ class HomeViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> YourQuestionsFragment.newInstance(myChatList)
-            else -> YourQuestionsFragment.newInstance(otherChatList)
+            else -> OtherQuestionsFragment.newInstance(otherChatList)
 
         }
     }
