@@ -16,7 +16,10 @@ import java.util.*
 
 class ArchiveViewModel(private val application: Application) : ViewModel() {
 
-    val TAG = "ArchiveViewModel"
+    companion object{
+        const val TAG = "ArchiveViewModel"
+    }
+
     private lateinit var userId: String
 
     var archivedChatId: MutableList<String> = mutableListOf()
@@ -24,7 +27,7 @@ class ArchiveViewModel(private val application: Application) : ViewModel() {
 
     fun findChatsId() {
 
-        Log.d(com.example.iadvice.home.TAG, "In onCreate")
+        Log.d(TAG, "In onCreate")
         userId = FirebaseAuth.getInstance().uid!!
 
 
