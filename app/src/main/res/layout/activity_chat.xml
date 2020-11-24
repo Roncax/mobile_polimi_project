@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".chat.ChatActivity">
+    tools:context=".chat.ChatActivity"
+    android:label="@string/app_name">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messageList"
@@ -16,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/layout_messageArea"
@@ -25,14 +26,13 @@
         android:background="#ffffff"
         android:minHeight="48dp"
         android:orientation="horizontal"
-        app:barrierMargin="@dimen/material_emphasis_disabled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
         <EditText
             android:id="@+id/txtMessage"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
@@ -47,7 +47,7 @@
         <Button
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:background="@drawable/rounded_button"
             android:clickable="true"
@@ -55,6 +55,15 @@
             android:gravity="center"
             android:text="@string/send"
             android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/close_button"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button"
+            android:onClick="clickHere"
+            android:text="Close" />
 
     </LinearLayout>
 

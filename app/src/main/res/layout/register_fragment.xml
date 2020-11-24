@@ -54,7 +54,7 @@
             android:id="@+id/add_image_register_button"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/round_button"
+            android:background="@drawable/default_picture"
             android:contextClickable="true"
             android:gravity="center_vertical|center_horizontal"
             android:scaleType="fitStart"
@@ -65,7 +65,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/fui_ic_anonymous_white_24dp" />
+            app:srcCompat="@drawable/round_button"
+            tools:srcCompat="@drawable/round_button" />
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/country_spinner"

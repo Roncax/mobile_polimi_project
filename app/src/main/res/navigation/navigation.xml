@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.iadvice.login.LoginFragment"
-        android:label="LoginFragment"
+        android:label="Login"
         tools:layout="@layout/login_fragment">
 
         <action
@@ -20,7 +20,7 @@
     <activity
         android:id="@+id/chatActivity"
         android:name="com.example.iadvice.chat.ChatActivity"
-        android:label="chatActivity"
+        android:label="A chat"
         tools:layout="@layout/activity_chat">
         <argument
             android:name="chatId"
@@ -30,48 +30,53 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.iadvice.login.RegisterFragment"
-        android:label="RegisterFragment"
-        tools:layout="@layout/register_fragment"/>
+        android:label="Registration"
+        tools:layout="@layout/register_fragment" />
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.iadvice.home.HomeFragment"
-        android:label="HomeFragment"
+        android:label="iAdvice"
         tools:layout="@layout/home_fragment">
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_your_questions_fragment"
+            app:destination="@id/your_questions_fragment" />
 
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.iadvice.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="Settings" />
     <fragment
         android:id="@+id/your_questions_fragment"
         android:name="com.example.iadvice.home.YourQuestionsFragment"
-        android:label="your_questions_fragment"
+        android:label="My chats"
         tools:layout="@layout/your_questions_fragment">
         <action
             android:id="@+id/action_your_questions_fragment_to_newQuestionFragment"
             app:destination="@id/newQuestionFragment"
-            app:popUpTo="@id/your_questions_fragment" />
+            app:enterAnim="@android:anim/fade_in"
+            app:popUpTo="@id/mainHome_fragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_your_questions_fragment_to_chatActivity"
             app:destination="@id/chatActivity"
-            app:popUpTo="@id/your_questions_fragment" />
+            app:popUpTo="@id/mainHome_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/newQuestionFragment"
         android:name="com.example.iadvice.newQuestion.NewQuestionFragment"
-        android:label="newQuestionFragment"
+        android:label="Create a new question"
         tools:layout="@layout/new_question_fragment"/>
     <fragment
         android:id="@+id/mainHome_fragment"
-        android:name="com.example.iadvice.mainHome_fragment"
+        android:name="com.example.iadvice.MainHomeFragment"
         android:label="fragment_main_home_fragment"
-        tools:layout="@layout/fragment_main_home_fragment" >
+        tools:layout="@layout/main_home_fragment" >
         <action
             android:id="@+id/action_mainHome_fragment_to_homeFragment"
             app:destination="@id/homeFragment"

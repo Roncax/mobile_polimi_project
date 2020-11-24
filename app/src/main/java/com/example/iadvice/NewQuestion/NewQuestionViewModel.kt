@@ -3,6 +3,7 @@ package com.example.iadvice.newQuestion
 import android.app.Application
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.iadvice.database.Chat
 import com.google.firebase.auth.FirebaseAuth
@@ -14,66 +15,86 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.util.*
 
-private const val TAG = "NewQuestionViewModel"
+private const val TAG = "NEWQUESTION_VIEWMODEL"
 
 class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
-    lateinit var categories: String
+    lateinit var category: String
     var images: MutableList<Uri?> = mutableListOf()
-    lateinit var coverImage: Uri
+    var coverImage: Uri = Uri.EMPTY
     lateinit var region: String
     lateinit var expiration: Date
     lateinit var sex: String
     lateinit var title: String
     var coverId = -1
-    var maxUsers = -1
+    var maxUsers = 5
+    lateinit var realCountry: String
+    lateinit var realSex: String
+
+    val newChatLiveData: MutableLiveData<Chat> by lazy {
+        MutableLiveData<Chat>()
+    }
 
     fun onCreateNewQuestion() {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        val userlist: MutableList<String> = mutableListOf()
 
+
+        Log.d(TAG, "CreateNewQuestion")
         val mDatabase = FirebaseDatabase.getInstance().reference
         val key = mDatabase.child("chats").push().key
 
-        userlist.add(userId)
-        val chatid = key!!
 
-        mDatabase.child("users").child(userId).child("chatlist").child("your").child(key)
+        mDatabase.child("users").child(userId).child("chatlist").child("your").child(key!!)
             .setValue(key)
-        chooseChatUsers(chatid, userlist)
+        chooseChatUsers(key)
     }
 
     private fun chooseChatUsers(
-        chatId: String,
-        userlist: MutableList<String>
+        chatId: String
     ) {
         val mDatabase = FirebaseDatabase.getInstance().reference
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
+        val userMap = mutableMapOf<String, String>()
+
 
         val userListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val children = dataSnapshot.children
+                realCountry = dataSnapshot.child(userId).child("country").value.toString()
+                realSex = dataSnapshot.child(userId).child("gender").value.toString()
+
+                Log.d(TAG, "real Country: $realCountry")
+                Log.d(TAG, "real Category: $category")
+                Log.d(TAG, "real Gender: $realSex")
+
                 kotlin.run loop@{
+                    Log.d(TAG, "In loop")
+
                     children.forEach {
-                        if (userlist.size > maxUsers) {
+
+                        if (userMap.size > maxUsers) {
                             return@loop
                         }
                         if (it.child("uid").value.toString() != userId) {
+                            val country = it.child("country").value.toString()
+                            val gender = it.child("gender").value.toString()
+                            var categories = mutableListOf<String>()
+
+                            it.child("categories").children.forEach {
+                                categories.add(it.key.toString())
+                            }
+
                             val validUser =
-                                checkCountry(it.child("country").value.toString()) && checkGender(
-                                    it.child("gender").value.toString()
-                                ) && checkCategory(listOf(it.child("categories").value))
+                                checkCountry(country = country) && checkCategory(categories) && checkGender(gender)
+
+                            Log.d(TAG, "Country: $country")
+                            Log.d(TAG, "Category: $categories")
+                            Log.d(TAG, "Gender: $gender")
+                            Log.d(TAG, "Is valid?: $validUser")
 
                             if (validUser) {
-                                mDatabase.child("users").child(it.key!!).child("chatlist")
-                                    .child("other")
-                                    .child(chatId).setValue(chatId)
-
-                                mDatabase.child("chats").child(chatId).child("userList")
-                                    .child(it.key!!)
-                                    .setValue(it.key!!)
-
-                                userlist.add(it.key!!)
+                                Log.d(TAG, "On true validUser id: ${it.key}")
+                                userMap[it.key!!] = it.child("username").value.toString()
                             }
                         }
                     }
@@ -84,14 +105,26 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
                 val newChat = Chat(
                     chatId = chatId,
                     owner = userId,
-                    question = title,
+                    title = title,
                     isActive = true,
-                    userList = userlist,
+                    userList = userMap,
                     expiration = expiration,
                     coverId = coverId
                 )
                 mDatabase.child("chats").child(chatId).setValue(newChat)
 
+                    for((k, v) in userMap){
+                        mDatabase.child("users").child(k).child("chatlist")
+                            .child("other")
+                            .child(chatId).setValue(chatId)
+
+                        mDatabase.child("chats").child(chatId).child("userList")
+                            .child(k)
+                            .setValue(v)
+                    }
+
+                Log.d(TAG, "The chat $chatId is uploaded")
+                newChatLiveData.value = newChat
 
             }
 
@@ -111,6 +144,8 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
         val imagesRef: StorageReference? =
             FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/${coverId}")
 
+
+
         imagesRef?.putFile(coverImage)
 
         for (image in images) {
@@ -122,19 +157,19 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     private fun checkGender(gender: String): Boolean {
         return when (sex) {
             "Both" -> true
-            else -> (gender == sex)
+            else -> (gender == realSex)
         }
     }
 
     private fun checkCountry(country: String): Boolean {
-        return when (country) {
-            "My country" -> (country == region)
+        return when (region) {
+            "My country" -> (country == realCountry)
             else -> true
         }
     }
 
     private fun checkCategory(categoryList: List<Any?>): Boolean {
-        return categoryList.contains(categories)
+        return categoryList.contains(category)
     }
 }
 

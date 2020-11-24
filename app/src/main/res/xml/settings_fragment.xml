@@ -13,11 +13,6 @@
             app:title="@string/nickname_title"
             app:useSimpleSummaryProvider="true" />
 
-        <EditTextPreference
-            app:key="@string/bio_title"
-            app:title="@string/bio_title"
-            app:useSimpleSummaryProvider="true" />
-
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/settings_header">
@@ -31,7 +26,6 @@
             app:key="notifications"
             app:title="Enable message notifications" />-->
 
-
         <Preference
             app:icon="@drawable/ic_chat"
             app:key="chat_settings"
@@ -41,12 +35,6 @@
             app:icon="@drawable/ic_language"
             app:key="language"
             app:title="@string/language_title" />
-
-        <Preference
-            app:icon="@drawable/ic_logout"
-            app:key="logout"
-            app:title="@string/logout_title" />
-
 
     </PreferenceCategory>
 
