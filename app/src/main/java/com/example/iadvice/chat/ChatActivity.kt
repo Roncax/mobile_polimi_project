@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.database.Message
@@ -45,19 +46,17 @@ class ChatActivity : AppCompatActivity(), EvaluationDataAdapter.RecyclerViewItem
         messageList.scrollToPosition(adapter.itemCount - 1)
 
         loadMessages(chatId, messageList)
-
+        val actionBar = supportActionBar
+        actionBar!!.title = chatId
 
         btnSend.setOnClickListener {
             if (txtMessage.text.isNotEmpty()) {
-                val time = Calendar.getInstance().timeInMillis
-                val sharedPreference =  getSharedPreferences("USERS",Context.MODE_PRIVATE)
-                val user_nick = sharedPreference.getString("username","defaultName")
                 val message = Message(
                     chatId = chatId,
                     user = FirebaseAuth.getInstance().currentUser!!.uid,
-                    nickname = user_nick!!,
+                    nickname = PersistenceUtils.currentUser.username,
                     text = txtMessage.text.toString(),
-                    time = time
+                    time = Calendar.getInstance().timeInMillis
                 )
                 adapter.addNewMessage(message)
 

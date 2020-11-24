@@ -15,12 +15,6 @@
             app:showAsAction="never" />
 
         <item
-            android:id="@+id/faqFragment"
-            android:icon="@drawable/ic_faq"
-            android:title="@string/faqFragment"
-            android:visible="true"
-            app:showAsAction="never" />
-        <item
             android:id="@+id/logOutFragment"
             android:icon="@drawable/ic_logout"
             android:title="@string/logOutFragment"
