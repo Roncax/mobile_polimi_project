@@ -3,6 +3,7 @@ package com.example.iadvice.chat
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,29 +11,34 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
+import com.example.iadvice.database.Chat
 import com.example.iadvice.database.Message
+import com.example.iadvice.evaluation.CustomListViewEvaluationDialog
+import com.example.iadvice.evaluation.EvaluationDataAdapter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.util.*
+import kotlin.arrayOf as arrayOf
 
 const val TAG = "ChatActivity"
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : AppCompatActivity(), EvaluationDataAdapter.RecyclerViewItemClickListener {
     private lateinit var adapter: MessageAdapter
+    private var customDialog: CustomListViewEvaluationDialog? = null
+    lateinit var chatId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
         val intent = intent
-        val chatId = intent.getStringExtra("chatId")
+        chatId = intent.getStringExtra("chatId")
 
         messageList.layoutManager = LinearLayoutManager(this)
         adapter = MessageAdapter(this, chatId)
@@ -40,19 +46,17 @@ class ChatActivity : AppCompatActivity() {
         messageList.scrollToPosition(adapter.itemCount - 1)
 
         loadMessages(chatId, messageList)
-
+        val actionBar = supportActionBar
+        actionBar!!.title = chatId
 
         btnSend.setOnClickListener {
             if (txtMessage.text.isNotEmpty()) {
-                val time = Calendar.getInstance().timeInMillis
-                val sharedPreference =  getSharedPreferences("USERS",Context.MODE_PRIVATE)
-                val user_nick = sharedPreference.getString("username","defaultName")
                 val message = Message(
                     chatId = chatId,
                     user = FirebaseAuth.getInstance().currentUser!!.uid,
-                    nickname = user_nick!!,
+                    nickname = PersistenceUtils.currentUser.username,
                     text = txtMessage.text.toString(),
-                    time = time
+                    time = Calendar.getInstance().timeInMillis
                 )
                 adapter.addNewMessage(message)
 
@@ -67,6 +71,38 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
+    fun clickHere(view: View) {
+        val db = Firebase.database.reference
+        val items = mutableListOf<String>()
+
+
+        val mDatabase = FirebaseDatabase.getInstance().reference
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+
+        val userListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val children = dataSnapshot.children
+                children.forEach{
+                    items.add(it.value.toString())
+                }
+
+                val dataAdapter = EvaluationDataAdapter(items.toTypedArray(), this@ChatActivity)
+                customDialog = CustomListViewEvaluationDialog(this@ChatActivity, dataAdapter)
+
+                //if we know that the particular variable not null any time ,we can assign !! (not null operator ), then  it won't check for null, if it becomes null, it willthrow exception
+                customDialog!!.show()
+                customDialog!!.setCanceledOnTouchOutside(false)
+            }
+
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.i(TAG, "Error in choosing the chat users")
+            }
+
+        }
+        mDatabase.child("chats").child(chatId).child("userList").addListenerForSingleValueEvent(userListener)
+    }
+
     private fun resetInput() {
         // Clean text box
         txtMessage.text.clear()
@@ -79,7 +115,17 @@ class ChatActivity : AppCompatActivity() {
         )
     }
 
-    fun loadMessages(chatId: String?, messageList: RecyclerView) {
+
+    override fun clickOnItem(data: String) {
+        //Synthetic property without calling findViewById() method and supports view caching to improve performance.
+        Log.d(TAG, "Data received in valuation dialog: $data")
+
+        if (customDialog != null) {
+            customDialog!!.dismiss()
+        }
+    }
+
+    private fun loadMessages(chatId: String?, messageList: RecyclerView) {
         val onlineDb = Firebase.database.reference
         val messagesListener = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {

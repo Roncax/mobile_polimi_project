@@ -146,25 +146,6 @@
             app:layout_constraintStart_toStartOf="@+id/reference_textView"
             app:layout_constraintTop_toBottomOf="@+id/reference_textView" />
 
-        <TableLayout
-            android:id="@+id/images_table"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/reference_textView"
-            app:layout_constraintEnd_toStartOf="@+id/cover_imageView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/selectImages_newchat_button">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </TableLayout>
-
         <EditText
             android:id="@+id/participants_textNumber"
             android:layout_width="wrap_content"
@@ -176,6 +157,18 @@
             app:layout_constraintEnd_toEndOf="@+id/reference_textView"
             app:layout_constraintStart_toStartOf="@+id/reference_textView"
             app:layout_constraintTop_toBottomOf="@+id/region_spinner" />
+
+        <GridView
+            android:id="@+id/image_grindView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:numColumns="3"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/reference_textView"
+            app:layout_constraintEnd_toStartOf="@+id/cover_imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectImages_newchat_button" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

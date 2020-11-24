@@ -15,9 +15,6 @@ import com.google.firebase.storage.StorageReference
 
 class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
 
-    private val listener: OnItemClickListener = itemClickListener
-
-
     /* Create new views (invoked by the layout manager) */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionChatViewHolder {
         return QuestionChatViewHolder.from(parent)
@@ -34,10 +31,9 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = myDataset.size
 
+
     /**
-     *
      *  Holder for the view of the single item
-     *
      **/
     class QuestionChatViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val questionTitle: TextView = itemView.findViewById(R.id.questionChatTitle_text)
@@ -46,7 +42,7 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
 
 
         fun bind(item: Chat, clickListener: OnItemClickListener){
-            questionTitle.text = item.question
+            questionTitle.text = item.title
             questionSubtitle.text = item.owner
             val imageRef: StorageReference? = FirebaseStorage.getInstance().reference.child("chat_images/${item.chatId}/${item.coverId}" )
             GlideApp.with(this.itemView)

@@ -54,8 +54,6 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
             setHasFixedSize(true)
             adapter = viewAdapter
         }
-
- 
     }
 
 
@@ -67,7 +65,7 @@ class YourQuestionsFragment(var chatList: MutableList<Chat>) : Fragment(), OnIte
 
     }
 
-    fun onFabClick() {
+    private fun onFabClick() {
         findNavController().navigate(R.id.newQuestionFragment, null)
     }
 

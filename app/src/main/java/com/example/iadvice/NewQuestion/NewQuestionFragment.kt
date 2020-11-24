@@ -4,9 +4,9 @@ import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,17 +18,22 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.iadvice.GlideApp
 import com.example.iadvice.R
+import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.NewQuestionFragmentBinding
+import androidx.lifecycle.Observer
 import java.util.*
 
-private const val TAG = "NewQuestionFragment"
+private const val TAG = "NEWQUESTION_FRAGMENT"
 
 class NewQuestionFragment : Fragment() {
 
     private lateinit var binding: NewQuestionFragmentBinding
     private lateinit var viewModel: NewQuestionViewModel
-    val REQUEST_CODE = 200
+    private val REQUEST_CODE = 200
 
+    private val newChatObserver = Observer<Chat>{ _ ->
+        popStack()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +51,7 @@ class NewQuestionFragment : Fragment() {
         val viewModelFactory = NewQuestionViewModelFactory(application)
         // viewModelProviders used to not destroy the viewmodel until detached
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewQuestionViewModel::class.java)
+        viewModel.newChatLiveData.observe(viewLifecycleOwner, newChatObserver)
 
         val c = Calendar.getInstance()
 
@@ -62,7 +68,7 @@ class NewQuestionFragment : Fragment() {
                         context, "You forgot to insert the title, please fill and retry",
                         Toast.LENGTH_SHORT
                     ).show()
-                    return@setOnClickListener
+
                 }
             }
 
@@ -73,7 +79,7 @@ class NewQuestionFragment : Fragment() {
                 startActivityForResult(gallery, 100)
             }
 
-            selectImagesNewchatButton.setOnClickListener{
+            selectImagesNewchatButton.setOnClickListener {
                 openGalleryForImages()
             }
 
@@ -97,61 +103,40 @@ class NewQuestionFragment : Fragment() {
             viewModel.coverImage = imageUri!!
         }
 
-
-
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // if multiple images are selected
             if (data?.getClipData() != null) {
                 var count = data.clipData!!.itemCount
-
                 for (i in 0..count - 1) {
-                    imageUri= data.clipData!!.getItemAt(i).uri
-                    //     iv_image.setImageURI(imageUri) Here you can assign your Image URI to the ImageViews
-
-                    var newView: ImageView
-
-                    newView = ImageView(this.context)
-                    binding.imagesTable.addView(newView)
-
-                    GlideApp.with(requireContext())
-                        .load(imageUri)
-                        .circleCrop()
-                        .into(newView)
-                    newView.layoutParams.height = 200
-                    newView.layoutParams.width = 200
-                    viewModel.coverImage = imageUri!!
-
-
+                    imageUri = data.clipData!!.getItemAt(i).uri
+                    viewModel.images.add(imageUri)
                 }
 
-            } else if (data?.getData() != null) {
-                // if single image is selected
-
-                imageUri = data.data
-                //   iv_image.setImageURI(imageUri) Here you can assign the picked image uri to your imageview
-
             }
-            viewModel.images.add(imageUri)
         }
     }
 
 
     private fun onCreateNewQuestion() {
         val p = binding.datePicker
-        viewModel.expiration = getDate(p.year,p.month,p.dayOfMonth)!!
+        viewModel.expiration = getDate(p.year, p.month, p.dayOfMonth)!!
         viewModel.region = binding.regionSpinner.selectedItem.toString()
         viewModel.sex = binding.genderSpinner.selectedItem.toString()
         viewModel.title = binding.titleTexbox.text.toString()
-        viewModel.categories = binding.categorySpinner.selectedItem.toString()
+        viewModel.category = binding.categorySpinner.selectedItem.toString()
         viewModel.onCreateNewQuestion()
+        Log.d(TAG, "onCreateNewQuestion")
 
+
+    }
+
+    fun popStack(){
         if (!requireView().findNavController().popBackStack()) {
             Toast.makeText(
                 context, "Cannot go back to the chats, error!",
                 Toast.LENGTH_SHORT
             ).show()
         }
-
     }
 
 
