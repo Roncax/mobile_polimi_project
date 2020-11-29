@@ -74,8 +74,8 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
 
 }
 
-
-
-
+interface OnItemClickListener {
+    fun onItemClick(item: Chat)
+}
 
 

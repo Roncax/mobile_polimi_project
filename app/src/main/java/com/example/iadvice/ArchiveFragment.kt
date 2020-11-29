@@ -1,17 +1,14 @@
 package com.example.iadvice
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.ArchiveFragmentBinding
 import com.example.iadvice.home.OnItemClickListener
@@ -65,9 +62,9 @@ class ArchiveFragment() : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClick(item: Chat) {
-        val intent = Intent(activity, ChatActivity::class.java)
-        intent.putExtra("chatId",item.chatId)
-        startActivity(intent)
+        //val intent = Intent(activity, ChatActivity::class.java)
+        //intent.putExtra("chatId",item.chatId)
+        //startActivity(intent)
     }
 
     companion object {

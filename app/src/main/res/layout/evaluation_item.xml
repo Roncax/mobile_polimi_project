@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView_evaluation_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
-    app:cardElevation="6dp"
 
-    >
+    app:cardElevation="6dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -35,6 +35,7 @@
             android:ems="10"
             android:hint="dsd"
             android:inputType="number"
+            android:numeric="integer"
             android:text="5"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"

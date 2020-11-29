@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.iadvice.R
 
-import android.content.Intent
 import android.util.Log
 
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.OtherQuestionsFragmentBinding
 
@@ -58,9 +56,9 @@ class OtherQuestionsFragment() : Fragment(), OnItemClickListener {
 
 
     override fun onItemClick(item: Chat) {
-        val intent = Intent(activity, ChatActivity::class.java)
-        intent.putExtra("chatId", item.chatId)
-        startActivity(intent)
+        //  val intent = Intent(activity, ChatActivity::class.java)
+        //intent.putExtra("chatId", item.chatId)
+        //startActivity(intent)
 
     }
 

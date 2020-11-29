@@ -1,58 +1,75 @@
 package com.example.iadvice.chat
 
 import android.content.Context
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
-import com.example.iadvice.database.Chat
 import com.example.iadvice.database.Message
 import com.example.iadvice.evaluation.CustomListViewEvaluationDialog
-import com.example.iadvice.evaluation.EvaluationDataAdapter
+import com.example.iadvice.home.HomeFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.activity_chat_fragment.*
 import java.util.*
-import kotlin.arrayOf as arrayOf
+import com.example.iadvice.databinding.ActivityChatFragmentBinding
 
-const val TAG = "ChatActivity"
 
-class ChatActivity : AppCompatActivity(), EvaluationDataAdapter.RecyclerViewItemClickListener {
-    private lateinit var adapter: MessageAdapter
-    private var customDialog: CustomListViewEvaluationDialog? = null
-    lateinit var chatId: String
+class ChatActivityFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
+    companion object {
+        fun newInstance() = ChatActivityFragment()
+        const val TAG = "CHAT_ACTIVITY_FRAGMENT"
+    }
 
-        val intent = intent
-        chatId = intent.getStringExtra("chatId")
+    private lateinit var currentChatId: String
+    private lateinit var home_viewModel: HomeFragmentViewModel
+    private lateinit var viewModel: ChatActivityViewModel
+    private lateinit var adapter:MessageAdapter
+    private lateinit var customDialog: CustomListViewEvaluationDialog
 
-        messageList.layoutManager = LinearLayoutManager(this)
-        adapter = MessageAdapter(this, chatId)
-        messageList.adapter = adapter
-        messageList.scrollToPosition(adapter.itemCount - 1)
 
-        loadMessages(chatId, messageList)
-        val actionBar = supportActionBar
-        actionBar!!.title = chatId
 
-        btnSend.setOnClickListener {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        // bind the login_fragment layout with the binding variable
+        val binding= DataBindingUtil.inflate<ActivityChatFragmentBinding>(
+            inflater,
+            R.layout.activity_chat_fragment, container, false
+        )
+
+        currentChatId = PersistenceUtils.currenChatId
+        viewModel = ViewModelProvider(this).get(ChatActivityViewModel::class.java)
+        home_viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
+
+        binding.messageList.layoutManager = LinearLayoutManager(context)
+        adapter = MessageAdapter(requireContext(), currentChatId)
+        binding.messageList.adapter = adapter
+        binding.messageList.scrollToPosition(adapter.itemCount - 1)
+
+        loadMessages(currentChatId, binding.messageList)
+
+
+        binding.btnSend.setOnClickListener {
             if (txtMessage.text.isNotEmpty()) {
                 val message = Message(
-                    chatId = chatId,
+                    chatId = currentChatId,
                     user = FirebaseAuth.getInstance().currentUser!!.uid,
                     nickname = PersistenceUtils.currentUser.username,
                     text = txtMessage.text.toString(),
@@ -61,20 +78,26 @@ class ChatActivity : AppCompatActivity(), EvaluationDataAdapter.RecyclerViewItem
                 adapter.addNewMessage(message)
 
                 // scroll the RecyclerView to the last added element
-                messageList.scrollToPosition(adapter.itemCount - 1)
+                binding.messageList.scrollToPosition(adapter.itemCount - 1)
                 resetInput()
 
             } else {
-                Toast.makeText(applicationContext, "Message should not be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Message should not be empty", Toast.LENGTH_SHORT).show()
             }
         }
 
+        binding.closeButton.setOnClickListener {
+            clickHere()
+        }
+
+        return binding.root
     }
 
-    fun clickHere(view: View) {
-        val db = Firebase.database.reference
-        val items = mutableListOf<String>()
 
+
+    fun clickHere() {
+        val db = Firebase.database.reference
+        val items = mutableMapOf<String, String>()
 
         val mDatabase = FirebaseDatabase.getInstance().reference
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
@@ -83,15 +106,16 @@ class ChatActivity : AppCompatActivity(), EvaluationDataAdapter.RecyclerViewItem
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val children = dataSnapshot.children
                 children.forEach{
-                    items.add(it.value.toString())
+                    items[it.key.toString()] = it.value.toString()
                 }
 
-                val dataAdapter = EvaluationDataAdapter(items.toTypedArray(), this@ChatActivity)
-                customDialog = CustomListViewEvaluationDialog(this@ChatActivity, dataAdapter)
+                customDialog = CustomListViewEvaluationDialog(activity = requireActivity(),
+                    usernameList = items
+                )
 
                 //if we know that the particular variable not null any time ,we can assign !! (not null operator ), then  it won't check for null, if it becomes null, it willthrow exception
-                customDialog!!.show()
-                customDialog!!.setCanceledOnTouchOutside(false)
+                customDialog.show()
+                customDialog.setCanceledOnTouchOutside(false)
             }
 
 
@@ -100,30 +124,23 @@ class ChatActivity : AppCompatActivity(), EvaluationDataAdapter.RecyclerViewItem
             }
 
         }
-        mDatabase.child("chats").child(chatId).child("userList").addListenerForSingleValueEvent(userListener)
+        mDatabase.child("chats").child(currentChatId).child("userList").addListenerForSingleValueEvent(userListener)
     }
+
+
 
     private fun resetInput() {
         // Clean text box
         txtMessage.text.clear()
+        val view = this.view
+        if (view != null) {
+            val imm =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
 
-        // Hide keyboard
-        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(
-            currentFocus!!.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS
-        )
-    }
-
-
-    override fun clickOnItem(data: String) {
-        //Synthetic property without calling findViewById() method and supports view caching to improve performance.
-        Log.d(TAG, "Data received in valuation dialog: $data")
-
-        if (customDialog != null) {
-            customDialog!!.dismiss()
         }
     }
+
 
     private fun loadMessages(chatId: String?, messageList: RecyclerView) {
         val onlineDb = Firebase.database.reference
@@ -143,7 +160,6 @@ class ChatActivity : AppCompatActivity(), EvaluationDataAdapter.RecyclerViewItem
                 val message = p0.getValue<Message>()
                 adapter.addMessage(message!!)
                 messageList.scrollToPosition(adapter.itemCount - 1)
-
             }
 
             override fun onChildRemoved(p0: DataSnapshot) {
@@ -156,6 +172,5 @@ class ChatActivity : AppCompatActivity(), EvaluationDataAdapter.RecyclerViewItem
         onlineDb.child("messages").child(chatId!!).addChildEventListener(messagesListener)
 
     }
-
 
 }

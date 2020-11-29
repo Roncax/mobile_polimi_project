@@ -1,6 +1,5 @@
 package com.example.iadvice.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.iadvice.ArchiveFragment
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
-import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
 
@@ -61,9 +61,15 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
 
 
     override fun onItemClick(item: Chat) {
-        val intent = Intent(activity, ChatActivity::class.java)
-        intent.putExtra("chatId",item.chatId)
-        startActivity(intent)
+        //val intent = Intent(activity, ChatActivity::class.java)
+        //intent.putExtra("chatId",item.chatId)
+        //startActivity(intent)
+        PersistenceUtils.currenChatId = item.chatId
+        findNavController().navigate(R.id.action_homeFragment_to_chatActivityFragment)
+
+
+
+
     }
 
     private fun onFabClick() {
@@ -74,10 +80,12 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
         fun newInstance(chatList: MutableList<Chat>): YourQuestionsFragment {
             val fragment = YourQuestionsFragment()
             fragment.chatList = chatList
-            val TAG = "YOUR_QUESTION_FRAGMENT"
             Log.d("TAG","${chatList}")
             return fragment
         }
+
+        val TAG = "YOUR_QUESTION_FRAGMENT"
+
     }
 
 

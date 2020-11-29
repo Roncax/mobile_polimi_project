@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "MAIN_ACTIVITY"
@@ -32,11 +32,12 @@ class MainActivity : AppCompatActivity(){
 
     private val userObserver = Observer<User> { user ->
         navView.getHeaderView(0).findViewById<TextView>(R.id.navUsername).text = user.username
-        navView.getHeaderView(0).findViewById<TextView>(R.id.navSubtitle).text = "${user.points} owned points"
+        navView.getHeaderView(0).findViewById<TextView>(R.id.navSubtitle).text =
+            "${user.points} owned points"
     }
 
     private val userImageObserver = Observer<StorageReference> { imageRef ->
-        val imageView =  navView.getHeaderView(0).findViewById<ImageView>(R.id.navImage)
+        val imageView = navView.getHeaderView(0).findViewById<ImageView>(R.id.navImage)
         GlideApp.with(this)
             .load(imageRef)
             .circleCrop()
@@ -79,9 +80,8 @@ class MainActivity : AppCompatActivity(){
             drawerListener(item)
         }
 
-        PersistenceUtils.currentUserLiveData.observe(this,userObserver)
-        PersistenceUtils.currentUserImageLiveData.observe(this,userImageObserver)
-
+        PersistenceUtils.currentUserLiveData.observe(this, userObserver)
+        PersistenceUtils.currentUserImageLiveData.observe(this, userImageObserver)
 
 
     }
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity(){
             R.id.settingsFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_settingsFragment)
             }
-            R.id.archiveFragment ->{
+            R.id.archiveFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_archiveFragment)
             }
 

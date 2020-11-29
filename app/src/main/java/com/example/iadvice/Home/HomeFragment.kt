@@ -49,9 +49,6 @@ class HomeFragment : Fragment() {
         viewModel.fetchList()
         viewModel.myChatListLiveData.observe(this, chatListObserver)
         viewModel.otherChatListLiveData.observe(this, chatListObserver)
-
-
-
     }
 
     override fun onCreateView(

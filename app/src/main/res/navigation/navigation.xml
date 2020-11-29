@@ -17,16 +17,6 @@
             app:destination="@id/registerFragment" />
     </fragment>
 
-    <activity
-        android:id="@+id/chatActivity"
-        android:name="com.example.iadvice.chat.ChatActivity"
-        android:label="A chat"
-        tools:layout="@layout/activity_chat">
-        <argument
-            android:name="chatId"
-            app:argType="string" />
-    </activity>
-
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.iadvice.login.RegisterFragment"
@@ -47,6 +37,9 @@
         <action
             android:id="@+id/action_homeFragment_to_your_questions_fragment"
             app:destination="@id/your_questions_fragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatActivityFragment"
+            app:destination="@id/chatActivityFragment" />
 
     </fragment>
     <fragment
@@ -65,9 +58,8 @@
             app:popUpTo="@id/mainHome_fragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_your_questions_fragment_to_chatActivity"
-            app:destination="@id/chatActivity"
-            app:popUpTo="@id/mainHome_fragment" />
+            android:id="@+id/action_your_questions_fragment_to_chatActivityFragment"
+            app:destination="@id/chatActivityFragment" />
     </fragment>
 
     <fragment
@@ -96,4 +88,8 @@
         android:label="archive_fragment"
         tools:layout="@layout/archive_fragment" >
     </fragment>
+    <fragment
+        android:id="@+id/chatActivityFragment"
+        android:name="com.example.iadvice.chat.ChatActivityFragment"
+        android:label="ChatActivityFragment" />
 </navigation>

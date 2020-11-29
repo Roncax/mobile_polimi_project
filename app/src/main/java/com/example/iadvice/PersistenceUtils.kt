@@ -15,6 +15,8 @@ import com.google.firebase.storage.StorageReference
 
 object PersistenceUtils {
 
+    lateinit var currenChatId: String
+
     var currentUser: User = User()
     val currentUserLiveData: MutableLiveData<User> by lazy {
         MutableLiveData<User>(User())
@@ -42,7 +44,13 @@ object PersistenceUtils {
 
 
     fun retrieveUser() {
+
+        if(FirebaseAuth.getInstance().uid.isNullOrBlank())
+        {
+         return
+        }
         val userId = FirebaseAuth.getInstance().uid!!
+
 
         val messagesUploadListener = object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
