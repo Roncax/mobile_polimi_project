@@ -35,12 +35,10 @@ class ChatActivityFragment : Fragment() {
         const val TAG = "CHAT_ACTIVITY_FRAGMENT"
     }
 
-    private lateinit var currentChatId: String
     private lateinit var home_viewModel: HomeFragmentViewModel
     private lateinit var viewModel: ChatActivityViewModel
-    private lateinit var adapter:MessageAdapter
+    private lateinit var adapter: MessageAdapter
     private lateinit var customDialog: CustomListViewEvaluationDialog
-
 
 
     override fun onCreateView(
@@ -49,27 +47,26 @@ class ChatActivityFragment : Fragment() {
     ): View? {
 
         // bind the login_fragment layout with the binding variable
-        val binding= DataBindingUtil.inflate<ActivityChatFragmentBinding>(
+        val binding = DataBindingUtil.inflate<ActivityChatFragmentBinding>(
             inflater,
             R.layout.activity_chat_fragment, container, false
         )
 
-        currentChatId = PersistenceUtils.currenChatId
         viewModel = ViewModelProvider(this).get(ChatActivityViewModel::class.java)
         home_viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
 
         binding.messageList.layoutManager = LinearLayoutManager(context)
-        adapter = MessageAdapter(requireContext(), currentChatId)
+        adapter = MessageAdapter(requireContext(), viewModel.currentChatId)
         binding.messageList.adapter = adapter
         binding.messageList.scrollToPosition(adapter.itemCount - 1)
 
-        loadMessages(currentChatId, binding.messageList)
+        loadMessages(viewModel.currentChatId, binding.messageList)
 
 
         binding.btnSend.setOnClickListener {
             if (txtMessage.text.isNotEmpty()) {
                 val message = Message(
-                    chatId = currentChatId,
+                    chatId = viewModel.currentChatId,
                     user = FirebaseAuth.getInstance().currentUser!!.uid,
                     nickname = PersistenceUtils.currentUser.username,
                     text = txtMessage.text.toString(),
@@ -86,6 +83,25 @@ class ChatActivityFragment : Fragment() {
             }
         }
 
+
+        val chatOwner = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (FirebaseAuth.getInstance().uid!! != dataSnapshot.value.toString()) {
+                    binding.closeButton.visibility = View.GONE
+                }
+            }
+
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.i(TAG, "Error in choosing the chat users")
+            }
+
+        }
+        FirebaseDatabase.getInstance().reference.child("chats").child(viewModel.currentChatId)
+            .child("owner").addListenerForSingleValueEvent(chatOwner)
+
+
+
         binding.closeButton.setOnClickListener {
             clickHere()
         }
@@ -94,26 +110,24 @@ class ChatActivityFragment : Fragment() {
     }
 
 
-
     fun clickHere() {
-        val db = Firebase.database.reference
         val items = mutableMapOf<String, String>()
 
         val mDatabase = FirebaseDatabase.getInstance().reference
-        val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
         val userListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val children = dataSnapshot.children
-                children.forEach{
+                children.forEach {
                     items[it.key.toString()] = it.value.toString()
                 }
 
-                customDialog = CustomListViewEvaluationDialog(activity = requireActivity(),
+                customDialog = CustomListViewEvaluationDialog(
+                    activity = requireActivity(),
                     usernameList = items
                 )
 
-                //if we know that the particular variable not null any time ,we can assign !! (not null operator ), then  it won't check for null, if it becomes null, it willthrow exception
+                //if we know that the particular variable not null any time ,we can assign !! (not null operator ), then  it won't check for null, if it becomes null, it will throw exception
                 customDialog.show()
                 customDialog.setCanceledOnTouchOutside(false)
             }
@@ -124,9 +138,9 @@ class ChatActivityFragment : Fragment() {
             }
 
         }
-        mDatabase.child("chats").child(currentChatId).child("userList").addListenerForSingleValueEvent(userListener)
+        mDatabase.child("chats").child(viewModel.currentChatId).child("userList")
+            .addListenerForSingleValueEvent(userListener)
     }
-
 
 
     private fun resetInput() {

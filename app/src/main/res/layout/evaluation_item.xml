@@ -27,21 +27,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/editTextNumber"
-            android:layout_width="85dp"
+        <RatingBar
+            android:id="@+id/ratingBar2"
+            style="@android:style/Widget.Material.RatingBar.Indicator"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:ems="10"
-            android:hint="dsd"
-            android:inputType="number"
-            android:numeric="integer"
-            android:text="5"
-            android:textAlignment="center"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:rating="1"
+            android:stepSize="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="5" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

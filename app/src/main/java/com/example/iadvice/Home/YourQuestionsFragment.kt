@@ -66,10 +66,6 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
         //startActivity(intent)
         PersistenceUtils.currenChatId = item.chatId
         findNavController().navigate(R.id.action_homeFragment_to_chatActivityFragment)
-
-
-
-
     }
 
     private fun onFabClick() {
@@ -80,7 +76,7 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
         fun newInstance(chatList: MutableList<Chat>): YourQuestionsFragment {
             val fragment = YourQuestionsFragment()
             fragment.chatList = chatList
-            Log.d("TAG","${chatList}")
+            Log.d("TAG", "${chatList}")
             return fragment
         }
 

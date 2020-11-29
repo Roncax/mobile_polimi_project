@@ -1,6 +1,8 @@
 package com.example.iadvice
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.iadvice.database.User
 import com.example.iadvice.login.LoginFragment
@@ -72,5 +74,31 @@ object PersistenceUtils {
         val userId = FirebaseAuth.getInstance().uid!!
         val imageRef: StorageReference? = FirebaseStorage.getInstance().reference.child("avatar_images/" + userId)
         updatecurrentUserImage(imageRef!!)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun addEvaluationToUser(usernameListEvaluation: MutableMap<String, String>) {
+
+        usernameListEvaluation.forEach { k, v ->
+
+            val evaluationUploader = object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    //method that is called if the read is canceled (eg no permission)
+                    Log.w(LoginFragment.TAG, "loadEval:onCancelled", databaseError.toException())
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    val oldValue = p0.value.toString().toInt()
+                    val newValue = oldValue+v.toInt()
+                    Firebase.database.reference.child("users").child(k).child("points").setValue(newValue)
+
+                }
+            }
+
+            Firebase.database.reference.child("users").child(k).child("points").addListenerForSingleValueEvent(evaluationUploader)
+
+
+        }
+
     }
 }

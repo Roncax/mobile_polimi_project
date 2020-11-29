@@ -1,13 +1,14 @@
 package com.example.iadvice.chat
 
 import androidx.lifecycle.ViewModel
+import com.example.iadvice.PersistenceUtils
 
 class ChatActivityViewModel : ViewModel() {
 
-    lateinit var chatId: String
+    var currentChatId: String
 
 init {
-    chatId = "123"
+    currentChatId = PersistenceUtils.currenChatId
 }
 
 }
