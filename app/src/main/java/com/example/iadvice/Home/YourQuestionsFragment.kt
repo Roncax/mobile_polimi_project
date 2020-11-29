@@ -64,8 +64,9 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
         //val intent = Intent(activity, ChatActivity::class.java)
         //intent.putExtra("chatId",item.chatId)
         //startActivity(intent)
+        //TODO porcata, non utilizzare singleton per il passaggio dell'id della chat
         PersistenceUtils.currenChatId = item.chatId
-        findNavController().navigate(R.id.action_homeFragment_to_chatActivityFragment)
+        this.findNavController().navigate(R.id.action_homeFragment_to_chatActivityFragment)
     }
 
     private fun onFabClick() {

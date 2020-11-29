@@ -135,6 +135,10 @@ class MainActivity : AppCompatActivity() {
             R.id.archiveFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_archiveFragment)
             }
+            R.id.rankingFragment ->{
+                findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_rankingFragment)
+            }
+
 
 
         }
