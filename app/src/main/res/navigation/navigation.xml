@@ -105,7 +105,7 @@
         android:label="RankingFragment" />
     <fragment
         android:id="@+id/chatInformationFragment"
-        android:name="com.example.iadvice.chatInformation.ChatInformations"
+        android:name="com.example.iadvice.chatInformation.ChatInformationsFragment"
         android:label="chat_information"
         tools:layout="@layout/chat_information" />
 </navigation>

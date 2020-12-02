@@ -1,5 +1,6 @@
 package com.example.iadvice
 
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -32,6 +33,18 @@ object PersistenceUtils {
         MutableLiveData<StorageReference>()
     }
 
+    lateinit var allUserImages: MutableMap<String, StorageReference>
+    val allUserImagesLiveData: MutableLiveData<MutableMap<String, StorageReference>> by lazy {
+        MutableLiveData<MutableMap<String, StorageReference>>()
+    }
+
+    lateinit var currentChatImages: MutableList<StorageReference>
+    val currentChatImagesLiveData: MutableLiveData<MutableList<StorageReference>> by lazy {
+        MutableLiveData<MutableList<StorageReference>>()
+    }
+
+
+
     fun updateCurrentUser(user: User){
         currentUser = user
         currentUserLiveData.value = user
@@ -42,12 +55,18 @@ object PersistenceUtils {
         currentUserImageLiveData.value = storageReference
     }
 
+    fun updateAllUserImages(images: MutableMap<String, StorageReference>){
+        allUserImages = images
+        allUserImagesLiveData.value = images
+    }
+
     const val TAG = "PERSISTENCE_UTILS"
 
 
     init {
         retrieveUser()
         retrieveSortedUserList()
+
     }
 
 
@@ -118,7 +137,10 @@ object PersistenceUtils {
                     val user: User? = u.getValue(User::class.java)
                     userListRank.add(user!!)
                     Log.d(TAG, "User ${user.username} download")
+                    userListRank.sortBy { it.points }
+                    userListRank.reverse()
                 }
+                retrieveUserImages()
 
             }
 
@@ -129,6 +151,22 @@ object PersistenceUtils {
 
         }
         onlineDb.child("users").addListenerForSingleValueEvent(userListener)
+    }
+
+    private fun retrieveUserImages(){
+        allUserImages = mutableMapOf()
+        userListRank.forEach{
+            val userId = it.uid
+            val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("avatar_images/" + userId)
+            allUserImages[userId] = imageRef
+        }
+        updateAllUserImages(allUserImages)
+    }
+
+
+    fun retrieveChatImages(chatId: String){
+        val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("chat_images/" + chatId)
+
     }
 
 }
