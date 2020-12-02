@@ -6,18 +6,21 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.iadvice.database.User
 import com.example.iadvice.login.LoginFragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 object PersistenceUtils {
 
     lateinit var currenChatId: String
+    lateinit var userListRank:MutableList<User>
 
     var currentUser: User = User()
     val currentUserLiveData: MutableLiveData<User> by lazy {
@@ -39,9 +42,12 @@ object PersistenceUtils {
         currentUserImageLiveData.value = storageReference
     }
 
+    const val TAG = "PERSISTENCE_UTILS"
+
 
     init {
         retrieveUser()
+        retrieveSortedUserList()
     }
 
 
@@ -101,4 +107,28 @@ object PersistenceUtils {
         }
 
     }
+
+    private fun retrieveSortedUserList() {
+        userListRank = mutableListOf()
+
+        val onlineDb = Firebase.database.reference
+        val userListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach{u ->
+                    val user: User? = u.getValue(User::class.java)
+                    userListRank.add(user!!)
+                    Log.d(TAG, "User ${user.username} download")
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+
+        }
+        onlineDb.child("users").addListenerForSingleValueEvent(userListener)
+    }
+
 }

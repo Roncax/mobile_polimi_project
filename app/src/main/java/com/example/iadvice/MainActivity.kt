@@ -84,6 +84,8 @@ class MainActivity : AppCompatActivity() {
         PersistenceUtils.currentUserImageLiveData.observe(this, userImageObserver)
 
 
+
+
     }
 
     private fun setupActionBar(navController: NavController, appBarConfig: AppBarConfiguration) {

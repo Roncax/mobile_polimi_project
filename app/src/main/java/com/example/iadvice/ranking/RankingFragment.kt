@@ -7,7 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.chat.ChatActivityFragment
 import com.example.iadvice.chat.MessageAdapter
@@ -25,12 +30,15 @@ import com.google.firebase.ktx.Firebase
 
 class RankingFragment : Fragment() {
 
+    companion object{
+        const val TAG = "RANKING_FRAGMENT"
+    }
+
 
     private lateinit var viewModel: RankingViewModel
     private lateinit var adapter: MessageAdapter
     private lateinit var binding: RankingFragmentBinding
 
-    lateinit var userListRank: MutableList<User>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,37 +50,18 @@ class RankingFragment : Fragment() {
             inflater,
             R.layout.ranking_fragment, container, false
         )
-
-        retrieveSortedUserList()
-
+        Log.d(TAG, "Current user rank list: ${PersistenceUtils.userListRank}}")
 
 
+
+        binding.rankingList.layoutManager = LinearLayoutManager(context)
+        val adapter = CustomAdapter(requireContext(), PersistenceUtils.userListRank)
+        binding.rankingList.adapter = adapter
 
         return binding.root
     }
 
-    private fun retrieveSortedUserList() {
-        userListRank = mutableListOf()
 
-        val onlineDb = Firebase.database.reference
-        val userListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.children.forEach{u ->
-                    val user: User? = u.getValue(User::class.java)
-                    userListRank.add(user!!)
-                }
-                val adapter = ListAdapter(userListRank)
-                binding.rankingList.adapter = adapter
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-
-        }
-        onlineDb.child("users").addListenerForSingleValueEvent(userListener)
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
