@@ -15,6 +15,7 @@ import com.example.iadvice.R
 import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
+import com.google.android.material.appbar.AppBarLayout
 
 
 class YourQuestionsFragment() : Fragment(), OnItemClickListener {
@@ -23,6 +24,7 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     var chatList: MutableList<Chat> = mutableListOf()
+    private lateinit var type: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +46,10 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.fab.setOnClickListener { onFabClick() }
+        if(!type.equals("YOUR"))
+            binding.fab.visibility = View.GONE
+        else
+            binding.fab.setOnClickListener { onFabClick() }
 
     }
 
@@ -71,9 +76,10 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
     }
 
     companion object {
-        fun newInstance(chatList: MutableList<Chat>): YourQuestionsFragment {
+        fun newInstance(chatList: MutableList<Chat>, type:String): YourQuestionsFragment {
             val fragment = YourQuestionsFragment()
             fragment.chatList = chatList
+            fragment.type = type
             val TAG = "YOUR_QUESTION_FRAGMENT"
             Log.d("TAG","${chatList}")
             return fragment

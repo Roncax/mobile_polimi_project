@@ -34,8 +34,10 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
 
-    var archivedChatList = mutableListOf<Chat>()
-
+    var archivedChatList: MutableList<Chat> = mutableListOf()
+    val archivedChatListLiveData: MutableLiveData<MutableList<Chat>> by lazy {
+        MutableLiveData<MutableList<Chat>>(mutableListOf())
+    }
 
 
     fun fetchList() {
@@ -103,6 +105,8 @@ class HomeFragmentViewModel : ViewModel() {
                         } else {
                             Log.d(TAG, "Chat '$chatName' is not active")
                             chat.let { archivedChatList.add(it) }
+                            archivedChatListLiveData.setValue(archivedChatList)
+                            Log.d(TAG,"ARCHIVIATE ${archivedChatList}")
                         }
                     }
                 }

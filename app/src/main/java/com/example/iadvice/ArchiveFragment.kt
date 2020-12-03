@@ -1,5 +1,6 @@
 package com.example.iadvice
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,20 +15,41 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.ArchiveFragmentBinding
+import com.example.iadvice.home.HomeFragmentViewModel
 import com.example.iadvice.home.OnItemClickListener
 import com.example.iadvice.home.QuestionsAdapter
+import androidx.lifecycle.Observer
+import com.example.iadvice.home.HomeFragment
+
 
 import java.util.*
 
+const val TAG = "ARCHIVE_FRAGMENT"
 
 class ArchiveFragment() : Fragment(), OnItemClickListener {
 
+    private lateinit var viewModel: HomeFragmentViewModel
     private lateinit var binding: ArchiveFragmentBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    var chatList: MutableList<Chat> = mutableListOf()
 
-    private lateinit var viewModel: ArchiveViewModel
+    private val chatListObserver = Observer<MutableList<Chat>> { _ ->
+        Log.d(
+            HomeFragment.TAG,
+            "AdapterList fired with my ARCHIVED chats: '${viewModel.archivedChatList}' "
+        )
+        attachAdapter()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG,"onCreate")
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
+        Log.d(TAG,"chiamo viewModel.fetch")
+        viewModel.fetchList()
+        viewModel.archivedChatListLiveData.observe(this, chatListObserver)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,20 +63,40 @@ class ArchiveFragment() : Fragment(), OnItemClickListener {
             false
         )
 
-
-        val application = requireNotNull(this.activity).application
-        val viewModelFactory = ArchiveViewModelFactory(application)
-        // viewModelProviders used to not destroy the viewmodel until detached
-        viewModel = ViewModelProvider(this, viewModelFactory).get(ArchiveViewModel::class.java)
-
-        viewModel.findChatsId()
-
-        attachAdapter()
+        //todo vedere se si può togliere attachAdapter()
         return binding.root
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+
+        super.onActivityCreated(savedInstanceState)
+        viewModel.fetchList()
+    }
+
+
+
+    /**
+     * Called when a fragment is first attached to its context.
+     * [.onCreate] will be called after this.
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
+
+        Log.d("ARCHIVIO_ON_ATTACH","")
+        viewModel.fetchList()
+        Log.d("ARCHIVIO","ARCHIVIATE  '${viewModel.archivedChatList}'")
+        viewModel.archivedChatListLiveData.observe(this, chatListObserver)
+    }
+*/
+
+
+
+
+
     private fun attachAdapter() {
-        viewAdapter = QuestionsAdapter(chatList, this@ArchiveFragment)
+        viewAdapter = QuestionsAdapter(viewModel.archivedChatList, this@ArchiveFragment)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances
@@ -70,19 +112,15 @@ class ArchiveFragment() : Fragment(), OnItemClickListener {
         startActivity(intent)
     }
 
+    /*
     companion object {
         fun newInstance(chatList: MutableList<Chat>): ArchiveFragment {
             val fragment = ArchiveFragment()
-            fragment.chatList = chatList
             val TAG = "ARCHIVE_FRAGMENT"
             Log.d(TAG,"${chatList}")
 
             return fragment
         }
     }
-
-
-
-
-
+    */
 }

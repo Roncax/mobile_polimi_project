@@ -34,9 +34,14 @@ class HomeViewPagerAdapter(
      */
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> YourQuestionsFragment.newInstance(myChatList)
-            else -> OtherQuestionsFragment.newInstance(otherChatList)
-
+            0 ->{
+                val type = "your"
+                YourQuestionsFragment.newInstance(myChatList, type)
+            }
+            else -> {
+                val type = "other"
+                YourQuestionsFragment.newInstance(otherChatList, type)
+            }
         }
     }
 
