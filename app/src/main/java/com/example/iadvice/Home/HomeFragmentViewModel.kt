@@ -104,9 +104,12 @@ class HomeFragmentViewModel : ViewModel() {
                             }
                         } else {
                             Log.d(TAG, "Chat '$chatName' is not active")
-                            chat.let { archivedChatList.add(it) }
-                            archivedChatListLiveData.setValue(archivedChatList)
-                            Log.d(TAG,"ARCHIVIATE ${archivedChatList}")
+                            if (!archivedChatList.contains(chat)) {
+                                chat.let { archivedChatList.add(it) }
+                                archivedChatListLiveData.setValue(archivedChatList)
+                            }
+
+                            Log.d(TAG, "ARCHIVIATE ${archivedChatList}")
                         }
                     }
                 }
