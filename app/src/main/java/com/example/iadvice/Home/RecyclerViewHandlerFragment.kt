@@ -1,6 +1,5 @@
 package com.example.iadvice.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
-import com.example.iadvice.chat.ChatActivity
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
 
@@ -28,10 +27,10 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
     private lateinit var viewModel: HomeFragmentViewModel
 
-    private val chatListObserver = Observer<MutableList<Chat>> { _ ->
+    private val chatListObserver = Observer<MutableList<Chat>> { chat ->
         Log.d(
             HomeFragment.TAG,
-            "AdapterList fired with my ARCHIVED chats: '${viewModel.archivedChatList}' "
+            "AdapterList fired with my chats: '${chat}' "
         )
         attachAdapter()
     }
@@ -41,24 +40,21 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        Log.d(TAG,"onCreate")
         super.onCreate(savedInstanceState)
+
         viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
         Log.d(TAG,"chiamo viewModel.fetch")
         viewModel.fetchList()
+
         viewModel.archivedChatListLiveData.observe(this, chatListObserver)
+        viewModel.myChatListLiveData.observe(this, chatListObserver)
+        viewModel.otherChatListLiveData.observe(this, chatListObserver)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-/*
-        val safeArgs: YourQuestionsFragmentArgs by navArgs()
-        chatType = safeArgs.type
-*/
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -73,12 +69,9 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-
         super.onActivityCreated(savedInstanceState)
         viewModel.fetchList()
     }
-
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -110,9 +103,10 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
 
     override fun onItemClick(item: Chat) {
-        val intent = Intent(activity, ChatActivity::class.java)
-        intent.putExtra("chatId",item.chatId)
-        startActivity(intent)
+        PersistenceUtils.currenChatId = item.chatId
+        if(chatType == "archived"){findNavController().navigate(R.id.action_your_questions_fragment_to_chatActivityFragment)}
+        else{findNavController().navigate(R.id.action_homeFragment_to_chatActivityFragment)}
+
     }
 
     private fun onFabClick() {

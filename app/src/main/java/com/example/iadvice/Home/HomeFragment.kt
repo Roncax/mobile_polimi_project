@@ -33,22 +33,16 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var viewPager: ViewPager2
 
-    private val chatListObserver = Observer<MutableList<Chat>> { _ ->
-        Log.d(
-            TAG,
-            "DisplayHome fired with my chats: '${viewModel.myChatList}' and other: '${viewModel.otherChatList}'"
-        )
-        displayHomeChats()
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
+    }
 
-        viewModel.fetchList()
-        viewModel.myChatListLiveData.observe(this, chatListObserver)
-        viewModel.otherChatListLiveData.observe(this, chatListObserver)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        displayHomeChats()
+
     }
 
     override fun onCreateView(
@@ -67,14 +61,10 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel.fetchList()
-    }
 
     private fun displayHomeChats() {
         homeViewPagerAdapter =
-            HomeViewPagerAdapter(this@HomeFragment, viewModel.myChatList, viewModel.otherChatList)
+            HomeViewPagerAdapter(this@HomeFragment)
         viewPager = requireView().findViewById(R.id.pager)
         viewPager.adapter = homeViewPagerAdapter
 

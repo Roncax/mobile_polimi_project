@@ -6,9 +6,7 @@ import com.example.iadvice.database.Chat
 
 
 class HomeViewPagerAdapter(
-    fragment: Fragment,
-    private var myChatList: MutableList<Chat>,
-    private var otherChatList: MutableList<Chat>
+    fragment: Fragment
 ) : FragmentStateAdapter(fragment) {
 
     val TAG = "HOME_VIEWPAGER_ADAPTER"
