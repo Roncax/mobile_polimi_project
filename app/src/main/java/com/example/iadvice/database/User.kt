@@ -9,5 +9,5 @@ data class User(
     var age: Int = 0,
     var gender: String = "",
     var country: String = "",
-    var points: Int = -1
+    var points: Int = 0
 )

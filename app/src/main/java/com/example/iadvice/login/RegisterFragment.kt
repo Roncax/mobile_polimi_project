@@ -89,14 +89,14 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
-    // Method to show an alert dialog with multiple choice list items for the categories
-// Method to show an alert dialog with multiple choice list items
+    // Method to show an alert dialog with multiple choice list items
     private fun showCategoriesDialog() {
         // Late initialize an alert dialog object
         lateinit var dialog: AlertDialog
 
         // Initialize an array of colors
-        val arrayCat = arrayOf("Fashion", "DIY", "Technology", "Casual")
+        //TODO upload from array resource
+        val arrayCat = resources.getStringArray(R.array.categories)
 
         // Initialize a boolean array of checked items
         val arrayChecked = booleanArrayOf(false, false, false, true)
@@ -121,7 +121,8 @@ class RegisterFragment : Fragment() {
 
         // Set the positive/yes button click listener
         builder.setPositiveButton("OK") { _, _ ->
-            // Do something when click positive button
+
+            viewModel.categories = mutableListOf()
             for (i in arrayCat.indices) {
                 val checked = arrayChecked[i]
                 if (checked) {
@@ -171,10 +172,6 @@ class RegisterFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-
-
-
-
     }
 
 

@@ -51,6 +51,7 @@
     <string name="send">SEND</string>
     <string name="enter_message">Enter message</string>
     <string name="archive">Archive</string>
+    <string name="Refresh">Refresh</string>
 
 </resources>
 

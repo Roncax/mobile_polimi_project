@@ -36,41 +36,6 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
         private const val TAG = "MessageAdapter"
     }
 
-
-
-
-    fun loadMessages() {
-        val onlineDb = Firebase.database.reference
-
-        val messagesListener = object : ChildEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                Log.w(TAG, "loadPost:onCancelled", p0.toException())
-            }
-
-            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-
-            }
-
-            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                //TODO("Not yet implemented")
-            }
-
-            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                val message = p0.getValue<Message>()
-                addMessage(message!!)
-            }
-
-            override fun onChildRemoved(p0: DataSnapshot) {
-                //TODO("Not yet implemented")
-            }
-
-
-        }
-
-        onlineDb.child("messages").child(chatId).addChildEventListener(messagesListener)
-
-    }
-
     fun addNewMessage(message: Message) {
         val onlineDb = Firebase.database.reference
         val key = onlineDb.child("messages").child(chatId).push().key

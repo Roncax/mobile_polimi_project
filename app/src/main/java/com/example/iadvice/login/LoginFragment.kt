@@ -1,6 +1,5 @@
 package com.example.iadvice.login
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,16 +10,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.iadvice.R
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.databinding.LoginFragmentBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 
 class LoginFragment : Fragment() {
@@ -83,7 +77,8 @@ class LoginFragment : Fragment() {
 
                 Log.d(TAG, "signInWithCustomToken:success")
                 val uid = it.result!!.user!!.uid
-                retrieveUser(uid)
+                PersistenceUtils.retrieveUser()
+                PersistenceUtils.retrieveCurrentUserImage()
 
                 if (!requireView().findNavController().popBackStack()) {
                     Toast.makeText(
@@ -91,9 +86,6 @@ class LoginFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
-
-
                 Toast.makeText(
                     this.context, "Login successful",
                     Toast.LENGTH_SHORT
@@ -116,33 +108,6 @@ class LoginFragment : Fragment() {
         requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE
     }
 
-    // Download the user's info from the database and put it into the preferences(now only the nickname)
-    private fun retrieveUser(uid: String) {
 
-        val onlineDb = Firebase.database.reference
-
-        val messagesUploadListener = object : ValueEventListener {
-            override fun onCancelled(databaseError: DatabaseError) {
-                //method that is called if the read is canceled (eg no permission)
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                val children = p0.children
-                var child = ""
-                children.forEach {
-                    child = it.value.toString()
-                }
-
-                val sharedPreference =
-                    activity?.getSharedPreferences("USERS", Context.MODE_PRIVATE) ?: return
-                val editor = sharedPreference.edit()
-                editor.putString("username", child)
-                editor.apply()
-            }
-        }
-
-        onlineDb.child("users").child(uid).addValueEventListener(messagesUploadListener)
-    }
 
 }
