@@ -1,11 +1,7 @@
 package com.example.iadvice.home
 
-import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.iadvice.ArchiveFragment
 import com.example.iadvice.database.Chat
 
 
@@ -34,14 +30,8 @@ class HomeViewPagerAdapter(
      */
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 ->{
-                val type = "your"
-                YourQuestionsFragment.newInstance(myChatList, type)
-            }
-            else -> {
-                val type = "other"
-                YourQuestionsFragment.newInstance(otherChatList, type)
-            }
+            0 -> RecyclerViewHandlerFragment.newInstance( "your")
+            else -> RecyclerViewHandlerFragment.newInstance("other")
         }
     }
 

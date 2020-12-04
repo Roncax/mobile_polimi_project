@@ -42,9 +42,6 @@
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_archiveFragment"
-            app:destination="@id/archiveFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_your_questions_fragment"
             app:destination="@id/your_questions_fragment" />
 
@@ -55,9 +52,11 @@
         android:label="Settings" />
     <fragment
         android:id="@+id/your_questions_fragment"
-        android:name="com.example.iadvice.home.YourQuestionsFragment"
+        android:name="com.example.iadvice.home.RecyclerViewHandlerFragment"
         android:label="My chats"
         tools:layout="@layout/your_questions_fragment">
+
+
         <action
             android:id="@+id/action_your_questions_fragment_to_newQuestionFragment"
             app:destination="@id/newQuestionFragment"
@@ -89,11 +88,5 @@
             android:id="@+id/action_mainHome_fragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:popUpTo="@id/mainHome_fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/archiveFragment"
-        android:name="com.example.iadvice.ArchiveFragment"
-        android:label="archive_fragment"
-        tools:layout="@layout/archive_fragment" >
     </fragment>
 </navigation>

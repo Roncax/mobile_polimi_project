@@ -16,7 +16,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import com.example.iadvice.database.User
 import com.google.android.material.navigation.NavigationView
@@ -133,7 +132,7 @@ class MainActivity : AppCompatActivity(){
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_settingsFragment)
             }
             R.id.archiveFragment ->{
-                findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_archiveFragment)
+                findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_your_questions_fragment)
             }
 
 
