@@ -11,6 +11,7 @@ import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import org.w3c.dom.Text
 
 
 class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
@@ -42,12 +43,16 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
         val question: TextView = itemView.findViewById(R.id.questionChatQuestion_text)
         val numberUsers: TextView = itemView.findViewById(R.id.questionNumberUsers_text)
         val Image: ImageView = itemView.findViewById(R.id.questionChat_image)
+        //todo manage depending on the situation
+        val owner: TextView = itemView.findViewById(R.id.ownerChatQuestion_text)
 
 
         fun bind(item: Chat, clickListener: OnItemClickListener, size:String){  //todo questa size passata cosi è un po' una porcata
             title.text = item.title
             question.text = item.question
             numberUsers.text = size
+            //todo manage depending on the situation
+            owner.text = item.owner
             val imageRef: StorageReference? = FirebaseStorage.getInstance().reference.child("chat_images/${item.chatId}/${item.coverId}" )
             GlideApp.with(this.itemView)
                 .load(imageRef)
@@ -65,7 +70,7 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
             fun from(parent: ViewGroup): QuestionChatViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.question_chat, parent, false)
+                    .inflate(R.layout.other_question_chat, parent, false)   //TODO load the correct layout depending on the situation
                 return QuestionChatViewHolder(view)
             }
         }
