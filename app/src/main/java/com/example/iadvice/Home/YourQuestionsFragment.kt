@@ -50,7 +50,7 @@ class YourQuestionsFragment() : Fragment(), OnItemClickListener {
 
 
     private fun attachAdapter() {
-        viewAdapter = QuestionsAdapter(chatList, this@YourQuestionsFragment)
+        viewAdapter = QuestionsAdapter(chatList, "",this@YourQuestionsFragment)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances

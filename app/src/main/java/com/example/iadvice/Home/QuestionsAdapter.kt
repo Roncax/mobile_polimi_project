@@ -14,7 +14,7 @@ import com.google.firebase.storage.StorageReference
 import org.w3c.dom.Text
 
 
-class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
+class QuestionsAdapter ( val myDataset: MutableList<Chat>, val chatType:String, val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
 
     private val listener: OnItemClickListener = itemClickListener
 
@@ -28,6 +28,7 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         val item = myDataset[position]
+        holder.getType(chatType)
         holder.bind(item, itemClickListener, myDataset.size.toString())
     }
 
@@ -45,7 +46,7 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
         val Image: ImageView = itemView.findViewById(R.id.questionChat_image)
         //todo manage depending on the situation
         val owner: TextView = itemView.findViewById(R.id.ownerChatQuestion_text)
-
+        val ownerLabel: TextView = itemView.findViewById(R.id.ownerLabel_text)
 
         fun bind(item: Chat, clickListener: OnItemClickListener, size:String){  //todo questa size passata cosi è un po' una porcata
             title.text = item.title
@@ -66,6 +67,13 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
 
         }
 
+        fun getType(chatType: String) {
+            if (chatType.equals("your")){
+                owner.visibility = View.GONE
+                ownerLabel.visibility = View.GONE
+            }
+        }
+
         companion object {
             fun from(parent: ViewGroup): QuestionChatViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -76,7 +84,6 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val itemClickListener
         }
 
     }
-
 }
 
 interface OnItemClickListener {

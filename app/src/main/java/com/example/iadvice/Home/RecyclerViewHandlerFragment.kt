@@ -44,7 +44,6 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         if(savedInstanceState != null){
             chatType = savedInstanceState.getString(KEY_CHATTYPE,"archived")
         }
@@ -100,7 +99,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
             else -> chatList = viewModel.archivedChatList
         }
 
-        viewAdapter = QuestionsAdapter(chatList, this@RecyclerViewHandlerFragment)
+        viewAdapter = QuestionsAdapter(chatList, chatType, this@RecyclerViewHandlerFragment)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances
