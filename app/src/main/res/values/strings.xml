@@ -53,6 +53,8 @@
     <string name="archive">Archive</string>
     <string name="Refresh">Refresh</string>
     <string name="ranking">Ranking</string>
+    <string name="age">Age</string>
+    <string name="gender">Gender</string>
 
 </resources>
 

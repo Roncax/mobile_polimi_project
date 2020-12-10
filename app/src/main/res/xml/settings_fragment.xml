@@ -4,7 +4,7 @@
     <PreferenceCategory app:title="@string/account_header">
 
         <EditTextPreference
-            app:key="name"
+            app:key="@string/name_title"
             app:title="@string/name_title"
             app:useSimpleSummaryProvider="true" />
 
@@ -12,6 +12,19 @@
             app:key="@string/nickname_title"
             app:title="@string/nickname_title"
             app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="@string/age"
+            app:title="@string/age"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:entries="@array/gender_array"
+            app:entryValues="@array/gender_array"
+            app:key="@string/gender"
+            app:title="@string/gender"
+            app:useSimpleSummaryProvider="true"/>
+
 
     </PreferenceCategory>
 
