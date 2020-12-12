@@ -21,7 +21,7 @@ private const val TAG = "NEWQUESTION_VIEWMODEL"
 class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
     lateinit var category: String
-    var images: MutableList<Uri?> = mutableListOf()
+    var images: MutableList<Uri> = mutableListOf()
     var coverImage: Uri = Uri.EMPTY
     lateinit var region: String
     lateinit var expiration: Date
@@ -142,15 +142,16 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     private fun uploadImages(chatId: String) {
 
         coverId = (0..1000).random()
-        val imagesRef: StorageReference? =
+        val imagesRef: StorageReference =
             FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/${coverId}")
 
-
-
-        imagesRef?.putFile(coverImage)
+        imagesRef.putFile(coverImage)
 
         for (image in images) {
-            FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/${(0..1000).random()}")
+            Log.d(TAG, "Image $image put on firebase")
+            val imageId = (0..1000).random()
+            val imagesRef: StorageReference =  FirebaseStorage.getInstance().reference.child("chat_images/${chatId}/$imageId")
+            imagesRef.putFile(image)
         }
     }
 

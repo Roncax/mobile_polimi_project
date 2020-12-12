@@ -42,6 +42,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:5.0.0'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
 
+
+
     // FirebaseUI for Cloud Storage
     implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
     // Find the latest Glide releases here: https://goo.gl/LpksbR

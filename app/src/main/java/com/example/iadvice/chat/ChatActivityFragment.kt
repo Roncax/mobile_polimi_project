@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.PersistenceUtils
@@ -81,6 +82,10 @@ class ChatActivityFragment : Fragment() {
             } else {
                 Toast.makeText(context, "Message should not be empty", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.showInfochatButton.setOnClickListener{
+            findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformations)
         }
 
 

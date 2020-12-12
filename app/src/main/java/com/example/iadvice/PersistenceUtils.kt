@@ -1,22 +1,22 @@
 package com.example.iadvice
 
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.iadvice.database.User
 import com.example.iadvice.login.LoginFragment
-import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
+
 
 object PersistenceUtils {
 
@@ -38,7 +38,7 @@ object PersistenceUtils {
         MutableLiveData<MutableMap<String, StorageReference>>()
     }
 
-    lateinit var currentChatImages: MutableList<StorageReference>
+    var currentChatImages: MutableList<StorageReference> = mutableListOf()
     val currentChatImagesLiveData: MutableLiveData<MutableList<StorageReference>> by lazy {
         MutableLiveData<MutableList<StorageReference>>()
     }
@@ -58,6 +58,11 @@ object PersistenceUtils {
     fun updateAllUserImages(images: MutableMap<String, StorageReference>){
         allUserImages = images
         allUserImagesLiveData.value = images
+    }
+
+    fun updateChatImages(images: MutableList<StorageReference>){
+        currentChatImages = images
+        currentChatImagesLiveData.value = images
     }
 
     const val TAG = "PERSISTENCE_UTILS"
@@ -164,9 +169,28 @@ object PersistenceUtils {
     }
 
 
-    fun retrieveChatImages(chatId: String){
-        val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("chat_images/" + chatId)
+    fun retrieveChatImages(){
+
+
+        val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("chat_images/" + currenChatId)
+
+        val listAllTask: Task<ListResult> = imageRef.listAll()
+        listAllTask.addOnCompleteListener { result ->
+            // should check for errors here first
+            val tempList = mutableListOf<StorageReference>()
+            val items: List<StorageReference> = result.result!!.items
+            for (item in items) {
+                Log.d(TAG, "Item retrieved $item")
+                tempList.add(item)
+            }
+            updateChatImages(tempList)
+        }
+
+
+
 
     }
 
 }
+
+

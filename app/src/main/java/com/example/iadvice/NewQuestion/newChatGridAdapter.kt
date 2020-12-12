@@ -1,4 +1,4 @@
-package com.example.iadvice.chatInformation
+package com.example.iadvice.newQuestion
 
 import android.app.Activity
 import android.net.Uri
@@ -13,7 +13,7 @@ import com.example.iadvice.R
 import com.google.firebase.storage.StorageReference
 
 
-data class InformationAdapter(var imageInformationList: List<StorageReference>, var activity: Activity) :
+data class newChatGridAdapter(var imageInformationList: List<Uri>, var activity: Activity) :
     BaseAdapter() {
 
     companion object {
@@ -46,6 +46,7 @@ data class InformationAdapter(var imageInformationList: List<StorageReference>, 
         GlideApp.with(view)
             .load(pic)
             .fitCenter()
+            .circleCrop()
             .into(imgInf)
 
         return view
