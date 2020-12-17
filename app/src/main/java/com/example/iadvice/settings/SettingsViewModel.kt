@@ -4,8 +4,12 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.example.iadvice.PersistenceUtils
+import com.example.iadvice.database.Chat
 import com.example.iadvice.database.User
+import com.example.iadvice.home.HomeFragment
 import com.example.iadvice.home.HomeFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -23,9 +27,12 @@ class SettingsViewModel : ViewModel() {
 
     lateinit var userId: String
     lateinit var uri: Uri
-    lateinit var categories: MutableList<String>
+    //lateinit var categories: MutableList<String>
 
-
+    var categoriesList: MutableList<String> = mutableListOf()
+    val categoriesListLiveData: MutableLiveData<MutableList<String>> by lazy {
+        MutableLiveData<MutableList<String>>(mutableListOf())
+    }
 
 
     private val _gender = MutableLiveData<String>()
@@ -45,65 +52,75 @@ class SettingsViewModel : ViewModel() {
         get() = _age
 
 
-    init{
+    init {
         _age.value = -1
     }
 
-    fun setAge(age: Int){
+    fun setAge(age: Int) {
         _age.value = age
-       // updateUser()
+        updateUser()
     }
 
-    fun setUsername(username: String){
+    fun setUsername(username: String) {
         _username.value = username
         updateUser()
     }
 
-    fun setGender(gender: String){
+    fun setGender(gender: String) {
         _gender.value = gender
         updateUser()
     }
 
-    fun setCountry(country: String){
+    fun setCountry(country: String) {
         _country.value = country
         updateUser()
     }
 
-
-     // update user with the selected parameters
+    // update user with the selected parameters
     fun updateUser() {
         val db = Firebase.database.reference
 
-        val user = User(
-            uid = userId,
-            username = _username.value.toString(),
-            gender = _gender.value.toString(),
-            age = 5,
-            country = _country.value.toString()
-        )
+        val user = _age.value?.let {
+            User(
+                uid = userId,
+                username = _username.value.toString(),
+                gender = _gender.value.toString(),
+                age = it.toInt(),
+                country = _country.value.toString()
+            )
+        }
 
         db.child("users").child(userId).setValue(user)
 
-
-        for (category in categories) {
+/*todo problem
+        for (category in categoriesList) {
             db.child("users").child(userId).child("categories").child(category).setValue("true")
         }
+*/
+        /*
+       FirebaseStorage.getInstance().reference.child("avatar_images/$userId").putFile(uri)
+        */
 
-         /*
-        FirebaseStorage.getInstance().reference.child("avatar_images/$userId").putFile(uri)
-         */
-
-     }
+    }
 
 
+    fun getUser() {
+        userId = PersistenceUtils.currentUser.uid
+        _gender.value = PersistenceUtils.currentUser.gender
+        _username.value = PersistenceUtils.currentUser.username
+        _age.value = PersistenceUtils.currentUser.age
+        _country.value = PersistenceUtils.currentUser.country
+    }
 
-    fun getUser(){
+
+    fun getUserCategories() {
 
         userId = FirebaseAuth.getInstance().uid!!
 
         val userListener = FirebaseDatabase.getInstance().reference
             .child("users")
             .child(userId)
+            .child("categories")
 
 
         userListener.addValueEventListener(object : ValueEventListener {
@@ -112,18 +129,15 @@ class SettingsViewModel : ViewModel() {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user = dataSnapshot.getValue<User>()
-                Log.d(TAG, "user '${user!!.uid}' retrieved")
-
-                _gender.value = user!!.gender
-                _username.value = user!!.username
-                _age.value = user!!.age.toInt()
-                _country.value = user!!.country
-                //TODO  gestione categories e uri e password!!!
-
+                for (snapshot in dataSnapshot.children) {
+                    categoriesList.add(snapshot.value.toString())
+                    Log.d(
+                        HomeFragmentViewModel.TAG,
+                        "category '${snapshot.value.toString()}' added to user '${userId}'"
+                    )
                 }
+                categoriesListLiveData.setValue(categoriesList)
+            }
         })
     }
-
-
 }

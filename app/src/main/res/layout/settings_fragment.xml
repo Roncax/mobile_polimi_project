@@ -13,28 +13,17 @@
             android:id="@+id/email_register_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="108dp"
             android:ems="10"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/first_pw_text"
-            app:layout_constraintEnd_toEndOf="@+id/categories_button"
+            app:layout_constraintEnd_toEndOf="@id/country_spinner"
+            app:layout_constraintHorizontal_bias="0.515"
             app:layout_constraintStart_toStartOf="@+id/country_spinner"
-            app:layout_constraintTop_toBottomOf="@+id/categories_button" />
+            app:layout_constraintTop_toBottomOf="@id/country_spinner" />
 
-        <EditText
-            android:id="@+id/first_pw_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/password_hint"
-            android:inputType="textPassword"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/nickname_text"
-            app:layout_constraintEnd_toEndOf="@+id/email_register_text"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/email_register_text"
-            app:layout_constraintTop_toBottomOf="@+id/email_register_text" />
 
         <EditText
             android:id="@+id/nickname_text"
@@ -45,10 +34,10 @@
             android:inputType="textPersonName"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/register_button"
-            app:layout_constraintEnd_toEndOf="@+id/first_pw_text"
-            app:layout_constraintStart_toStartOf="@+id/first_pw_text"
-            app:layout_constraintTop_toBottomOf="@+id/first_pw_text" />
-
+            app:layout_constraintEnd_toEndOf="@id/email_register_text"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/email_register_text"
+            app:layout_constraintTop_toBottomOf="@id/email_register_text" />
 
         <ImageView
             android:id="@+id/add_image_register_button"
@@ -63,6 +52,7 @@
             android:textColor="#121010"
             app:layout_constraintBottom_toTopOf="@+id/age_register_text"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/round_button"
@@ -70,19 +60,22 @@
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/country_spinner"
-            android:layout_width="143dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:visibility="visible"
             app:ccp_countryPreference="IT,GB,FR,US,DE"
             app:ccp_showFullName="true"
             app:ccp_showNameCode="false"
             app:ccp_showPhoneCode="false"
             app:layout_constraintBottom_toTopOf="@+id/email_register_text"
-            app:layout_constraintEnd_toStartOf="@+id/categories_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.425"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/age_register_text">
 
         </com.hbb20.CountryCodePicker>
+
 
         <Button
             android:id="@+id/register_button"
@@ -91,9 +84,10 @@
             android:layout_gravity="center"
             android:layout_weight="0"
             android:background="@drawable/rounded_button"
-            android:text="@string/register_button"
+            android:text="@string/edit_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/nickname_text"
+            app:layout_constraintHorizontal_bias="0.164"
             app:layout_constraintStart_toStartOf="@+id/nickname_text"
             app:layout_constraintTop_toBottomOf="@+id/nickname_text" />
 
@@ -107,18 +101,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/age_register_text"
             app:layout_constraintTop_toTopOf="@+id/age_register_text"
+            app:layout_constraintVertical_bias="1.0"
             tools:visibility="visible" />
-
-        <Button
-            android:id="@+id/categories_button"
-            android:layout_width="110dp"
-            android:layout_height="0dp"
-            android:background="@drawable/rounded_button"
-            android:text="Categories"
-            app:layout_constraintBottom_toBottomOf="@+id/country_spinner"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/country_spinner"
-            app:layout_constraintTop_toTopOf="@+id/country_spinner" />
 
         <EditText
             android:id="@+id/age_register_text"
@@ -128,59 +112,25 @@
             android:hint="Age"
             android:inputType="number"
             android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/country_spinner"
             app:layout_constraintEnd_toStartOf="@+id/gender_spinner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_image_register_button" />
 
-        <TextView
-            android:id="@+id/age_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="age_text"
-            app:layout_constraintBottom_toTopOf="@+id/country_spinner"
-            app:layout_constraintStart_toStartOf="@+id/age_register_text"
-            app:layout_constraintTop_toBottomOf="@+id/age_register_text"
-            app:layout_constraintVertical_bias="0.487" />
 
-        <TextView
-            android:id="@+id/gender_text"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="gender_text"
-            app:layout_constraintBottom_toTopOf="@+id/categories_button"
-            app:layout_constraintEnd_toEndOf="@+id/gender_spinner"
-            app:layout_constraintTop_toBottomOf="@+id/gender_spinner" />
-
-        <TextView
-            android:id="@+id/email_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="email_text"
-            app:layout_constraintBottom_toTopOf="@+id/first_pw_text"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginBottom="?attr/actionBarSize"
+            app:layout_constraintBottom_toTopOf="@id/nickname_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_register_text"
-            app:layout_constraintVertical_bias="0.487" />
+            app:layout_constraintTop_toBottomOf="@id/email_register_text"
+            app:layout_constraintVertical_bias="1.0"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <TextView
-            android:id="@+id/username_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="username_text"
-            app:layout_constraintBottom_toTopOf="@+id/register_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nickname_text"
-            app:layout_constraintVertical_bias="0.56" />
-
-        <TextView
-            android:id="@+id/country_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="country_text"
-            app:layout_constraintBottom_toTopOf="@+id/email_register_text"
-            app:layout_constraintStart_toStartOf="@+id/country_spinner"
-            app:layout_constraintTop_toBottomOf="@+id/country_spinner" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

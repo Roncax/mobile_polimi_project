@@ -55,6 +55,7 @@
     <string name="ranking">Ranking</string>
     <string name="age">Age</string>
     <string name="gender">Gender</string>
+    <string name="edit_button">EDIT PROFILE</string>
 
 </resources>
 
