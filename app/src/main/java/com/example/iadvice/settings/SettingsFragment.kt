@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
@@ -16,9 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.SettingsFragmentBinding
-import com.example.iadvice.home.OnItemClickListener
 import kotlinx.android.synthetic.main.evaluation_dialog.view.*
 import kotlinx.android.synthetic.main.register_fragment.*
 import kotlinx.android.synthetic.main.settings_fragment.*
@@ -39,6 +36,8 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    //private lateinit var viewAdapter: RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -196,7 +195,16 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
         //uploadDefaultImage()
 
-        binding.emailRegisterText.visibility = GONE
+        binding.apply {
+            registerButton.setOnClickListener {
+                (viewAdapter as CategoriesAdapter).setClickable(true)
+                //todo cambia scritta bottone e tira su tutti i nuovi valori
+                //todo passa tutto al viewModel che fa l'upload! 
+            }
+        }
+
+
+
         attachAdapter()
         return binding.root
     }
@@ -348,16 +356,17 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
             }
         }
 
+        viewAdapter = CategoriesAdapter( arrayCat, arrayChecked, this@SettingsFragment)
 
-
-
-        viewAdapter = CategoriesAdapter( viewModel.categoriesList, this@SettingsFragment)
+        (viewAdapter as CategoriesAdapter).setClickable(false)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances
             setHasFixedSize(true)
+
             adapter = viewAdapter
         }
+
     }
 
 

@@ -10,22 +10,6 @@
 
 
         <EditText
-            android:id="@+id/email_register_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="108dp"
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/first_pw_text"
-            app:layout_constraintEnd_toEndOf="@id/country_spinner"
-            app:layout_constraintHorizontal_bias="0.515"
-            app:layout_constraintStart_toStartOf="@+id/country_spinner"
-            app:layout_constraintTop_toBottomOf="@id/country_spinner" />
-
-
-        <EditText
             android:id="@+id/nickname_text"
             android:layout_width="0dp"
             android:layout_height="43dp"
@@ -34,10 +18,10 @@
             android:inputType="textPersonName"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/register_button"
-            app:layout_constraintEnd_toEndOf="@id/email_register_text"
+            app:layout_constraintEnd_toEndOf="@id/RecyclerView"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@id/email_register_text"
-            app:layout_constraintTop_toBottomOf="@id/email_register_text" />
+            app:layout_constraintStart_toStartOf="@id/RecyclerView"
+            app:layout_constraintTop_toBottomOf="@id/RecyclerView" />
 
         <ImageView
             android:id="@+id/add_image_register_button"
@@ -68,13 +52,24 @@
             app:ccp_showFullName="true"
             app:ccp_showNameCode="false"
             app:ccp_showPhoneCode="false"
-            app:layout_constraintBottom_toTopOf="@+id/email_register_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.425"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/age_register_text">
-
         </com.hbb20.CountryCodePicker>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/nickname_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/country_spinner"
+            app:layout_constraintVertical_bias="1.0" />
 
 
         <Button
@@ -118,18 +113,6 @@
             app:layout_constraintTop_toBottomOf="@+id/add_image_register_button" />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:layout_marginBottom="?attr/actionBarSize"
-            app:layout_constraintBottom_toTopOf="@id/nickname_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/email_register_text"
-            app:layout_constraintVertical_bias="1.0"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
