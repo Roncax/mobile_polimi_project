@@ -110,6 +110,8 @@ class SettingsViewModel : ViewModel() {
         _username.value = PersistenceUtils.currentUser.username
         _age.value = PersistenceUtils.currentUser.age
         _country.value = PersistenceUtils.currentUser.country
+        categoriesList = PersistenceUtils.currentUser.categories
+        categoriesListLiveData.setValue(categoriesList)
     }
 
 /*

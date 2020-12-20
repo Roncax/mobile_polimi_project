@@ -8,6 +8,8 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -76,11 +78,15 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
             genderSpinner.isEnabled = false
             binding.countrySpinner.setCcpClickable(false)
         }*/
+
+
+      //  edit_button.visibility = View.INVISIBLE
         allowClickability(false)
 
 
-        //todo scarico i valori attuali
-        viewModel.getUser()
+      //setto tutti i vari listener
+
+        viewModel.categoriesListLiveData.observe(viewLifecycleOwner, categoryObserver)
 
         viewModel.age.observe(viewLifecycleOwner, Observer { newAge ->
             binding.ageRegisterText.setText(viewModel.age.value.toString())
@@ -100,8 +106,13 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         viewModel.country.observe(viewLifecycleOwner, Observer { newCountry ->
             //todo capire come mettere il valore attuale
             // binding.countrySpinner.setCountryForNameCode("IT")
-
         })
+
+
+        //todo scarico i valori attuali
+        viewModel.getUser()
+
+
 
         /*
         viewModel.categories = mutableListOf()
@@ -205,28 +216,43 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         binding.apply {
             registerButton.setOnClickListener {
                 (viewAdapter as CategoriesAdapter).setClickable(true)
-
                 ageRegisterText.setFocusableInTouchMode(true)
-                registerButton.text = "APPLY CHANGES"
                 allowClickability(true)
+              //  registerButton.visibility = GONE
+                //editButton.visibility = VISIBLE
+                Log.d("PORCODDIO PRIMA SETTATO", "${registerButton.text.toString()}")
+                registerButton.setText(R.string.apply_changes)
+                Log.d("PORCODDIO DOPO SETTATO", "${registerButton.text.toString()}")
 
-                //todo hai cliccato che vuoi modificare
+                if( registerButton.text.toString() == "APPLY CHANGES" ){ //todo se uso R.string.apply_changes.toString() non entra
+                    Log.d("PORCODDIO", "TRUEEEE")
+                    viewModel.setUsername(binding.nicknameText.text.toString())
+                    viewModel.setAge(binding.ageRegisterText.text.toString().toInt())
+                    viewModel.setGender(binding.genderSpinner.selectedItem.toString())
+
+                    //todo torna a pagina principale
+                }
+                return@setOnClickListener
+            }
+        }
+
+/*
+        binding.apply {
+            editButton.setOnClickListener{
+                // hai cliccato che vuoi modificare
                 viewModel.setUsername(binding.nicknameText.text.toString())
                 viewModel.setAge(binding.ageRegisterText.text.toString().toInt())
                 viewModel.setGender(binding.genderSpinner.selectedItem.toString())
-
-               // checkSelectedCategories()
-
+                //todo tira su il valore del country spinner
 
 
-
-
-
-
-                //todo cambia scritta bottone e tira su tutti i nuovi valori
-                //todo passa tutto al viewModel che fa l'upload!
             }
         }
+*/
+
+
+
+
 
 
 
@@ -250,10 +276,8 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         this.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
-
             override fun afterTextChanged(editable: Editable?) {
                 afterTextChanged.invoke(editable.toString())
             }
@@ -379,7 +403,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
            arrayChecked[index] = true
        }
 
-
         viewAdapter = CategoriesAdapter(arrayCat, arrayChecked, this@SettingsFragment)
 
         (viewAdapter as CategoriesAdapter).setClickable(false)
@@ -393,8 +416,16 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
     }
 
 
-    override fun onItemClick(item: String) {
-        //Todo proviamo a cambiare il valore del boolean
+    override fun onItemClick(item: String, clicked: Boolean){
+        //Todo tira su il valore del checkbox
+
+        if(viewModel.categoriesList.containsKey(item)){
+            viewModel.categoriesList.remove(item)
+        }
+        else{
+            viewModel.categoriesList.put(item,"true")
+        }
+
     }
 
 

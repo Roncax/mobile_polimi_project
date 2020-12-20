@@ -56,6 +56,7 @@
     <string name="age">Age</string>
     <string name="gender">Gender</string>
     <string name="edit_button">EDIT PROFILE</string>
+    <string name="apply_changes">APPLY CHANGES</string>
 
 </resources>
 

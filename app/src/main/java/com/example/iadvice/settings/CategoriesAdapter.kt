@@ -64,6 +64,11 @@ class CategoriesAdapter(
 
         fun bind(item: String, check: Boolean, clickListener: OnCategoryClickListener, size: String){  //todo questa size passata cosi è un po' una porcata
             label.text = item
+
+            checkBox.setOnClickListener{
+                clickListener.onItemClick(item, checkBox.isChecked)
+            }
+
             if (check){
                 checkBox.isChecked = true
             }
@@ -87,7 +92,7 @@ class CategoriesAdapter(
 }
 
 interface OnCategoryClickListener {
-    fun onItemClick(item: String)
+    fun onItemClick(item: String, clicked: Boolean)
 }
 
 
