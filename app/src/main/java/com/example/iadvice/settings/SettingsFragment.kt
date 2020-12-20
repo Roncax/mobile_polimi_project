@@ -217,15 +217,12 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
             registerButton.setOnClickListener {
                 (viewAdapter as CategoriesAdapter).setClickable(true)
                 ageRegisterText.setFocusableInTouchMode(true)
+                nicknameText.setFocusableInTouchMode(true)
                 allowClickability(true)
-              //  registerButton.visibility = GONE
-                //editButton.visibility = VISIBLE
-                Log.d("PORCODDIO PRIMA SETTATO", "${registerButton.text.toString()}")
+
                 registerButton.setText(R.string.apply_changes)
-                Log.d("PORCODDIO DOPO SETTATO", "${registerButton.text.toString()}")
 
                 if( registerButton.text.toString() == "APPLY CHANGES" ){ //todo se uso R.string.apply_changes.toString() non entra
-                    Log.d("PORCODDIO", "TRUEEEE")
                     viewModel.setUsername(binding.nicknameText.text.toString())
                     viewModel.setAge(binding.ageRegisterText.text.toString().toInt())
                     viewModel.setGender(binding.genderSpinner.selectedItem.toString())
