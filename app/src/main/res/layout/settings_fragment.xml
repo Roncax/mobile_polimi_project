@@ -70,7 +70,7 @@
 
 
         <Button
-            android:id="@+id/register_button"
+            android:id="@+id/edit_button"
             android:layout_width="277dp"
             android:layout_height="53dp"
             android:layout_gravity="center"

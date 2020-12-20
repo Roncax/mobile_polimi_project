@@ -1,17 +1,16 @@
 package com.example.iadvice.settings
 
 import android.app.Service
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -19,9 +18,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
-import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.SettingsFragmentBinding
-import com.example.iadvice.home.HomeFragment
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.evaluation_dialog.view.*
 import kotlinx.android.synthetic.main.register_fragment.*
 import kotlinx.android.synthetic.main.settings_fragment.*
@@ -96,103 +94,30 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
 
 
-/*
+
         binding.apply {
-            registerButton.setOnClickListener {
-                if (binding.nicknameText.text.toString().isNotEmpty() and
-                    binding.ageRegisterText.text.toString().isNotEmpty() and
-                    binding.genderSpinner.selectedItem.toString().isNotEmpty()
-                ) {
-                    performRegister(binding)
-                } else {
-                    Toast.makeText(
-                        context, "You forgot a field, please fill and retry",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-
-            }
-
             addImageRegisterButton.setOnClickListener {
                 val gallery =
                     Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 startActivityForResult(gallery, 100)
             }
 
-            categoriesButton.setOnClickListener {
-                showCategoriesDialog()
-            }
-
         }
 
-
-        */
-
-
-/*
-        viewModel.age.observe(viewLifecycleOwner, Observer { newAge ->
-            binding.ageText.text = viewModel.age.value.toString()
-        })
-
-        viewModel.username.observe(viewLifecycleOwner, Observer { newUsername ->
-            binding.usernameText.text = viewModel.username.value
-        })
-
-        viewModel.country.observe(viewLifecycleOwner, Observer { newCountry ->
-            binding.countryText.text = viewModel.country.value
-        })
-
- */
-
-
-
-/*
-        binding.apply {
-            ageRegisterText.afterTextChanged { viewModel.setAge(it.toInt()) }
-            nicknameText.afterTextChanged { viewModel.setUsername(it) }
-
-
-           genderSpinner.setOnItemSelectedListener(object : OnItemSelectedListener {
-                override fun onItemSelected(
-                    parentView: AdapterView<*>?,
-                    selectedItemView: View,
-                    position: Int,
-                    id: Long
-                ) {
-                    viewModel.setGender(genderSpinner.selectedItem.toString())
-                }
-
-                override fun onNothingSelected(parentView: AdapterView<*>?) {
-                    //no code here
-                }
-            })
-
-          countrySpinner.setOnCountryChangeListener(OnCountryChangeListener {
-                viewModel.setCountry(countrySpinner.selectedCountryName)
-            })
-
-            /*Set listener for categories button
-                categoriesButton.setOnClickListener {
-                    showCategoriesDialog()
-                }
-             */
-        }
-*/
-
+        //todo da chiamare
         //uploadDefaultImage()
 
 
 
         binding.apply {
-            registerButton.setOnClickListener {
+            editButton.setOnClickListener {
                 (viewAdapter as CategoriesAdapter).setClickable(true)
                 nicknameText.setFocusableInTouchMode(true)
                 allowClickability(true)
 
-                registerButton.setText(R.string.apply_changes)
+                editButton.setText(R.string.apply_changes)
 
-                if( registerButton.text.toString() == "APPLY CHANGES" ){ //todo se uso R.string.apply_changes.toString() non entra
+                if( editButton.text.toString() == "APPLY CHANGES" ){ //todo se uso R.string.apply_changes.toString() non entra
                     viewModel.setUsername(binding.nicknameText.text.toString())
                     viewModel.setGender(binding.genderSpinner.selectedItem.toString())
 
@@ -201,26 +126,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
                 return@setOnClickListener
             }
         }
-
-/*
-        binding.apply {
-            editButton.setOnClickListener{
-                // hai cliccato che vuoi modificare
-                viewModel.setUsername(binding.nicknameText.text.toString())
-                viewModel.setAge(binding.ageRegisterText.text.toString().toInt())
-                viewModel.setGender(binding.genderSpinner.selectedItem.toString())
-                //todo tira su il valore del country spinner
-
-
-            }
-        }
-*/
-
-
-
-
-
-
 
         return binding.root
     }
@@ -249,9 +154,9 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
     }
 
 
-
-/*
+    /*    //todo fare upload immagine nuova
     private fun performRegister(binding: SettingsFragmentBinding) {
+
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(
             binding.emailRegisterText.text.toString(),
@@ -283,6 +188,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
                 Toast.LENGTH_SHORT
             ).show()
         }
+
     }
 
 
@@ -315,45 +221,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 */
 
     private fun attachAdapter() {
-
-
-
-        /* Initialize a boolean array of checked items
-        val arrayChecked = booleanArrayOf(true, false, false, true)
-
-        viewModel.categoriesList = mutableListOf()
-        for (i in arrayCat.indices) {
-            val checked = arrayChecked[i]
-            if (checked) {
-                viewModel.categoriesList.add(arrayCat[i])
-            }
-        }
-        */
-
-
-        /*todo setta tutto a false
-        var categoriesList: MutableMap<String, Boolean> = mutableMapOf<String, Boolean>()
-        for (i in arrayCat.indices){
-            categoriesList.put(arrayCat[i],false)
-        }
-
-        categoriesList.putAll(viewModel.categoriesList)
-        */
-
-
-/*
-        val arrayCat = resources.getStringArray(R.array.categories)
-        val arrayChecked = booleanArrayOf(true, false, false, true)
-        //val arrayChecked: MutableCollection<String> = viewModel.categoriesList.values
-
-        //todo mutablemap con tutto settato a false
-        var all: MutableMap<String, String> = mutableMapOf<String, String>()
-        for (i in arrayCat.indices){
-            all.put(arrayCat[i], "false")
-        }
-        all.putAll(viewModel.categoriesList)
-*/
-
 
         //array che contiene tutte le categorie
         val arrayCat = resources.getStringArray(R.array.categories)
@@ -389,9 +256,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         else{
             viewModel.categoriesList.put(item,"true")
         }
-
     }
-
-
 }
 
