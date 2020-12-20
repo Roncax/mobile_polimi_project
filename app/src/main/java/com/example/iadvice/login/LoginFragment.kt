@@ -91,6 +91,7 @@ class LoginFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
 
+                PersistenceUtils.retrieveUser()
             }
             .addOnFailureListener {
                 Toast.makeText(

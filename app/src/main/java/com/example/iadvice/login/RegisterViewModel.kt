@@ -13,7 +13,6 @@ class RegisterViewModel : ViewModel() {
 
     lateinit var uid: String
     lateinit var username: String
-    var age = -1
     lateinit var gender: String
     lateinit var uri: Uri
     lateinit var country: String
@@ -27,7 +26,6 @@ class RegisterViewModel : ViewModel() {
             uid = uid,
             username = username,
             gender = gender,
-            age = age,
             country = country
         )
 

@@ -37,12 +37,12 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="feedback_header">Feedback</string>
     <string name="feedback_title">Send feedback</string>
-    <string name="question_argument_edit">Title or question…</string>
+    <string name="question_argument_edit">Title</string>
     <string name="new_question_button">Create</string>
     <string name="category">Category</string>
     <string name="email">Email</string>
     <string name="categories">Categories</string>
-    <string name="chat_cover">Chat cover</string>
+    <string name="chat_cover">Click to select the cover</string>
     <string name="reference_categories_and_sex">Choose the category, gender and country</string>
     <string name="maximum_participants">Number of maximum participants</string>
     <string name="how_long_should_the_chat_last">How long should the chat last?</string>

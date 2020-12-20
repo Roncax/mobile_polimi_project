@@ -69,7 +69,9 @@ object PersistenceUtils {
 
 
     init {
-        retrieveUser()
+        if (!FirebaseAuth.getInstance().currentUser?.uid.isNullOrBlank()) {
+            retrieveUser()
+        }
         retrieveSortedUserList()
 
     }

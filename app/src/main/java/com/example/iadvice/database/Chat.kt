@@ -6,7 +6,7 @@ import java.util.*
 @IgnoreExtraProperties
 data class Chat(
     var chatId: String = "",
-    var owner: String = "",
+    var owner: MutableMap<String, String> = mutableMapOf(),
     var title: String = "",
     var question: String = "",
     var isActive: Boolean = true,

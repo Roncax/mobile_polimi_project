@@ -46,7 +46,6 @@ data class newChatGridAdapter(var imageInformationList: List<Uri>, var activity:
         GlideApp.with(view)
             .load(pic)
             .fitCenter()
-            .circleCrop()
             .into(imgInf)
 
         return view

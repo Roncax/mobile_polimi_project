@@ -64,11 +64,11 @@ class NewQuestionFragment : Fragment() {
 
         binding.apply {
             createButton.setOnClickListener {
-                if (titleTexbox.text.toString().isNotEmpty()) {
+                if (titleTexbox.text.toString().isNotEmpty() and questionEditTextView.text.toString().isNotEmpty()) {
                     onCreateNewQuestion()
                 } else {
                     Toast.makeText(
-                        context, "You forgot to insert the title, please fill and retry",
+                        context, "You forgot to insert the title or the question, please fill and retry",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -133,6 +133,7 @@ class NewQuestionFragment : Fragment() {
         viewModel.sex = binding.genderSpinner.selectedItem.toString()
         viewModel.title = binding.titleTexbox.text.toString()
         viewModel.category = binding.categorySpinner.selectedItem.toString()
+        viewModel.question = binding.questionEditTextView.text.toString()
         viewModel.onCreateNewQuestion()
         Log.d(TAG, "onCreateNewQuestion")
     }

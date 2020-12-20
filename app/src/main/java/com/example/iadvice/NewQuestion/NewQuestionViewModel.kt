@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.database.Chat
 import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +22,7 @@ private const val TAG = "NEWQUESTION_VIEWMODEL"
 class NewQuestionViewModel(private val application: Application) : ViewModel() {
 
     lateinit var category: String
+    lateinit var question: String
     var images: MutableList<Uri> = mutableListOf()
     var coverImage: Uri = Uri.EMPTY
     lateinit var region: String
@@ -105,12 +107,13 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
                 uploadImages(chatId)
                 val newChat = Chat(
                     chatId = chatId,
-                    owner = userId,
+                    owner = mutableMapOf(userId to PersistenceUtils.currentUser.username),
                     title = title,
                     isActive = true,
                     userList = userMap,
                     expiration = expiration,
-                    coverId = coverId
+                    coverId = coverId,
+                    question = question
                 )
                 mDatabase.child("chats").child(chatId).setValue(newChat)
 

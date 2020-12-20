@@ -58,7 +58,6 @@ class RegisterFragment : Fragment() {
         binding.apply {
             registerButton.setOnClickListener {
                 if (binding.nicknameText.text.toString().isNotEmpty() and
-                    binding.ageRegisterText.text.toString().isNotEmpty() and
                     binding.genderSpinner.selectedItem.toString().isNotEmpty() and
                     binding.emailRegisterText.text.toString().isNotEmpty() and
                     binding.firstPwText.text.toString().isNotEmpty()
@@ -155,7 +154,6 @@ class RegisterFragment : Fragment() {
 
                 viewModel.username = binding.nicknameText.text.toString()
                 viewModel.uid = uid
-                viewModel.age = binding.ageRegisterText.text.toString().toInt()
                 viewModel.gender = binding.genderSpinner.selectedItem.toString()
                 viewModel.uri = imageUri
                 viewModel.country = binding.countrySpinner.selectedCountryName
