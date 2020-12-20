@@ -47,20 +47,6 @@ class SettingsViewModel : ViewModel() {
     val username: LiveData<String>
         get() = _username
 
-    private val _age = MutableLiveData<Int>()
-    val age: LiveData<Int>
-        get() = _age
-
-
-    init {
-        _age.value = -1
-    }
-
-    fun setAge(age: Int) {
-        _age.value = age
-        updateUser()
-    }
-
     fun setUsername(username: String) {
         _username.value = username
         updateUser()
@@ -80,15 +66,14 @@ class SettingsViewModel : ViewModel() {
     fun updateUser() {
         val db = Firebase.database.reference
 
-        val user = _age.value?.let {
+        val user =
             User(
                 uid = userId,
                 username = _username.value.toString(),
                 gender = _gender.value.toString(),
-                age = it.toInt(),
                 country = _country.value.toString()
             )
-        }
+
 
         db.child("users").child(userId).setValue(user)
 
@@ -108,7 +93,6 @@ class SettingsViewModel : ViewModel() {
         userId = PersistenceUtils.currentUser.uid
         _gender.value = PersistenceUtils.currentUser.gender
         _username.value = PersistenceUtils.currentUser.username
-        _age.value = PersistenceUtils.currentUser.age
         _country.value = PersistenceUtils.currentUser.country
         categoriesList = PersistenceUtils.currentUser.categories
         categoriesListLiveData.setValue(categoriesList)

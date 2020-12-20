@@ -40,6 +40,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
     private lateinit var viewModel: SettingsViewModel
     private lateinit var binding: SettingsFragmentBinding
 
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     //private lateinit var viewAdapter: RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>
@@ -67,30 +68,11 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         // viewModelProviders used to not destroy the viewmodel until detached
         requireNotNull(this.activity).application
 
-
-        //Todo prima di tutto setto tutto come non editabile, e gli metto come testo il valore attuale
-
-        /*binding.apply {
-            ageRegisterText.isFocusable = false
-            ageRegisterText.isClickable = false
-            nicknameText.isFocusable = false
-            nicknameText.isClickable = false
-            genderSpinner.isEnabled = false
-            binding.countrySpinner.setCcpClickable(false)
-        }*/
-
-
-      //  edit_button.visibility = View.INVISIBLE
         allowClickability(false)
 
 
       //setto tutti i vari listener
-
         viewModel.categoriesListLiveData.observe(viewLifecycleOwner, categoryObserver)
-
-        viewModel.age.observe(viewLifecycleOwner, Observer { newAge ->
-            binding.ageRegisterText.setText(viewModel.age.value.toString())
-        })
 
         viewModel.username.observe(viewLifecycleOwner, Observer { newUsername ->
             binding.nicknameText.setText(viewModel.username.value)
@@ -108,21 +90,10 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
             // binding.countrySpinner.setCountryForNameCode("IT")
         })
 
-
-        //todo scarico i valori attuali
+        //scarico i valori attuali
         viewModel.getUser()
 
 
-
-        /*
-        viewModel.categories = mutableListOf()
-        for (i in arrayCat.indices) {
-            val checked = arrayChecked[i]
-            if (checked) {
-                viewModel.categories.add(arrayCat[i])
-            }
-        }
-*/
 
 
 /*
@@ -216,7 +187,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         binding.apply {
             registerButton.setOnClickListener {
                 (viewAdapter as CategoriesAdapter).setClickable(true)
-                ageRegisterText.setFocusableInTouchMode(true)
                 nicknameText.setFocusableInTouchMode(true)
                 allowClickability(true)
 
@@ -224,7 +194,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
                 if( registerButton.text.toString() == "APPLY CHANGES" ){ //todo se uso R.string.apply_changes.toString() non entra
                     viewModel.setUsername(binding.nicknameText.text.toString())
-                    viewModel.setAge(binding.ageRegisterText.text.toString().toInt())
                     viewModel.setGender(binding.genderSpinner.selectedItem.toString())
 
                     //todo torna a pagina principale
@@ -258,8 +227,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
     private fun allowClickability(bool: Boolean) {
         binding.apply {
-            ageRegisterText.isFocusable = bool
-            ageRegisterText.isClickable = bool
             nicknameText.isFocusable = bool
             nicknameText.isClickable = bool
             genderSpinner.isEnabled = bool

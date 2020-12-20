@@ -22,10 +22,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/RecyclerView" />
 
+
         <ImageView
             android:id="@+id/add_image_register_button"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/default_picture"
             android:contextClickable="true"
             android:gravity="center_vertical|center_horizontal"
@@ -33,9 +35,8 @@
             android:text="@string/add_image_button"
             android:textAlignment="center"
             android:textColor="#121010"
-            app:layout_constraintBottom_toTopOf="@+id/age_register_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.488"
+            app:layout_constraintHorizontal_bias="0.479"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/round_button"
@@ -44,19 +45,16 @@
         <com.hbb20.CountryCodePicker
             android:id="@+id/country_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="60dp"
             android:visibility="visible"
             app:ccp_countryPreference="IT,GB,FR,US,DE"
             app:ccp_showFullName="true"
             app:ccp_showNameCode="false"
             app:ccp_showPhoneCode="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.425"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/age_register_text">
-        </com.hbb20.CountryCodePicker>
-
+            app:layout_constraintTop_toBottomOf="@+id/gender_spinner"></com.hbb20.CountryCodePicker>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecyclerView"
@@ -85,34 +83,18 @@
             app:layout_constraintTop_toBottomOf="@+id/nickname_text" />
 
 
-
         <Spinner
             android:id="@+id/gender_spinner"
             android:layout_width="124dp"
             android:layout_height="0dp"
+            android:layout_marginTop="64dp"
             android:entries="@array/gender_array"
             android:spinnerMode="dropdown"
-            app:layout_constraintBottom_toBottomOf="@+id/age_register_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/age_register_text"
-            app:layout_constraintTop_toTopOf="@+id/age_register_text"
-            app:layout_constraintVertical_bias="1.0"
-            tools:visibility="visible" />
-
-        <EditText
-            android:id="@+id/age_register_text"
-            android:layout_width="84dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Age"
-            android:inputType="number"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/country_spinner"
-            app:layout_constraintEnd_toStartOf="@+id/gender_spinner"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_image_register_button" />
-
-
+            app:layout_constraintTop_toBottomOf="@+id/add_image_register_button"
+            tools:visibility="visible" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
