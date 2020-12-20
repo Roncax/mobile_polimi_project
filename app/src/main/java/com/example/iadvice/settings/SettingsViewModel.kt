@@ -29,9 +29,9 @@ class SettingsViewModel : ViewModel() {
     lateinit var uri: Uri
     //lateinit var categories: MutableList<String>
 
-    var categoriesList: MutableList<String> = mutableListOf()
-    val categoriesListLiveData: MutableLiveData<MutableList<String>> by lazy {
-        MutableLiveData<MutableList<String>>(mutableListOf())
+    var categoriesList: MutableMap<String, String> = mutableMapOf<String, String>()
+    val categoriesListLiveData: MutableLiveData<MutableMap<String, String>> by lazy {
+        MutableLiveData<MutableMap<String, String>>()
     }
 
 
@@ -92,11 +92,11 @@ class SettingsViewModel : ViewModel() {
 
         db.child("users").child(userId).setValue(user)
 
-/*todo problem
-        for (category in categoriesList) {
+
+        for (category in categoriesList.keys) {
             db.child("users").child(userId).child("categories").child(category).setValue("true")
         }
-*/
+
         /*
        FirebaseStorage.getInstance().reference.child("avatar_images/$userId").putFile(uri)
         */
@@ -112,7 +112,7 @@ class SettingsViewModel : ViewModel() {
         _country.value = PersistenceUtils.currentUser.country
     }
 
-
+/*
     fun getUserCategories() {
 
         userId = FirebaseAuth.getInstance().uid!!
@@ -139,5 +139,5 @@ class SettingsViewModel : ViewModel() {
                 categoriesListLiveData.setValue(categoriesList)
             }
         })
-    }
+    }*/
 }

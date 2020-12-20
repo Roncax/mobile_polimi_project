@@ -1,21 +1,25 @@
 package com.example.iadvice.settings
 
-import com.example.iadvice.R
+import android.app.Service
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.iadvice.R
+import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.SettingsFragmentBinding
+import com.example.iadvice.home.HomeFragment
 import kotlinx.android.synthetic.main.evaluation_dialog.view.*
 import kotlinx.android.synthetic.main.register_fragment.*
 import kotlinx.android.synthetic.main.settings_fragment.*
@@ -39,6 +43,15 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
     //private lateinit var viewAdapter: RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>
 
 
+    private val categoryObserver = Observer<MutableMap<String,String>> { category ->
+        Log.d(TAG, "new category updated: '${category}' ")
+
+        attachAdapter()
+    }
+
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,14 +68,15 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
         //Todo prima di tutto setto tutto come non editabile, e gli metto come testo il valore attuale
 
-        binding.apply {
+        /*binding.apply {
             ageRegisterText.isFocusable = false
             ageRegisterText.isClickable = false
             nicknameText.isFocusable = false
             nicknameText.isClickable = false
             genderSpinner.isEnabled = false
             binding.countrySpinner.setCcpClickable(false)
-        }
+        }*/
+        allowClickability(false)
 
 
         //todo scarico i valori attuali
@@ -89,12 +103,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
         })
 
-
-        val arrayCat = resources.getStringArray(R.array.categories)
-
-        // Initialize a boolean array of checked items
-        val arrayChecked = booleanArrayOf(false, false, false, true)
-
         /*
         viewModel.categories = mutableListOf()
         for (i in arrayCat.indices) {
@@ -111,8 +119,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
             registerButton.setOnClickListener {
                 if (binding.nicknameText.text.toString().isNotEmpty() and
                     binding.ageRegisterText.text.toString().isNotEmpty() and
-                    binding.genderSpinner.selectedItem.toString().isNotEmpty() and
-                    binding.emailRegisterText.text.toString().isNotEmpty()
+                    binding.genderSpinner.selectedItem.toString().isNotEmpty()
                 ) {
                     performRegister(binding)
                 } else {
@@ -157,8 +164,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
  */
 
 
-        //Todo email, password e immagine
-
 
 /*
         binding.apply {
@@ -195,19 +200,50 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
         //uploadDefaultImage()
 
+
+
         binding.apply {
             registerButton.setOnClickListener {
                 (viewAdapter as CategoriesAdapter).setClickable(true)
+
+                ageRegisterText.setFocusableInTouchMode(true)
+                registerButton.text = "APPLY CHANGES"
+                allowClickability(true)
+
+                //todo hai cliccato che vuoi modificare
+                viewModel.setUsername(binding.nicknameText.text.toString())
+                viewModel.setAge(binding.ageRegisterText.text.toString().toInt())
+                viewModel.setGender(binding.genderSpinner.selectedItem.toString())
+
+               // checkSelectedCategories()
+
+
+
+
+
+
+
                 //todo cambia scritta bottone e tira su tutti i nuovi valori
-                //todo passa tutto al viewModel che fa l'upload! 
+                //todo passa tutto al viewModel che fa l'upload!
             }
         }
 
 
 
-        attachAdapter()
         return binding.root
     }
+
+    private fun allowClickability(bool: Boolean) {
+        binding.apply {
+            ageRegisterText.isFocusable = bool
+            ageRegisterText.isClickable = bool
+            nicknameText.isFocusable = bool
+            nicknameText.isClickable = bool
+            genderSpinner.isEnabled = bool
+            binding.countrySpinner.setCcpClickable(bool)
+        }
+    }
+
 
     //function used to recycle code for the EditText listeners of different fields
     fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
@@ -224,56 +260,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         })
     }
 
-
-    // Method to show an alert dialog with multiple choice list items
-    private fun showCategoriesDialog() {
-        // Late initialize an alert dialog object
-        lateinit var dialog: AlertDialog
-
-        // Initialize an array of colors
-        //TODO upload from array resource
-        val arrayCat = resources.getStringArray(R.array.categories)
-
-        // Initialize a boolean array of checked items
-        val arrayChecked = booleanArrayOf(false, false, false, true)
-
-
-        // Initialize a new instance of alert dialog builder object
-        val builder = AlertDialog.Builder(this.requireContext())
-
-        // Set a title for alert dialog
-        builder.setTitle("Choose categories of interest")
-
-        // Define multiple choice items for alert dialog
-        builder.setMultiChoiceItems(arrayCat, arrayChecked) { _, which, isChecked ->
-            // Update the clicked item checked status
-            arrayChecked[which] = isChecked
-
-            // Get the clicked item
-            val categories = arrayCat[which]
-
-
-        }
-
-        // Set the positive/yes button click listener
-        builder.setPositiveButton("OK") { _, _ ->
-
-            viewModel.categoriesList = mutableListOf()
-            for (i in arrayCat.indices) {
-                val checked = arrayChecked[i]
-                if (checked) {
-                    viewModel.categoriesList.add(arrayCat[i])
-                }
-            }
-        }
-
-
-        // Initialize the AlertDialog using builder object
-        dialog = builder.create()
-
-        // Finally, display the alert dialog
-        dialog.show()
-    }
 
 
 /*
@@ -342,10 +328,9 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
     private fun attachAdapter() {
 
-        val arrayCat = resources.getStringArray(R.array.categories)
 
-        // Initialize a boolean array of checked items
-        //val arrayChecked = booleanArrayOf(false, false, false, true)
+
+        /* Initialize a boolean array of checked items
         val arrayChecked = booleanArrayOf(true, false, false, true)
 
         viewModel.categoriesList = mutableListOf()
@@ -355,15 +340,53 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
                 viewModel.categoriesList.add(arrayCat[i])
             }
         }
+        */
 
-        viewAdapter = CategoriesAdapter( arrayCat, arrayChecked, this@SettingsFragment)
+
+        /*todo setta tutto a false
+        var categoriesList: MutableMap<String, Boolean> = mutableMapOf<String, Boolean>()
+        for (i in arrayCat.indices){
+            categoriesList.put(arrayCat[i],false)
+        }
+
+        categoriesList.putAll(viewModel.categoriesList)
+        */
+
+
+/*
+        val arrayCat = resources.getStringArray(R.array.categories)
+        val arrayChecked = booleanArrayOf(true, false, false, true)
+        //val arrayChecked: MutableCollection<String> = viewModel.categoriesList.values
+
+        //todo mutablemap con tutto settato a false
+        var all: MutableMap<String, String> = mutableMapOf<String, String>()
+        for (i in arrayCat.indices){
+            all.put(arrayCat[i], "false")
+        }
+        all.putAll(viewModel.categoriesList)
+*/
+
+
+        //array che contiene tutte le categorie
+        val arrayCat = resources.getStringArray(R.array.categories)
+        //array che contiene solo le categorie selezionate
+        val categories = viewModel.categoriesList.keys
+        //array che mappa categoria con il fatto che sia selezionata o meno
+        val arrayChecked = BooleanArray(arrayCat.size){false}
+
+       for (c in categories){
+           val index = arrayCat.indexOf(c)
+           arrayChecked[index] = true
+       }
+
+
+        viewAdapter = CategoriesAdapter(arrayCat, arrayChecked, this@SettingsFragment)
 
         (viewAdapter as CategoriesAdapter).setClickable(false)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances
             setHasFixedSize(true)
-
             adapter = viewAdapter
         }
 
@@ -371,7 +394,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
 
     override fun onItemClick(item: String) {
-        TODO("Not yet implemented")
+        //Todo proviamo a cambiare il valore del boolean
     }
 
 
