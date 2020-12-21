@@ -22,7 +22,6 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
     lateinit var userId: String
-    lateinit var currentChatId:String
 
     var myChatList: MutableList<Chat> = mutableListOf()
     val myChatListLiveData: MutableLiveData<MutableList<Chat>> by lazy {

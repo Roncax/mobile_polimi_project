@@ -34,11 +34,7 @@ class RankingFragment : Fragment() {
         const val TAG = "RANKING_FRAGMENT"
     }
 
-
-    private lateinit var viewModel: RankingViewModel
-    private lateinit var adapter: MessageAdapter
     private lateinit var binding: RankingFragmentBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,23 +46,12 @@ class RankingFragment : Fragment() {
             inflater,
             R.layout.ranking_fragment, container, false
         )
-        Log.d(TAG, "Current user rank list: ${PersistenceUtils.userListRank}}")
-
-
 
         binding.rankingList.layoutManager = LinearLayoutManager(context)
         val adapter = CustomAdapter(requireContext(), PersistenceUtils.userListRank)
         binding.rankingList.adapter = adapter
 
         return binding.root
-    }
-
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(RankingViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 
 }

@@ -48,7 +48,6 @@ class CustomAdapter(val context: Context, private val dataSet: MutableList<User>
                 .load(image)
                 .circleCrop()
                 .into(imageViewUser)
-            //TODO aggiungere caricamento immagine dell'utente
 
 
         }

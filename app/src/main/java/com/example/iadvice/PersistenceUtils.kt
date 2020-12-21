@@ -21,7 +21,12 @@ import com.google.firebase.storage.StorageReference
 object PersistenceUtils {
 
     lateinit var currenChatId: String
-    lateinit var userListRank:MutableList<User>
+
+
+    var userListRank:MutableList<User> = mutableListOf()
+    val userListRankLiveData: MutableLiveData<User> by lazy {
+        MutableLiveData<User>(User())
+    }
 
     var currentUser: User = User()
     val currentUserLiveData: MutableLiveData<User> by lazy {

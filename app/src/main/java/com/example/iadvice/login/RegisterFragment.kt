@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.example.iadvice.GlideApp
 import com.example.iadvice.R
 import com.example.iadvice.databinding.RegisterFragmentBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -93,33 +94,27 @@ class RegisterFragment : Fragment() {
         // Late initialize an alert dialog object
         lateinit var dialog: AlertDialog
 
-        // Initialize an array of colors
-        //TODO upload from array resource
         val arrayCat = resources.getStringArray(R.array.categories)
 
         // Initialize a boolean array of checked items
-        val arrayChecked = booleanArrayOf(false, false, false, true)
+        val arrayChecked = BooleanArray(arrayCat.size) { i -> arrayCat[i] == "Casual" }
 
 
         // Initialize a new instance of alert dialog builder object
-        val builder = AlertDialog.Builder(this.requireContext())
+        val builder = MaterialAlertDialogBuilder(this.requireContext())
 
         // Set a title for alert dialog
-        builder.setTitle("Choose categories of interest")
+        builder.setTitle("Categories of interest")
 
         // Define multiple choice items for alert dialog
         builder.setMultiChoiceItems(arrayCat, arrayChecked) { _, which, isChecked ->
             // Update the clicked item checked status
             arrayChecked[which] = isChecked
 
-            // Get the clicked item
-            val categories = arrayCat[which]
-
-
         }
 
         // Set the positive/yes button click listener
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton("Done") { _, _ ->
 
             viewModel.categories = mutableListOf()
             for (i in arrayCat.indices) {
