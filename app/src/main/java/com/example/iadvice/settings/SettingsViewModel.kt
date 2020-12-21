@@ -82,7 +82,7 @@ class SettingsViewModel : ViewModel() {
             db.child("users").child(userId).child("categories").child(category).setValue("true")
         }
 
-        /*
+        /* todo immagine
        FirebaseStorage.getInstance().reference.child("avatar_images/$userId").putFile(uri)
         */
 
@@ -98,32 +98,4 @@ class SettingsViewModel : ViewModel() {
         categoriesListLiveData.setValue(categoriesList)
     }
 
-/*
-    fun getUserCategories() {
-
-        userId = FirebaseAuth.getInstance().uid!!
-
-        val userListener = FirebaseDatabase.getInstance().reference
-            .child("users")
-            .child(userId)
-            .child("categories")
-
-
-        userListener.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(dataSnapshot: DatabaseError) {
-                Log.e(TAG, "Cancelled ids retrieve on fetch user '$userId'")
-            }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    categoriesList.add(snapshot.value.toString())
-                    Log.d(
-                        HomeFragmentViewModel.TAG,
-                        "category '${snapshot.value.toString()}' added to user '${userId}'"
-                    )
-                }
-                categoriesListLiveData.setValue(categoriesList)
-            }
-        })
-    }*/
 }

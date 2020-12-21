@@ -38,7 +38,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
     private lateinit var viewModel: SettingsViewModel
     private lateinit var binding: SettingsFragmentBinding
 
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     //private lateinit var viewAdapter: RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>
@@ -49,9 +48,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
         attachAdapter()
     }
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +65,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         allowClickability(false)
 
 
-      //setto tutti i vari listener
+      //set listeners
         viewModel.categoriesListLiveData.observe(viewLifecycleOwner, categoryObserver)
 
         viewModel.username.observe(viewLifecycleOwner, Observer { newUsername ->
@@ -84,11 +80,11 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         })
 
         viewModel.country.observe(viewLifecycleOwner, Observer { newCountry ->
-            //todo capire come mettere il valore attuale
+        //todo capire come mettere il valore attuale col nome del paese e non con il codice
             // binding.countrySpinner.setCountryForNameCode("IT")
         })
 
-        //scarico i valori attuali
+        //setto i valori attuali
         viewModel.getUser()
 
 
@@ -117,10 +113,10 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
                 editButton.setText(R.string.apply_changes)
 
-                if( editButton.text.toString() == "APPLY CHANGES" ){ //todo se uso R.string.apply_changes.toString() non entra
+                if( editButton.text.toString() == "APPLY CHANGES" ){ //se uso R.string.apply_changes.toString() non entra
                     viewModel.setUsername(binding.nicknameText.text.toString())
                     viewModel.setGender(binding.genderSpinner.selectedItem.toString())
-
+                    viewModel.setCountry(binding.countrySpinner.selectedCountryName.toString())
                     //todo torna a pagina principale
                 }
                 return@setOnClickListener
