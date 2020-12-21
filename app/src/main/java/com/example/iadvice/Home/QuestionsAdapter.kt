@@ -53,7 +53,7 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val chatType:String, 
             question.text = item.question
             numberUsers.text = size
             //todo manage depending on the situation
-            owner.text = item.owner
+            owner.text = item.owner.values.toString()
             val imageRef: StorageReference? = FirebaseStorage.getInstance().reference.child("chat_images/${item.chatId}/${item.coverId}" )
             GlideApp.with(this.itemView)
                 .load(imageRef)
