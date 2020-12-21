@@ -10,7 +10,7 @@
         android:id="@+id/questionChat_image"
         android:layout_width="@dimen/icon_size"
         android:layout_height="60dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,11 +22,10 @@
         android:id="@+id/imageView"
         android:layout_width="24dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/questionNumberUsers_text"
         app:layout_constraintEnd_toStartOf="@+id/questionNumberUsers_text"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/questionChatTitle_text"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_person" />
 
     <TextView
@@ -34,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:maxLines="1"
@@ -53,7 +52,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/questionChatTitle_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageView" />
@@ -70,4 +69,26 @@
         app:layout_constraintStart_toEndOf="@+id/questionChat_image"
         app:layout_constraintTop_toBottomOf="@+id/questionChatTitle_text"
         tools:text="Question" />
+
+    <TextView
+        android:id="@+id/ownerLabel_text"
+        android:layout_width="0dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Owner:"
+        app:layout_constraintStart_toEndOf="@+id/questionChat_image"
+        app:layout_constraintTop_toBottomOf="@+id/questionChatQuestion_text" />
+
+    <TextView
+        android:id="@+id/ownerChatQuestion_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="OwnerIdentifier"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ownerLabel_text"
+        app:layout_constraintEnd_toEndOf="@+id/questionChatQuestion_text"
+        app:layout_constraintStart_toEndOf="@+id/ownerLabel_text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.iadvice.home
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
 
+const val KEY_CHATTYPE = "type_of_chat_to_display"
 
 class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
@@ -41,6 +43,10 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if(savedInstanceState != null){
+            chatType = savedInstanceState.getString(KEY_CHATTYPE,"archived")
+        }
 
         viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
         Log.d(TAG,"chiamo viewModel.fetch")
@@ -69,6 +75,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onActivityCreated called")
         super.onActivityCreated(savedInstanceState)
         viewModel.fetchList()
     }
@@ -92,7 +99,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
             else -> chatList = viewModel.archivedChatList
         }
 
-        viewAdapter = QuestionsAdapter(chatList, this@RecyclerViewHandlerFragment)
+        viewAdapter = QuestionsAdapter(chatList, chatType, this@RecyclerViewHandlerFragment)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances
@@ -123,4 +130,27 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     }
 
 
+    /**
+     * Called to ask the fragment to save its current dynamic state, so it
+     * can later be reconstructed in a new instance of its process is
+     * restarted.  If a new instance of the fragment later needs to be
+     * created, the data you place in the Bundle here will be available
+     * in the Bundle given to [.onCreate],
+     * [.onCreateView], and
+     * [.onActivityCreated].
+     *
+     *
+     * This corresponds to [ Activity.onSaveInstanceState(Bundle)][Activity.onSaveInstanceState] and most of the discussion there
+     * applies here as well.  Note however: *this method may be called
+     * at any time before [.onDestroy]*.  There are many situations
+     * where a fragment may be mostly torn down (such as when placed on the
+     * back stack with no UI showing), but its state will not be saved until
+     * its owning activity actually needs to save its state.
+     *
+     * @param outState Bundle in which to place your saved state.
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState!!.putString(KEY_CHATTYPE,chatType)
+    }
 }

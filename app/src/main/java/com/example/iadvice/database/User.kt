@@ -8,5 +8,6 @@ data class User(
     var username: String = "",
     var gender: String = "",
     var country: String = "",
+    var categories: MutableMap<String, String> = mutableMapOf<String, String>(),
     var points: Int = 0
 )
