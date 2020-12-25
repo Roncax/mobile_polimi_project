@@ -1,5 +1,6 @@
 package com.example.iadvice.home
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -49,7 +50,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding = DataBindingUtil.inflate<HomeFragmentBinding>(
             inflater,
@@ -58,6 +59,10 @@ class HomeFragment : Fragment() {
 
         //The appbar become VISIBLE
         requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
+
+        //Force the screen orientation
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+
         return binding.root
     }
 

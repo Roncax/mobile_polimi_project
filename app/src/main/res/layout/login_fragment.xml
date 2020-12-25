@@ -9,23 +9,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:minWidth="10dp"
         tools:context=".login.LoginFragment">
+
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="30dp"
             android:contentDescription="@string/logo_description"
+            app:layout_constraintBottom_toTopOf="@+id/space2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             app:srcCompat="@drawable/iadvice_logo"
             tools:srcCompat="@drawable/iadvice_logo" />
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/username_text_layout"
@@ -34,10 +38,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="10dp"
             android:hint="@string/username_text"
             app:layout_constraintBottom_toTopOf="@+id/password_text_layout"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logo"
             app:layout_constraintVertical_chainStyle="packed">
@@ -45,8 +49,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username_text"
                 android:layout_width="match_parent"
-                android:layout_height="61dp"
+                android:layout_height="wrap_content"
                 android:inputType="textPersonName" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -58,9 +63,9 @@
             app:endIconMode="password_toggle"
             app:layout_constraintBottom_toTopOf="@+id/loginButton"
             app:layout_constraintEnd_toEndOf="@+id/username_text_layout"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/username_text_layout"
-            app:layout_constraintTop_toBottomOf="@+id/username_text_layout"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/username_text_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_text"
@@ -73,6 +78,7 @@
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
             android:layout_marginBottom="20dp"
             android:text="@string/login_button"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,10 +95,20 @@
             android:text="@string/register_button"
             app:layout_constraintBaseline_toBaselineOf="@+id/loginButton"
             app:layout_constraintEnd_toStartOf="@+id/loginButton"
-            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="478dp" />
+
+        <Space
+            android:id="@+id/space2"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/username_text_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

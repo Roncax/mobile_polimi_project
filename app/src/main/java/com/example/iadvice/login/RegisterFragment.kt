@@ -2,6 +2,7 @@ package com.example.iadvice.login
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -54,7 +55,8 @@ class RegisterFragment : Fragment() {
         // viewModelProviders used to not destroy the viewmodel until detached
         requireNotNull(this.activity).application
 
-
+        //Force the screen orientation
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         binding.apply {
             registerButton.setOnClickListener {
