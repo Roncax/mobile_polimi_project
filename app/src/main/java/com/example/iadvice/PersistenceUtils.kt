@@ -55,23 +55,22 @@ object PersistenceUtils {
         currentUserLiveData.value = user
     }
 
-    fun updatecurrentUserImage(storageReference: StorageReference){
+    private fun updatecurrentUserImage(storageReference: StorageReference){
         currentUserImage = storageReference
         currentUserImageLiveData.value = storageReference
     }
 
-    fun updateAllUserImages(images: MutableMap<String, StorageReference>){
+    private fun updateAllUserImages(images: MutableMap<String, StorageReference>){
         allUserImages = images
         allUserImagesLiveData.value = images
     }
 
-    fun updateChatImages(images: MutableList<StorageReference>){
+    private fun updateChatImages(images: MutableList<StorageReference>){
         currentChatImages = images
         currentChatImagesLiveData.value = images
     }
 
     const val TAG = "PERSISTENCE_UTILS"
-
 
     init {
         if (!FirebaseAuth.getInstance().currentUser?.uid.isNullOrBlank()) {
@@ -84,12 +83,7 @@ object PersistenceUtils {
 
     fun retrieveUser() {
 
-        if(FirebaseAuth.getInstance().uid.isNullOrBlank())
-        {
-         return
-        }
         val userId = FirebaseAuth.getInstance().uid!!
-
 
         val messagesUploadListener = object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
@@ -109,14 +103,14 @@ object PersistenceUtils {
 
     fun retrieveCurrentUserImage(){
         val userId = FirebaseAuth.getInstance().uid!!
-        val imageRef: StorageReference? = FirebaseStorage.getInstance().reference.child("avatar_images/" + userId)
-        updatecurrentUserImage(imageRef!!)
+        val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("avatar_images/$userId")
+        updatecurrentUserImage(imageRef)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun addEvaluationToUser(usernameListEvaluation: MutableMap<String, String>) {
 
-        usernameListEvaluation.forEach { k, v ->
+        usernameListEvaluation.forEach { (k, v) ->
 
             val evaluationUploader = object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -169,7 +163,7 @@ object PersistenceUtils {
         allUserImages = mutableMapOf()
         userListRank.forEach{
             val userId = it.uid
-            val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("avatar_images/" + userId)
+            val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("avatar_images/$userId")
             allUserImages[userId] = imageRef
         }
         updateAllUserImages(allUserImages)
@@ -178,8 +172,7 @@ object PersistenceUtils {
 
     fun retrieveChatImages(){
 
-
-        val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("chat_images/" + currenChatId)
+        val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("chat_images/$currenChatId")
 
         val listAllTask: Task<ListResult> = imageRef.listAll()
         listAllTask.addOnCompleteListener { result ->

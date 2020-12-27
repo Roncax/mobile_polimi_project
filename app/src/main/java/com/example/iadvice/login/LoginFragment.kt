@@ -80,7 +80,6 @@ class LoginFragment : Fragment() {
                 if (!it.isSuccessful) return@addOnCompleteListener
 
                 Log.d(TAG, "signInWithCustomToken:success")
-                val uid = it.result!!.user!!.uid
                 PersistenceUtils.retrieveUser()
                 PersistenceUtils.retrieveCurrentUserImage()
 
@@ -95,7 +94,6 @@ class LoginFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                PersistenceUtils.retrieveUser()
             }
             .addOnFailureListener {
                 Toast.makeText(

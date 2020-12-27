@@ -93,10 +93,10 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
     private fun attachAdapter() {
         var chatList: MutableList<Chat> = mutableListOf()
-        when(chatType){
-            "your" -> chatList = viewModel.myChatList
-            "other" -> chatList = viewModel.otherChatList
-            else -> chatList = viewModel.archivedChatList
+        chatList = when(chatType){
+            "your" -> viewModel.myChatList
+            "other" -> viewModel.otherChatList
+            else -> viewModel.archivedChatList
         }
 
         viewAdapter = QuestionsAdapter(chatList, chatType, this@RecyclerViewHandlerFragment)

@@ -3,8 +3,11 @@
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#3F51B5</color>
     <color name="colorAccent">#2196F3</color>
+    <color name="colorPrimaryTab">#06BFAE</color>
+
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+
     <color name="generic_buttons">#35CF57</color>>
 
 </resources>
