@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.evaluation_item.view.*
 
 class CustomListViewEvaluationDialog(
     var activity: FragmentActivity,
-    usernameList: MutableMap<String, String>
+    var usernameList: MutableMap<String, String>
 ) : Dialog(activity),
     View.OnClickListener {
 
@@ -34,7 +34,6 @@ class CustomListViewEvaluationDialog(
     var dialog: Dialog? = null
 
     var userEvaluationListView = mutableMapOf<String, View>()
-    var usernameList = usernameList
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

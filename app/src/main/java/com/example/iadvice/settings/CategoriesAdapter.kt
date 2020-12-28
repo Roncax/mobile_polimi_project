@@ -56,14 +56,10 @@ class CategoriesAdapter(
         itemView
     ) {
 
-        //val clickable = clickable
-
-        val label: TextView = itemView.findViewById(R.id.category_label_text)
         val checkBox: CheckBox = itemView.findViewById(R.id.category_checkBox)
 
-
-        fun bind(item: String, check: Boolean, clickListener: OnCategoryClickListener, size: String){  //todo questa size passata cosi è un po' una porcata
-            label.text = item
+        fun bind(item: String, check: Boolean, clickListener: OnCategoryClickListener, size: String){
+            checkBox.text = item
 
             checkBox.setOnClickListener{
                 clickListener.onItemClick(item, checkBox.isChecked)
@@ -81,7 +77,7 @@ class CategoriesAdapter(
                 val layoutInflater = LayoutInflater.from(parent.context)
                 //val clickable = false
                 val view = layoutInflater
-                    .inflate(R.layout.categories_fragment, parent, false)   //TODO load the correct layout depending on the situation
+                    .inflate(R.layout.categories_fragment, parent, false)
                 return CategoryViewHolder(view)
                 //return CategoryViewHolder(view, clickable)
             }

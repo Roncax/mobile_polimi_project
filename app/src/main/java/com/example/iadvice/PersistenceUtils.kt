@@ -1,8 +1,6 @@
 package com.example.iadvice
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.iadvice.database.User
 import com.example.iadvice.login.LoginFragment
@@ -102,12 +100,12 @@ object PersistenceUtils {
 
 
     fun retrieveCurrentUserImage(){
+        Log.d(TAG, "In retrieveUserImage")
         val userId = FirebaseAuth.getInstance().uid!!
         val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("avatar_images/$userId")
         updatecurrentUserImage(imageRef)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun addEvaluationToUser(usernameListEvaluation: MutableMap<String, String>) {
 
         usernameListEvaluation.forEach { (k, v) ->
@@ -127,13 +125,11 @@ object PersistenceUtils {
             }
 
             Firebase.database.reference.child("users").child(k).child("points").addListenerForSingleValueEvent(evaluationUploader)
-
-
         }
 
     }
 
-    private fun retrieveSortedUserList() {
+    fun retrieveSortedUserList() {
         userListRank = mutableListOf()
 
         val onlineDb = Firebase.database.reference

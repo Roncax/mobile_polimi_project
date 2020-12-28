@@ -169,6 +169,7 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             app:ccp_arrowSize="16sp"
+            app:ccp_autoDetectLanguage="true"
             app:ccp_countryPreference="IT,US"
             app:ccp_defaultLanguage="ITALIAN"
             app:ccp_showArrow="false"

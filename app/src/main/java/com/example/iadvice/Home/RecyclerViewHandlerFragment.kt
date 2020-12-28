@@ -60,7 +60,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -83,7 +83,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(!chatType.equals("your"))
+        if(chatType != "your")
             binding.fab.visibility = View.GONE
         else
             binding.fab.setOnClickListener { onFabClick() }
@@ -124,7 +124,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
         fun newInstance(chatType: String): RecyclerViewHandlerFragment {
             val fragment = RecyclerViewHandlerFragment()
             fragment.chatType = chatType
-            Log.d("TAG","${chatType}")
+            Log.d("TAG", chatType)
             return fragment
         }
     }
@@ -151,6 +151,6 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState!!.putString(KEY_CHATTYPE,chatType)
+        outState.putString(KEY_CHATTYPE,chatType)
     }
 }

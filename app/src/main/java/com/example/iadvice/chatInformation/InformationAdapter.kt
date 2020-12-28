@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.iadvice.GlideApp
 import com.example.iadvice.R
 import com.google.firebase.storage.StorageReference
@@ -35,17 +37,15 @@ data class InformationAdapter(var imageInformationList: List<StorageReference>, 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val pic = imageInformationList[position]
-
         val view: View = View.inflate(activity, R.layout.information_item, null)
-
         val imgInf = view.findViewById<ImageView>(R.id.imageView_information_item)
 
         Log.d(TAG, "Get pic $pic")
 
-
         GlideApp.with(view)
             .load(pic)
             .fitCenter()
+            .transform(RoundedCorners(25))
             .into(imgInf)
 
         return view

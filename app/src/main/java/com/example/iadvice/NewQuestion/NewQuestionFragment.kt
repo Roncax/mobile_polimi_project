@@ -40,8 +40,7 @@ class NewQuestionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        //Inflate the layout for this fragment
+    ): View {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.new_question_fragment,
@@ -51,18 +50,21 @@ class NewQuestionFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
         val viewModelFactory = NewQuestionViewModelFactory(application)
-        // viewModelProviders used to not destroy the viewmodel until detached
+
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewQuestionViewModel::class.java)
         viewModel.newChatLiveData.observe(viewLifecycleOwner, newChatObserver)
 
-        val c = Calendar.getInstance()
 
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        binding.datePicker.minDate = c.timeInMillis
-        c.add(Calendar.DAY_OF_MONTH, 360);
-        binding.datePicker.maxDate = c.timeInMillis
 
         binding.apply {
+
+            val c = Calendar.getInstance()
+
+            c.add(Calendar.DAY_OF_MONTH, 1);
+            datePicker.minDate = c.timeInMillis
+            c.add(Calendar.DAY_OF_MONTH, 360);
+            datePicker.maxDate = c.timeInMillis
+
             createButton.setOnClickListener {
                 if (titleTexbox.text.toString().isNotEmpty() and questionEditTextView.text.toString().isNotEmpty()) {
                     onCreateNewQuestion()

@@ -11,140 +11,121 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
+import com.example.iadvice.database.Chat
 import com.example.iadvice.database.Message
 import com.example.iadvice.evaluation.CustomListViewEvaluationDialog
-import com.example.iadvice.home.HomeFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_chat_fragment.*
-import java.util.*
 import com.example.iadvice.databinding.ActivityChatFragmentBinding
+import java.util.*
 
 
 class ChatActivityFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ChatActivityFragment()
         const val TAG = "CHAT_ACTIVITY_FRAGMENT"
     }
 
-    private lateinit var home_viewModel: HomeFragmentViewModel
     private lateinit var viewModel: ChatActivityViewModel
     private lateinit var adapter: MessageAdapter
     private lateinit var customDialog: CustomListViewEvaluationDialog
+    private lateinit var binding: ActivityChatFragmentBinding
+
+    private val chatObserver = Observer<Chat> { chat ->
+        if (FirebaseAuth.getInstance().currentUser!!.uid == viewModel.currentChat.owner.keys.first()) {
+            binding.closeButton.visibility = View.VISIBLE
+        }
+
+        Log.d(TAG,
+            "Visible close button '${chat}' owner:${FirebaseAuth.getInstance().currentUser!!.uid} me: ${viewModel.currentChat.owner.keys.first()}"
+        )
+    }
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        // bind the login_fragment layout with the binding variable
-        val binding = DataBindingUtil.inflate<ActivityChatFragmentBinding>(
+            binding = DataBindingUtil.inflate(
             inflater,
             R.layout.activity_chat_fragment, container, false
         )
 
         viewModel = ViewModelProvider(this).get(ChatActivityViewModel::class.java)
-        home_viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
-
-        binding.messageList.layoutManager = LinearLayoutManager(context)
-        adapter = MessageAdapter(requireContext(), viewModel.currentChatId)
-        binding.messageList.adapter = adapter
-        binding.messageList.scrollToPosition(adapter.itemCount - 1)
+        adapter = MessageAdapter(requireContext(), viewModel)
 
         loadMessages(viewModel.currentChatId, binding.messageList)
 
+        viewModel.currentChatLiveData.observe(viewLifecycleOwner, chatObserver)
 
-        binding.btnSend.setOnClickListener {
-            if (txtMessage.text.isNotEmpty()) {
-                val message = Message(
-                    chatId = viewModel.currentChatId,
-                    user = FirebaseAuth.getInstance().currentUser!!.uid,
-                    nickname = PersistenceUtils.currentUser.username,
-                    text = txtMessage.text.toString(),
-                    time = Calendar.getInstance().timeInMillis
-                )
-                adapter.addNewMessage(message)
+        binding.apply {
 
-                // scroll the RecyclerView to the last added element
-                binding.messageList.scrollToPosition(adapter.itemCount - 1)
-                resetInput()
+            messageList.layoutManager = LinearLayoutManager(context)
+            messageList.adapter = adapter
+            messageList.scrollToPosition(adapter.itemCount - 1)
 
-            } else {
-                Toast.makeText(context, "Message should not be empty", Toast.LENGTH_SHORT).show()
-            }
-        }
+            btnSend.setOnClickListener {
+                if (txtMessage.text.isNotEmpty()) {
+                    val message = Message(
+                        chatId = viewModel.currentChatId,
+                        user = FirebaseAuth.getInstance().currentUser!!.uid,
+                        nickname = PersistenceUtils.currentUser.username,
+                        text = txtMessage.text.toString(),
+                        time = Calendar.getInstance().timeInMillis
+                    )
+                    adapter.addNewMessage(message)
 
-        binding.showInfochatButton.setOnClickListener{
-            findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformations)
-        }
+                    // scroll the RecyclerView to the last added element
+                    binding.messageList.scrollToPosition(adapter.itemCount - 1)
+                    resetInput()
 
-
-        val chatOwner = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (FirebaseAuth.getInstance().uid!! != dataSnapshot.value.toString()) {
-                    binding.closeButton.visibility = View.GONE
+                } else {
+                    Toast.makeText(context, "Message should not be empty", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.i(TAG, "Error in choosing the chat users")
+            showInfochatButton.setOnClickListener {
+                findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformations)
             }
 
-        }
-        FirebaseDatabase.getInstance().reference.child("chats").child(viewModel.currentChatId)
-            .child("owner").addListenerForSingleValueEvent(chatOwner)
-
-
-
-        binding.closeButton.setOnClickListener {
-            clickHere()
+            closeButton.setOnClickListener {
+                Log.d(TAG, "BuildEvaluationDialog")
+                buildEvaluationDialog()
+            }
         }
 
         return binding.root
     }
 
 
-    fun clickHere() {
+
+    private fun buildEvaluationDialog() {
+        Log.d(TAG, "BuildEvaluationDialog")
         val items = mutableMapOf<String, String>()
-
-        val mDatabase = FirebaseDatabase.getInstance().reference
-
-        val userListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val children = dataSnapshot.children
-                children.forEach {
-                    items[it.key.toString()] = it.value.toString()
-                }
-
-                customDialog = CustomListViewEvaluationDialog(
-                    activity = requireActivity(),
-                    usernameList = items
-                )
-
-                //if we know that the particular variable not null any time ,we can assign !! (not null operator ), then  it won't check for null, if it becomes null, it will throw exception
-                customDialog.show()
-                customDialog.setCanceledOnTouchOutside(false)
-            }
-
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.i(TAG, "Error in choosing the chat users")
-            }
-
+        viewModel.currentChat.userList.forEach {
+            items[it.key] = it.value
         }
-        mDatabase.child("chats").child(viewModel.currentChatId).child("userList")
-            .addListenerForSingleValueEvent(userListener)
+
+        customDialog = CustomListViewEvaluationDialog(
+            activity = requireActivity(),
+            usernameList = items
+        )
+
+        customDialog.show()
+        customDialog.setCanceledOnTouchOutside(false)
+
     }
 
 
@@ -172,7 +153,6 @@ class ChatActivityFragment : Fragment() {
             }
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                //TODO("Not yet implemented")
             }
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
@@ -182,10 +162,7 @@ class ChatActivityFragment : Fragment() {
             }
 
             override fun onChildRemoved(p0: DataSnapshot) {
-                //TODO("Not yet implemented")
             }
-
-
         }
 
         onlineDb.child("messages").child(chatId!!).addChildEventListener(messagesListener)

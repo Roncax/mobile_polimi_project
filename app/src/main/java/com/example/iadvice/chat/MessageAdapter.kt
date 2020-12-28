@@ -25,34 +25,32 @@ import kotlinx.android.synthetic.main.my_bubble.view.*
 import kotlinx.android.synthetic.main.other_bubble.view.*
 
 
-class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<MessageViewHolder>() {
+class MessageAdapter(val context: Context, val viewModel: ChatActivityViewModel) : RecyclerView.Adapter<MessageViewHolder>() {
 
-    val messages: ArrayList<Message> = ArrayList()
-    val chatId = Id
 
     companion object {
         private const val VIEW_TYPE_MY_MESSAGE = 1
         private const val VIEW_TYPE_OTHER_MESSAGE = 2
-        private const val TAG = "MessageAdapter"
+        private const val TAG = "MESSAGE_ADAPTER"
     }
 
     fun addNewMessage(message: Message) {
         val onlineDb = Firebase.database.reference
-        val key = onlineDb.child("messages").child(chatId).push().key
+        val key = onlineDb.child("messages").child(viewModel.currentChatId).push().key
         onlineDb.child("messages").child(message.chatId).child(key!!).setValue(message)
     }
 
 
     fun addMessage(message: Message) {
-        messages.add(message)
+        viewModel.messageList.add(message)
         notifyDataSetChanged()
     }
 
-    override fun getItemCount() = messages.size
+    override fun getItemCount() = viewModel.messageList.size
 
 
     override fun getItemViewType(position: Int): Int {
-        val message = messages[position]
+        val message = viewModel.messageList[position]
         return if (FirebaseAuth.getInstance().currentUser!!.uid == message.user) {
             VIEW_TYPE_MY_MESSAGE
         } else {
@@ -73,7 +71,7 @@ class MessageAdapter(val context: Context, Id: String) : RecyclerView.Adapter<Me
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-        val message = messages[position]
+        val message = viewModel.messageList[position]
         holder.bind(message)
     }
 
