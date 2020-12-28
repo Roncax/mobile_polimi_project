@@ -130,7 +130,7 @@ class RegisterFragment : Fragment() {
                 viewModel.username = binding.nicknameText.text.toString()
                 viewModel.uid = it.result!!.user!!.uid
                 viewModel.gender = binding.genderSpinner.selectedItem.toString()
-                viewModel.country = binding.countrySpinner.selectedCountryName
+                viewModel.country = binding.countrySpinner.selectedCountryCode
 
                 viewModel.registerUser()
             }

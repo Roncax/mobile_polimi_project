@@ -82,8 +82,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         })
 
         viewModel.country.observe(viewLifecycleOwner, Observer { newCountry ->
-        //todo capire come mettere il valore attuale col nome del paese e non con il codice
-             binding.countrySpinner.setCountryForNameCode("IT")
+             binding.countrySpinner.setCountryForNameCode(PersistenceUtils.currentUser.country)
         })
 
         viewModel.getUser()
@@ -106,7 +105,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
                 if(viewModel.editorMode ){ //se uso R.string.apply_changes.toString() non entra
                     viewModel.setUsername(binding.nicknameText.text.toString())
                     viewModel.setGender(binding.genderSpinner.selectedItem.toString())
-                    viewModel.setCountry(binding.countrySpinner.selectedCountryName.toString())
+                    viewModel.setCountry(binding.countrySpinner.selectedCountryNameCode.toString())
 
                     viewModel.updateUser()
                     viewModel.editorMode = false
@@ -149,7 +148,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null) {
-            viewModel.uri = data?.data!!
+            viewModel.uri = data.data!!
             if (resultCode == Activity.RESULT_OK && requestCode == 100) {
 
                 GlideApp.with(this@SettingsFragment)
@@ -202,8 +201,6 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
 
     override fun onItemClick(item: String, clicked: Boolean){
-        //Todo tira su il valore del checkbox
-
         if(viewModel.categoriesList.containsKey(item)){
             viewModel.categoriesList.remove(item)
         }

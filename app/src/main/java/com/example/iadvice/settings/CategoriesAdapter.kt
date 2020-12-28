@@ -19,10 +19,6 @@ class CategoriesAdapter(
     val categoryClickListener: OnCategoryClickListener
 ) : RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>() {
 
-    private val listener: OnCategoryClickListener = categoryClickListener
-    //todo impostare da fuori
-
-
 
     /* Create new views (invoked by the layout manager) */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -60,7 +56,6 @@ class CategoriesAdapter(
 
         fun bind(item: String, check: Boolean, clickListener: OnCategoryClickListener, size: String){
             checkBox.text = item
-
             checkBox.setOnClickListener{
                 clickListener.onItemClick(item, checkBox.isChecked)
             }
@@ -75,13 +70,10 @@ class CategoriesAdapter(
         companion object {
             fun from(parent: ViewGroup): CategoryViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                //val clickable = false
                 val view = layoutInflater
                     .inflate(R.layout.categories_fragment, parent, false)
                 return CategoryViewHolder(view)
-                //return CategoryViewHolder(view, clickable)
             }
-
         }
 
     }
