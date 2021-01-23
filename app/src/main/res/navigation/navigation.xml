@@ -30,10 +30,14 @@
         tools:layout="@layout/home_fragment">
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_homeFragment_to_your_questions_fragment"
-            app:destination="@id/your_questions_fragment" />
+            app:destination="@id/your_questions_fragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
         <action
             android:id="@+id/action_homeFragment_to_chatActivityFragment"
             app:destination="@id/chatActivityFragment" />
@@ -56,7 +60,6 @@
         <action
             android:id="@+id/action_your_questions_fragment_to_newQuestionFragment"
             app:destination="@id/newQuestionFragment"
-            app:enterAnim="@android:anim/fade_in"
             app:popUpTo="@id/mainHome_fragment"
             app:popUpToInclusive="true" />
         <action

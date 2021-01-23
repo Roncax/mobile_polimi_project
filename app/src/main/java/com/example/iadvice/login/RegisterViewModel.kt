@@ -14,9 +14,9 @@ class RegisterViewModel : ViewModel() {
     lateinit var uid: String
     lateinit var username: String
     lateinit var gender: String
-    lateinit var uri: Uri
+    var uri: Uri = Uri.parse("gs://iadvice-49847.appspot.com/avatar_images/default_picture.png")
     lateinit var country: String
-    lateinit var categories: MutableList<String>
+    var categories: MutableList<String> = mutableListOf()
 
     // register the user with the selected parameters
     fun registerUser() {
@@ -37,6 +37,8 @@ class RegisterViewModel : ViewModel() {
 
         FirebaseStorage.getInstance().reference.child("avatar_images/$uid").putFile(uri)
     }
+
+
 
 
 }

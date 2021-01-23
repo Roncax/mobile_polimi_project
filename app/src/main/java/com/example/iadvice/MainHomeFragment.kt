@@ -19,8 +19,8 @@ class MainHomeFragment : Fragment() {
         /**
          * Choose what fragment upload first
          */
-        if (user != null) {
-            Log.d(TAG, "The user is already present with id ${user.uid}")
+        if (!FirebaseAuth.getInstance().currentUser?.uid.isNullOrBlank()) {
+            Log.d(TAG, "The user is already present with id ${user?.uid}")
             PersistenceUtils.retrieveUser()
             PersistenceUtils.retrieveCurrentUserImage()
             findNavController().navigate(R.id.homeFragment)

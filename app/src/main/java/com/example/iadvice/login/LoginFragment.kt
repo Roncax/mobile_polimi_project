@@ -1,5 +1,6 @@
 package com.example.iadvice.login
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -39,6 +40,9 @@ class LoginFragment : Fragment() {
         // viewModelProviders used to not destroy the viewModel until detached
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
+        //Force the screen orientation
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         binding.apply {
 
             loginButton.setOnClickListener {
@@ -76,7 +80,6 @@ class LoginFragment : Fragment() {
                 if (!it.isSuccessful) return@addOnCompleteListener
 
                 Log.d(TAG, "signInWithCustomToken:success")
-                val uid = it.result!!.user!!.uid
                 PersistenceUtils.retrieveUser()
                 PersistenceUtils.retrieveCurrentUserImage()
 
@@ -91,7 +94,6 @@ class LoginFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                PersistenceUtils.retrieveUser()
             }
             .addOnFailureListener {
                 Toast.makeText(

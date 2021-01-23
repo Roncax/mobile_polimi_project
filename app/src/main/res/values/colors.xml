@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#009688</color>
-    <color name="colorPrimaryDark">#2196F3</color>
-    <color name="colorAccent">#4CAF50</color>
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#2196F3</color>
+    <color name="textColorPrimary">#442C2E</color>
+    <color name="toolbarIconColor">@color/textColorPrimary</color>
+    <color name="loginPageBackgroundColor">#FFFFFF</color>
+    <color name="productGridBackgroundColor">#FFFFFF</color>
+
+
+    <color name="colorPrimaryTab">@color/colorAccent</color>
+    <color name="generic_buttons">#35CF57</color>>
+
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="generic_buttons">#35CF57</color>>
 
 </resources>

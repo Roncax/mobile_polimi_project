@@ -65,8 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_button"
-                android:onClick="clickHere"
-                android:text="Close" />
+                android:text="Close"
+                android:visibility="visible" />
 
         </LinearLayout>
 

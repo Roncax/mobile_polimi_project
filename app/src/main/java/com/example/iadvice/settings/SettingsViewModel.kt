@@ -20,14 +20,15 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.net.URI
 
-private const val TAG = "SettingsViewModel"
+private const val TAG = "SETTINGS_VIEWMODEL"
 
 class SettingsViewModel : ViewModel() {
 
     lateinit var userId: String
-    lateinit var uri: Uri
-    //lateinit var categories: MutableList<String>
+    var uri =  Uri.parse("gs://iadvice-49847.appspot.com/avatar_images/default_picture.png")
+    var editorMode: Boolean = false
 
     var categoriesList: MutableMap<String, String> = mutableMapOf<String, String>()
     val categoriesListLiveData: MutableLiveData<MutableMap<String, String>> by lazy {
@@ -49,17 +50,14 @@ class SettingsViewModel : ViewModel() {
 
     fun setUsername(username: String) {
         _username.value = username
-        updateUser()
     }
 
     fun setGender(gender: String) {
         _gender.value = gender
-        updateUser()
     }
 
     fun setCountry(country: String) {
         _country.value = country
-        updateUser()
     }
 
     // update user with the selected parameters
@@ -77,15 +75,14 @@ class SettingsViewModel : ViewModel() {
 
         db.child("users").child(userId).setValue(user)
 
-
         for (category in categoriesList.keys) {
             db.child("users").child(userId).child("categories").child(category).setValue("true")
         }
 
-        /* todo immagine
-       FirebaseStorage.getInstance().reference.child("avatar_images/$userId").putFile(uri)
-        */
-
+        if (uri != Uri.parse("gs://iadvice-49847.appspot.com/avatar_images/default_picture.png")) {
+            Log.d(TAG, "L'immagine non é nulla!!")
+            FirebaseStorage.getInstance().reference.child("avatar_images/$userId").putFile(uri)
+        }
     }
 
 
