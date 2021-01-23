@@ -24,6 +24,16 @@
             </intent-filter>
         </activity>
 
+        <!-- [TESTS DEPEDENCIES] -->
+        <uses-library android:name="android.test.runner"
+            android:required="false" />
+        <uses-library android:name="android.test.base"
+            android:required="false" />
+        <uses-library android:name="android.test.mock"
+            android:required="false" />
+
+
+
 
         <!-- [START firebase_service] -->
         <service
@@ -36,6 +46,7 @@
         <!-- [END firebase_service] -->
 
     </application>
+
 
 
 </manifest>

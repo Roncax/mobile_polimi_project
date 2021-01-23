@@ -81,15 +81,12 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
 
         viewModel.country.observe(viewLifecycleOwner, Observer { newCountry ->
         //todo capire come mettere il valore attuale col nome del paese e non con il codice
-            // binding.countrySpinner.setCountryForNameCode("IT")
+            binding.countrySpinner.setCountryForNameCode(newCountry.toString())
         })
 
         //setto i valori attuali
         viewModel.getUser()
-
-
-
-
+        binding.countrySpinner.setCountryForNameCode(viewModel.country.value.toString())
 
         binding.apply {
             addImageRegisterButton.setOnClickListener {
@@ -116,7 +113,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
                 if( editButton.text.toString() == "APPLY CHANGES" ){ //se uso R.string.apply_changes.toString() non entra
                     viewModel.setUsername(binding.nicknameText.text.toString())
                     viewModel.setGender(binding.genderSpinner.selectedItem.toString())
-                    viewModel.setCountry(binding.countrySpinner.selectedCountryName.toString())
+                    viewModel.setCountry(binding.countrySpinner.selectedCountryNameCode)
                     //todo torna a pagina principale
                 }
                 return@setOnClickListener

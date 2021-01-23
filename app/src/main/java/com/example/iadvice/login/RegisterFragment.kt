@@ -151,7 +151,7 @@ class RegisterFragment : Fragment() {
                 viewModel.uid = uid
                 viewModel.gender = binding.genderSpinner.selectedItem.toString()
                 viewModel.uri = imageUri
-                viewModel.country = binding.countrySpinner.selectedCountryName
+                viewModel.country = binding.countrySpinner.selectedCountryNameCode
 
                 viewModel.registerUser()
             }
