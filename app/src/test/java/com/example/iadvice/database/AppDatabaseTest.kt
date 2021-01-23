@@ -1,5 +1,5 @@
 package com.example.iadvice.database
-
+/*
 
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
@@ -76,3 +76,6 @@ class AppDatabaseTest {
 
 
 }
+
+
+ */
