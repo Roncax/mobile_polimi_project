@@ -38,14 +38,14 @@
     <string name="feedback_header">Feedback</string>
     <string name="feedback_title">Send feedback</string>
     <string name="question_argument_edit">Title</string>
-    <string name="new_question_button">Create</string>
+    <string name="next_button">Next</string>
     <string name="category">Category</string>
     <string name="email">Email</string>
     <string name="categories">Categories</string>
     <string name="chat_cover">Click to select the cover</string>
     <string name="reference_categories_and_sex">Choose the category, gender and country</string>
     <string name="maximum_participants">Number of maximum participants</string>
-    <string name="how_long_should_the_chat_last">How long should the chat last?</string>
+    <string name="chat_last">Pick an expiration date</string>
     <string name="select_images">Select images</string>
     <string name="todo">TODO</string>
     <string name="send">SEND</string>
@@ -57,6 +57,11 @@
     <string name="gender">Gender</string>
     <string name="edit_button">EDIT PROFILE</string>
     <string name="apply_changes">APPLY CHANGES</string>
+    <string name="question_textview">Question</string>
+    <string name="max_chat_users">Max users:</string>
+    <string name="target_country">Target country:</string>
+    <string name="target_gender">Target gender:</string>
+    <string name="category_newchat_text">Category:</string>
 
 </resources>
 
