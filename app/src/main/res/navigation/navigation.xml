@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_homeFragment_to_rankingFragment"
             app:destination="@id/rankingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_archiveFragment"
+            app:destination="@id/archiveFragment" />
 
     </fragment>
     <fragment
@@ -71,7 +74,12 @@
         android:id="@+id/newQuestionFragment"
         android:name="com.example.iadvice.newQuestion.NewQuestionFragment"
         android:label="Create a new question"
-        tools:layout="@layout/new_question_fragment"/>
+        tools:layout="@layout/new_question_fragment">
+        <action
+            android:id="@+id/action_newQuestionFragment_to_newQuestionImagesFragment"
+            app:destination="@id/newQuestionImagesFragment"
+            app:popUpTo="@id/your_questions_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/mainHome_fragment"
         android:name="com.example.iadvice.MainHomeFragment"
@@ -108,6 +116,10 @@
     <fragment
         android:id="@+id/chatInformationFragment"
         android:name="com.example.iadvice.chatInformation.ChatInformationsFragment"
-        android:label="chat_information"
+        android:label="About the chat"
         tools:layout="@layout/chat_information" />
+    <fragment
+        android:id="@+id/newQuestionImagesFragment"
+        android:name="com.example.iadvice.newQuestion.NewQuestionImagesFragment"
+        android:label="Choose the pictures" />
 </navigation>

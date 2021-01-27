@@ -62,7 +62,6 @@
             app:endIconMode="password_toggle"
             app:layout_constraintBottom_toTopOf="@+id/loginButton"
             app:layout_constraintEnd_toEndOf="@+id/username_text_layout"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/username_text_layout"
             app:layout_constraintTop_toBottomOf="@+id/username_text_layout">
 

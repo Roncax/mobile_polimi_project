@@ -35,17 +35,12 @@ data class newChatGridAdapter(var imageInformationList: List<Uri>, var activity:
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val pic = imageInformationList[position]
-
         val view: View = View.inflate(activity, R.layout.information_item, null)
-
         val imgInf = view.findViewById<ImageView>(R.id.imageView_information_item)
-
         Log.d(TAG, "Get pic $pic")
-
 
         GlideApp.with(view)
             .load(pic)
-            .fitCenter()
             .into(imgInf)
 
         return view
