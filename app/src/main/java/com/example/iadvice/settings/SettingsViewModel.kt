@@ -63,17 +63,11 @@ class SettingsViewModel : ViewModel() {
     // update user with the selected parameters
     fun updateUser() {
         val db = Firebase.database.reference
+        
 
-        val user =
-            User(
-                uid = userId,
-                username = _username.value.toString(),
-                gender = _gender.value.toString(),
-                country = _country.value.toString()
-            )
-
-
-        db.child("users").child(userId).setValue(user)
+        db.child("users").child(userId).child("country").setValue(_country.value.toString())
+        db.child("users").child(userId).child("gender").setValue(_gender.value.toString())
+        db.child("users").child(userId).child("username").setValue(_username.value.toString())
 
         for (category in categoriesList.keys) {
             db.child("users").child(userId).child("categories").child(category).setValue("true")
