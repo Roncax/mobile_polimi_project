@@ -10,12 +10,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
+import kotlin.properties.Delegates
 
 const val KEY_CHATTYPE = "type_of_chat_to_display"
 
@@ -28,6 +30,9 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
 
     private lateinit var viewModel: HomeFragmentViewModel
+
+    private var isTablet by Delegates.notNull<Boolean>()
+
 
     private val chatListObserver = Observer<MutableList<Chat>> { chat ->
         Log.d(
@@ -43,6 +48,8 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
 
         if(savedInstanceState != null){
             chatType = savedInstanceState.getString(KEY_CHATTYPE,"archived")
@@ -70,6 +77,9 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
         )
 
         attachAdapter()
+
+
+        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
 
         return binding.root
     }
@@ -110,11 +120,30 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
 
     override fun onItemClick(item: Chat) {
+        if(!isTablet)
+            onItemClick_normal(item)
+        else
+            onItemClick_tablet(item)
+    }
+
+    private fun onItemClick_normal(item: Chat){
         PersistenceUtils.currenChatId = item.chatId
         if(chatType == "archived"){findNavController().navigate(R.id.action_your_questions_fragment_to_chatActivityFragment)}
         else{findNavController().navigate(R.id.action_homeFragment_to_chatActivityFragment)}
-
     }
+
+    private fun onItemClick_tablet(item: Chat){
+        PersistenceUtils.currenChatId = item.chatId
+        //val navHostFragment = childFragmentManager.findFragmentById(R.id.chat_nav_container) as NavHostFragment
+        val navHostFragment = NavHostFragment.create(R.navigation.navigation_tablet)
+
+        navHostFragment.navController.navigate(R.id.chatActivityFragment2)
+    }
+
+
+
+
+
 
     private fun onFabClick() {
         findNavController().navigate(R.id.newQuestionFragment, null)

@@ -57,11 +57,13 @@ class HomeFragment : Fragment() {
             R.layout.home_fragment, container, false
         )
 
+
         //The appbar become VISIBLE
         requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
 
         //Force the screen orientation
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+        //todo da vedere activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+
 
         return binding.root
     }
