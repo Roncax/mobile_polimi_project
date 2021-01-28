@@ -49,8 +49,6 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
-
         if(savedInstanceState != null){
             chatType = savedInstanceState.getString(KEY_CHATTYPE,"archived")
         }
@@ -132,20 +130,16 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
         else{findNavController().navigate(R.id.action_homeFragment_to_chatActivityFragment)}
     }
 
-    private fun onItemClick_tablet(item: Chat){
+    private fun onItemClick_tablet(item: Chat) {
         PersistenceUtils.currenChatId = item.chatId
 
-        val navHostFragment = parentFragmentManager.findFragmentById(R.id.chat_nav_container) as NavHostFragment
-
-
-
-        //val navHostFragment = supportFragmentManager.findFragmentById(R.id.chat_nav_container) as NavHostFragment
-        //val navController = navHostFragment.navController
-
-
-        //val navHostFragment = NavHostFragment.create(R.navigation.navigation_tablet)
-
-        navHostFragment.navController.navigate(R.id.chatActivityFragment2)
+        if (chatType == "archived") {
+            findNavController().navigate(R.id.action_your_questions_fragment_to_chatActivityFragment)
+        } else {
+            val navHostFragment =
+                parentFragmentManager.findFragmentById(R.id.chat_nav_container) as NavHostFragment
+            navHostFragment.navController.navigate(R.id.chatActivityFragment2)
+        }
     }
 
 
