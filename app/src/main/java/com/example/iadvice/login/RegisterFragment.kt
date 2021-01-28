@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.register_fragment.*
+import kotlin.properties.Delegates
 
 private const val TAG = "RegisterFragment"
 
@@ -33,6 +34,8 @@ class RegisterFragment : Fragment() {
 
     private lateinit var viewModel: RegisterViewModel
     private lateinit var binding: RegisterFragmentBinding
+
+    private var isTablet by Delegates.notNull<Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +51,11 @@ class RegisterFragment : Fragment() {
         // viewModelProviders used to not destroy the viewmodel until detached
         requireNotNull(this.activity).application
 
-        //Force the screen orientation
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
+        if(!isTablet) {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
 
         binding.apply {
             registerButton.setOnClickListener {

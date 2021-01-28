@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.properties.Delegates
 
 
 class HomeFragment : Fragment() {
@@ -34,6 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var viewPager: ViewPager2
 
+    private var isTablet by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,9 +63,11 @@ class HomeFragment : Fragment() {
         //The appbar become VISIBLE
         requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
 
-        //Force the screen orientation
-        //todo da vedere activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
-
+        //Force the screen orientation in case of smartphone
+        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
+        if(!isTablet) {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+        }
 
         return binding.root
     }

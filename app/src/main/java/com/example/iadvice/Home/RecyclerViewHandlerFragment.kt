@@ -76,7 +76,6 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
         attachAdapter()
 
-
         isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
 
         return binding.root
@@ -91,7 +90,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(chatType != "your")
+        if(chatType == "archived")
             binding.fab.visibility = View.GONE
         else
             binding.fab.setOnClickListener { onFabClick() }
