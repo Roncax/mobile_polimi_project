@@ -134,8 +134,16 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
     private fun onItemClick_tablet(item: Chat){
         PersistenceUtils.currenChatId = item.chatId
-        //val navHostFragment = childFragmentManager.findFragmentById(R.id.chat_nav_container) as NavHostFragment
-        val navHostFragment = NavHostFragment.create(R.navigation.navigation_tablet)
+
+        val navHostFragment = parentFragmentManager.findFragmentById(R.id.chat_nav_container) as NavHostFragment
+
+
+
+        //val navHostFragment = supportFragmentManager.findFragmentById(R.id.chat_nav_container) as NavHostFragment
+        //val navController = navHostFragment.navController
+
+
+        //val navHostFragment = NavHostFragment.create(R.navigation.navigation_tablet)
 
         navHostFragment.navController.navigate(R.id.chatActivityFragment2)
     }
