@@ -9,6 +9,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/linearLayout_chatList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -35,10 +42,9 @@
             android:layout_margin="@dimen/fab_margin"
             android:background="@color/generic_buttons"
             android:elevation="3dp"
-            android:onClick="fab_listener"
             android:src="@drawable/ic_add" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </LinearLayout>
 </FrameLayout>
 </layout>

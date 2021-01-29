@@ -117,7 +117,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
 
     override fun onItemClick(item: Chat) {
-        if(!isTablet)
+        if (!isTablet)
             onItemClick_normal(item)
         else
             onItemClick_tablet(item)
