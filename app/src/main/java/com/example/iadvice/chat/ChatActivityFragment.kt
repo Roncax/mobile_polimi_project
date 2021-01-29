@@ -42,9 +42,10 @@ class ChatActivityFragment : Fragment() {
     private lateinit var binding: ActivityChatFragmentBinding
 
     private val chatObserver = Observer<Chat> { chat ->
-        if (FirebaseAuth.getInstance().currentUser!!.uid == viewModel.currentChat.owner.keys.first()) {
+        //TODO rimettere closebutton
+        """if (FirebaseAuth.getInstance().currentUser!!.uid == viewModel.currentChat.owner.keys.first()) {
             binding.closeButton.visibility = View.VISIBLE
-        }
+        }"""
 
         Log.d(TAG,
             "Visible close button '${chat}' owner:${FirebaseAuth.getInstance().currentUser!!.uid} me: ${viewModel.currentChat.owner.keys.first()}"
@@ -100,10 +101,11 @@ class ChatActivityFragment : Fragment() {
                 findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformations)
             }
 
-            closeButton.setOnClickListener {
+            //TODO rimettere closedbutton
+           """ closeButton.setOnClickListener {
                 Log.d(TAG, "BuildEvaluationDialog")
                 buildEvaluationDialog()
-            }
+            }"""
         }
 
         return binding.root
