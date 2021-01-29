@@ -21,9 +21,7 @@
             app:tabGravity="center"
             app:tabMaxWidth="0dp"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/white"
-            app:tabIndicatorGravity="stretch"
-            app:tabIndicatorColor="@color/black"/>
+            app:tabSelectedTextColor="#000000" />
 
 
         <androidx.viewpager2.widget.ViewPager2
