@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -59,7 +58,7 @@ class QuestionsAdapter(
         val owner: TextView = itemView.findViewById(R.id.ownerChatQuestion_text)
         val ownerLabel: TextView = itemView.findViewById(R.id.ownerLabel_text)
         val card:CardView = itemView.findViewById(R.id.chatCard)
-
+        val categoryImage: ImageView = itemView.findViewById(R.id.category_image)
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: Chat, clickListener: OnItemClickListener, size: String){
@@ -75,6 +74,15 @@ class QuestionsAdapter(
                 .circleCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(Image)
+
+            when(item.category){
+                "Games" -> categoryImage.setImageResource(R.drawable.ic_games)
+                "Sport" -> categoryImage.setImageResource(R.drawable.ic_sport)
+                "Home" -> categoryImage.setImageResource(R.drawable.ic_home)
+                "Clothes" -> categoryImage.setImageResource(R.drawable.ic_clothes)
+                else -> categoryImage.setImageResource(R.drawable.ic_language)
+            }
+
 
             itemView.setOnClickListener{
                 //card.setCardBackgroundColor(Color.parseColor("#2196F3"))

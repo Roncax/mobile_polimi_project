@@ -113,7 +113,8 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
                     userList = userMap,
                     expiration = expiration,
                     coverId = coverId,
-                    question = question
+                    question = question,
+                    category = category
                 )
                 mDatabase.child("chats").child(chatId).setValue(newChat)
 

@@ -12,6 +12,7 @@ data class Chat(
     var isActive: Boolean = true,
     var userList: MutableMap<String, String> = mutableMapOf(),
     var expiration: Date = Date(),
-    var coverId:Int = -1
+    var coverId:Int = -1,
+    var category: String =""
 )
 
