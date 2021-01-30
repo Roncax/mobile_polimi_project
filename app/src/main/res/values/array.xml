@@ -18,10 +18,12 @@
     </string-array>
 
     <string-array name="categories">
-        <item>Casual</item>
+        <item>Home</item>
+        <item>Sport</item>
         <item>Technology</item>
-        <item>DIY</item>
-        <item>Fashion</item>
+        <item>Games</item>
+        <item>Style</item>
+        <item>Various</item>
     </string-array>
 
 </resources>

@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
 
@@ -72,7 +71,7 @@ class CategoriesAdapter(
                 "Games" -> categoryIcon.setImageResource(R.drawable.ic_games)
                 "Sport" -> categoryIcon.setImageResource(R.drawable.ic_sport)
                 "Home" -> categoryIcon.setImageResource(R.drawable.ic_home)
-                "Clothes" -> categoryIcon.setImageResource(R.drawable.ic_clothes)
+                "Clothes" -> categoryIcon.setImageResource(R.drawable.ic_style)
                 else -> categoryIcon.setImageResource(R.drawable.ic_language)
             }
 

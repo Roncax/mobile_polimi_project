@@ -15,4 +15,11 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
+    <color name="category_home">#F7DC6F</color>
+    <color name="category_sport">#7DCEA0 </color>
+    <color name="category_technology">#85C1E9</color>
+    <color name="category_games">#FF5733 </color>
+    <color name="category_style">#C39BD3 </color>
+    <color name="category_various">#85929E</color>
+
 </resources>

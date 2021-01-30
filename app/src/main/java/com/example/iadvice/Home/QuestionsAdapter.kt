@@ -1,13 +1,14 @@
 package com.example.iadvice.home
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.iadvice.GlideApp
@@ -17,6 +18,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
+lateinit var context_used: Context
 
 class QuestionsAdapter(
     val myDataset: MutableList<Chat>,
@@ -28,6 +30,7 @@ class QuestionsAdapter(
 
     /* Create new views (invoked by the layout manager) */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionChatViewHolder {
+        context_used = parent.context
         return QuestionChatViewHolder.from(parent)
     }
 
@@ -77,18 +80,27 @@ class QuestionsAdapter(
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(Image)
 
+            //customize the layout based on category of the chat
             when(item.category){
-                "Games" -> {categoryImage.setImageResource(R.drawable.ic_games)
-                    card.setStrokeColor(Color.parseColor("#2196F3"));
-                }
-                "Sport" -> categoryImage.setImageResource(R.drawable.ic_sport)
                 "Home" -> {categoryImage.setImageResource(R.drawable.ic_home)
-                    card.setStrokeColor(Color.parseColor("#2196F3"));
+                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_home))
                 }
-                "Clothes" -> categoryImage.setImageResource(R.drawable.ic_clothes)
-                else -> categoryImage.setImageResource(R.drawable.ic_language)
+                "Sport" -> {categoryImage.setImageResource(R.drawable.ic_sport)
+                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_sport))
+                }
+                "Technology" -> {categoryImage.setImageResource(R.drawable.ic_technology)
+                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_technology))
+                }
+                "Games" -> {categoryImage.setImageResource(R.drawable.ic_games)
+                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_games))
+                }
+                "Style" -> {categoryImage.setImageResource(R.drawable.ic_style)
+                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_style))
+                }
+                "Various" -> {categoryImage.setImageResource(R.drawable.ic_various)
+                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_various))
+                }
             }
-
 
             itemView.setOnClickListener{
                 //card.setCardBackgroundColor(Color.parseColor("#2196F3"))
