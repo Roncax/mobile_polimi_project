@@ -59,7 +59,7 @@ class RegisterFragment : Fragment(), OnCategoryClickListener {
         requireNotNull(this.activity).application
 
         isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
-        if(!isTablet) {
+        if (!isTablet) {
             activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
@@ -100,84 +100,36 @@ class RegisterFragment : Fragment(), OnCategoryClickListener {
     }
 
     // Method to show an alert dialog with multiple choice list items
-
-   /*
     private fun showCategoriesDialog() {
-        lateinit var dialog: AlertDialog
-
-        val arrayCat = resources.getStringArray(R.array.categories)
-        val arrayChecked = BooleanArray(arrayCat.size) { i -> arrayCat[i] == "Casual" }
-        val builder = MaterialAlertDialogBuilder(this.requireContext())
-
-        builder.setTitle("Categories of interest")
-
-        // Define multiple choice items for alert dialog
-        builder.setMultiChoiceItems(arrayCat, arrayChecked) { _, which, isChecked ->
-            arrayChecked[which] = isChecked
-        }
-
-        builder.setPositiveButton("Done") { _, _ ->
-            viewModel.categories = mutableListOf()
-            for (i in arrayCat.indices) {
-                val checked = arrayChecked[i]
-                if (checked) {
-                    viewModel.categories.add(arrayCat[i])
-                }
-            }
-        }
-
-        dialog = builder.create()
-        dialog.show()
-    }
-
-    */
-
-
-    private fun showCategoriesDialog() {
-
-        val arrayCat = resources.getStringArray(R.array.categories)
-        val arrayChecked = BooleanArray(arrayCat.size) { i -> arrayCat[i] == "Casual" }
-        val builder = MaterialAlertDialogBuilder(this.requireContext())
-
-        builder.setView(R.layout.dialog)
-        builder.setTitle("Categories of interest")
-
-
-
-        builder.setPositiveButton("Done") { _, _ ->
-            viewModel.categories = mutableListOf()
-            for (i in arrayCat.indices) {
-                val checked = arrayChecked[i]
-                if (checked) {
-                    viewModel.categories.add(arrayCat[i])
-                }
-            }
-        }
-
-        dialog = builder.create()
-        dialog.show()
-        attachAdapter()
-    }
-
-    private fun attachAdapter() {
 
         //array che contiene tutte le categorie
         val arrayCat = resources.getStringArray(R.array.categories)
-        //array che contiene solo le categorie selezionate
-        val categories = resources.getStringArray(R.array.categories)
         //array che mappa categoria con il fatto che sia selezionata o meno
-        val arrayChecked = BooleanArray(arrayCat.size) { i -> arrayCat[i] == "Casual" }
+        val arrayChecked = BooleanArray(arrayCat.size)
 
-        for (c in categories){
-            val index = arrayCat.indexOf(c)
-            arrayChecked[index] = true
-        }
+        val builder = MaterialAlertDialogBuilder(this.requireContext())
+        builder.setView(R.layout.dialog)
+        builder.setTitle("Categories of interest")
 
-        viewAdapter = CategoriesAdapter(arrayCat, arrayChecked, this)
+        viewModel.categories = mutableListOf()
 
-        (viewAdapter as CategoriesAdapter).setClickable(false)
+        //in pratica il bottone non fa nulla, le categorie vengono aggiunte/tolte direttamente al click del checkbox
+        builder.setPositiveButton("Done") { _, _ -> }
 
-        recyclerView = (dialog as? AlertDialog)?.findViewById<View>(R.id.RecyclerViewDialog) as RecyclerView
+        dialog = builder.create()
+        dialog.show()
+        attachAdapter(arrayCat, arrayChecked)
+    }
+
+    //used to manage the adapter of the recyclerview containing checbox with categories names
+    private fun attachAdapter(arrayCat: Array<String>, arrayChecked: BooleanArray) {
+        viewAdapter = CategoriesAdapter(arrayCat, arrayChecked, this@RegisterFragment)
+
+        recyclerView =
+            (dialog as? AlertDialog)?.findViewById<View>(R.id.RecyclerViewDialog) as RecyclerView
+
+        //set the categories clickable
+        (viewAdapter as CategoriesAdapter).setClickable(true)
 
         recyclerView.apply {
             //used to improve performances
@@ -186,13 +138,6 @@ class RegisterFragment : Fragment(), OnCategoryClickListener {
         }
 
     }
-
-
-
-
-
-
-
 
 
     private fun performRegister(binding: RegisterFragmentBinding) {
@@ -256,9 +201,12 @@ class RegisterFragment : Fragment(), OnCategoryClickListener {
 
     }
 
+    //cliccando il checkbox il viemodel viene automaticamente aggiornato
     override fun onItemClick(item: String, clicked: Boolean) {
-        TODO("Not yet implemented")
+        if (viewModel.categories.contains(item)) {
+            viewModel.categories.remove(item)
+        } else {
+            viewModel.categories.add(item)
+        }
     }
-
-
 }
