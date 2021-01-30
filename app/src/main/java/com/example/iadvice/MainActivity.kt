@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -23,33 +24,29 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_main.*
 
+const val TAG = "MAIN_ACTIVITY"
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        const val TAG = "MAIN_ACTIVITY"
-    }
 
     private val userObserver = Observer<User> { user ->
         navView.getHeaderView(0).findViewById<TextView>(R.id.navUsername).text = user.username
         navView.getHeaderView(0).findViewById<TextView>(R.id.navSubtitle).text =
-            "${user.points} owned points"
+                "${user.points} owned points"
     }
 
     private val userImageObserver = Observer<StorageReference> { imageRef ->
         val imageView = navView.getHeaderView(0).findViewById<ImageView>(R.id.navImage)
         GlideApp.with(this)
-            .load(imageRef)
-            .circleCrop()
-            .into(imageView)
-
+                .load(imageRef)
+                .circleCrop()
+                .into(imageView)
     }
 
     // Initialise the DrawerLayout, NavigationView and ToggleBar
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var actionBarToggle: ActionBarDrawerToggle
     private lateinit var navView: NavigationView
-
     private lateinit var appBarConfiguration: AppBarConfiguration
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -63,9 +60,10 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
         val host: NavHostFragment =
-            supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment?
-                ?: return
+                supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as NavHostFragment?
+                        ?: return
         // Set up Action Bar
         val navController = host.navController
         //setOf() contains the top-level destinations of out application
@@ -81,8 +79,6 @@ class MainActivity : AppCompatActivity() {
 
         PersistenceUtils.currentUserLiveData.observe(this, userObserver)
         PersistenceUtils.currentUserImageLiveData.observe(this, userImageObserver)
-
-
 
 
     }
@@ -105,8 +101,8 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.refreshButton -> {
                 Toast.makeText(
-                    this, "Chat list refreshed",
-                    Toast.LENGTH_SHORT
+                        this, "Returned to Home",
+                        Toast.LENGTH_SHORT
                 ).show()
                 findNavController(R.id.myNavHostFragment).popBackStack()
             }
@@ -133,14 +129,12 @@ class MainActivity : AppCompatActivity() {
             R.id.settingsFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_settingsFragment)
             }
-            R.id.archiveFragment ->{
+            R.id.archiveFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_your_questions_fragment)
             }
-            R.id.rankingFragment ->{
+            R.id.rankingFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_rankingFragment)
             }
-
-
 
         }
         drawer_layout.closeDrawer(GravityCompat.START)

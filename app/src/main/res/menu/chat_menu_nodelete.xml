@@ -7,13 +7,12 @@
         android:enabled="true"
         android:menuCategory="container"
         android:visible="true">
-
         <item
-            android:id="@+id/refreshButton"
-            android:icon="@drawable/iadvice_home_icon"
-            android:title="@string/Refresh"
+            android:id="@+id/chatInformationsFragment"
+            android:enabled="true"
+            android:icon="@drawable/chatinfo_icon"
+            android:title="Chat info"
+            android:visible="true"
             app:showAsAction="always" />
-
     </group>
-
 </menu>

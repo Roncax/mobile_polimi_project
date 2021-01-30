@@ -13,18 +13,17 @@ import androidx.lifecycle.Observer
 import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.databinding.ChatInformationBinding
+import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.chat_information.view.*
 
+const val TAG = "CHAT_INFO_FRAGMENT"
 class ChatInformationsFragment : Fragment() {
 
     private lateinit var binding: ChatInformationBinding
     private lateinit var viewModel: ChatInformationsViewModel
     var list_info: GridView? = null
     var adapter: InformationAdapter? = null
-
-    companion object{
-        const val TAG = "CHAT_INFO_FRAGMENT"
-    }
 
     private val chatListObserver = Observer<MutableList<StorageReference>> { imgList ->
         Log.d(
@@ -38,6 +37,7 @@ class ChatInformationsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -45,6 +45,8 @@ class ChatInformationsFragment : Fragment() {
             container,
             false
         )
+
+        binding.cardView.title_info_question.text = PersistenceUtils.currenChatId
 
         attachInformationAdapter()
 
