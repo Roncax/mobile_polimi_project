@@ -1,8 +1,6 @@
 package com.example.iadvice.home
 
-import android.R.id
 import android.annotation.SuppressLint
-import android.content.res.TypedArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
