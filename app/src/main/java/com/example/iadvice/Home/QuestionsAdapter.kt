@@ -1,6 +1,7 @@
 package com.example.iadvice.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.iadvice.GlideApp
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -57,7 +59,7 @@ class QuestionsAdapter(
         val Image: ImageView = itemView.findViewById(R.id.questionChat_image)
         val owner: TextView = itemView.findViewById(R.id.ownerChatQuestion_text)
         val ownerLabel: TextView = itemView.findViewById(R.id.ownerLabel_text)
-        val card:CardView = itemView.findViewById(R.id.chatCard)
+        val card: MaterialCardView = itemView.findViewById(R.id.chatCard)
         val categoryImage: ImageView = itemView.findViewById(R.id.category_image)
 
         @SuppressLint("ClickableViewAccessibility")
@@ -76,9 +78,13 @@ class QuestionsAdapter(
                 .into(Image)
 
             when(item.category){
-                "Games" -> categoryImage.setImageResource(R.drawable.ic_games)
+                "Games" -> {categoryImage.setImageResource(R.drawable.ic_games)
+                    card.setStrokeColor(Color.parseColor("#2196F3"));
+                }
                 "Sport" -> categoryImage.setImageResource(R.drawable.ic_sport)
-                "Home" -> categoryImage.setImageResource(R.drawable.ic_home)
+                "Home" -> {categoryImage.setImageResource(R.drawable.ic_home)
+                    card.setStrokeColor(Color.parseColor("#2196F3"));
+                }
                 "Clothes" -> categoryImage.setImageResource(R.drawable.ic_clothes)
                 else -> categoryImage.setImageResource(R.drawable.ic_language)
             }
