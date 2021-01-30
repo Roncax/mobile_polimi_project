@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.R
@@ -53,6 +54,7 @@ class CategoriesAdapter(
     ) {
 
         val checkBox: CheckBox = itemView.findViewById(R.id.category_checkBox)
+        val categoryIcon: ImageView = itemView.findViewById(R.id.category_icon)
 
         fun bind(item: String, check: Boolean, clickListener: OnCategoryClickListener, size: String){
             checkBox.text = item
@@ -65,6 +67,18 @@ class CategoriesAdapter(
             }
             //set the clickability according to value passed
             checkBox.isClickable = click
+
+            when(item){
+                "Games" -> categoryIcon.setImageResource(R.drawable.ic_games)
+                "Sport" -> categoryIcon.setImageResource(R.drawable.ic_sport)
+                "Home" -> categoryIcon.setImageResource(R.drawable.ic_home)
+                "Clothes" -> categoryIcon.setImageResource(R.drawable.ic_clothes)
+                else -> categoryIcon.setImageResource(R.drawable.ic_language)
+            }
+
+
+
+
         }
 
         companion object {
