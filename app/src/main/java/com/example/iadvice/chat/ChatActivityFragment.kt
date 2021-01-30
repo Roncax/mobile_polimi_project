@@ -58,6 +58,7 @@ class ChatActivityFragment : Fragment() {
             binding.materialCardView.visibility = View.GONE
         }
 
+        //Caricamento dell'immagine cover della chat
         val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("chat_images/${viewModel.currentChat.chatId}/${viewModel.currentChat.coverId}" )
         GlideApp.with(requireView())
             .load(imageRef)
@@ -92,7 +93,6 @@ class ChatActivityFragment : Fragment() {
         loadMessages(viewModel.currentChatId, binding.messageList)
         viewModel.currentChatLiveData.observe(viewLifecycleOwner, chatObserver)
 
-        //Caricamento dell'immagine cover della chat
 
 
         //nascondo l'altra appbar
@@ -126,7 +126,9 @@ class ChatActivityFragment : Fragment() {
         }
 
 
-
+        binding.toolbarChat.setNavigationOnClickListener {
+            popStack()
+        }
         binding.toolbarChat.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.chatInformationsFragment -> {
@@ -165,6 +167,11 @@ class ChatActivityFragment : Fragment() {
 
     }
 
+    fun popStack() {
+        if (requireView().findNavController().popBackStack()) {
+            requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
+        }
+    }
 
     private fun resetInput() {
         // Clean text box

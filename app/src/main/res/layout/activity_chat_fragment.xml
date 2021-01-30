@@ -11,23 +11,23 @@
         tools:context=".chat.ChatActivityFragment">
 
 
-        <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarChat"
+            layout="@layout/toolbar_chat"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:clickable="true"
-            android:id="@+id/toolbarChat"
-            layout="@layout/toolbar_chat"
             android:elevation="4dp"
             android:focusable="true"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:layout_constraintWidth_max="wrap"
-            app:menu="@menu/chat_menu_nodelete"
+            app:contentInsetStartWithNavigation="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="wrap"
+            app:menu="@menu/chat_menu_nodelete"
+            app:navigationIcon="@drawable/back_icon"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,37 +36,27 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/back_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/abc_vector_test" />
-
-                <ImageView
                     android:id="@+id/image_toolbar"
                     android:layout_width="50dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:clickable="true"
-                    android:contentDescription="TODO"
                     android:focusable="true"
-                    android:scaleType="centerCrop"
+                    android:scaleType="center"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/back_button"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/iadvice_avatar"
-                    tools:srcCompat="@drawable/iadvice_avatar" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/chat_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/image_toolbar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -118,9 +108,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:insetLeft="0dp"
@@ -130,6 +120,7 @@
                     android:minWidth="0dp"
                     android:text=""
                     app:cornerRadius="400dp"
+                    app:elevation="2dp"
                     app:icon="@android:drawable/ic_menu_send"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"

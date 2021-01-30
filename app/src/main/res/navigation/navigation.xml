@@ -78,7 +78,8 @@
         <action
             android:id="@+id/action_newQuestionFragment_to_newQuestionImagesFragment"
             app:destination="@id/newQuestionImagesFragment"
-            app:popUpTo="@id/your_questions_fragment" />
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/mainHome_fragment"
@@ -98,7 +99,7 @@
     <fragment
         android:id="@+id/archiveFragment"
         android:name="com.example.iadvice.ArchiveFragment"
-        android:label="archive_fragment"
+        android:label="Closed or expired chats"
         tools:layout="@layout/archive_fragment" >
     </fragment>
     <fragment
@@ -112,7 +113,8 @@
     <fragment
         android:id="@+id/rankingFragment"
         android:name="com.example.iadvice.ranking.RankingFragment"
-        android:label="RankingFragment" />
+        android:label="Ranking"
+        />
     <fragment
         android:id="@+id/chatInformationFragment"
         android:name="com.example.iadvice.chatInformation.ChatInformationsFragment"

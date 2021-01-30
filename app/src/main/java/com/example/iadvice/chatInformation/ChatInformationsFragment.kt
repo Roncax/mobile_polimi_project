@@ -16,6 +16,8 @@ import com.example.iadvice.databinding.ChatInformationBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.chat_information.view.*
+import kotlinx.android.synthetic.main.fragment_new_question_images.view.*
+import kotlinx.android.synthetic.main.other_question_chat.view.*
 
 const val TAG = "CHAT_INFO_FRAGMENT"
 class ChatInformationsFragment : Fragment() {
@@ -31,6 +33,8 @@ class ChatInformationsFragment : Fragment() {
             "AdapterInfoList fired with my image list information: '${imgList}' "
         )
         attachInformationAdapter()
+        binding.titleInfoQuestion.text = "AAAAAAaAAAAAAAAAAAAAAA"
+
     }
 
     override fun onCreateView(
@@ -46,7 +50,6 @@ class ChatInformationsFragment : Fragment() {
             false
         )
 
-        binding.cardView.title_info_question.text = PersistenceUtils.currenChatId
 
         attachInformationAdapter()
 
@@ -56,6 +59,7 @@ class ChatInformationsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ChatInformationsViewModel::class.java)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -29,7 +29,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            app:srcCompat="@mipmap/ic_launcher_round"
+            tools:srcCompat="@mipmap/ic_launcher_round" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -75,7 +76,6 @@
             android:id="@+id/questionChatQuestion_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:ellipsize="end"
             android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@+id/ownerLabel_text"

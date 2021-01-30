@@ -36,7 +36,7 @@
         <ImageView
             android:id="@+id/add_image_register_button"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="200dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:adjustViewBounds="true"
@@ -44,15 +44,14 @@
             android:contextClickable="false"
             android:cropToPadding="false"
             android:focusable="auto"
-            android:maxWidth="450dp"
-            android:maxHeight="450dp"
+            android:maxWidth="350dp"
+            android:maxHeight="350dp"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toTopOf="@+id/nickname_text_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/default_picture"
             tools:srcCompat="@drawable/default_picture" />
 
         <TextView

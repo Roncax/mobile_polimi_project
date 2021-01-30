@@ -23,7 +23,7 @@
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="5dp"
             app:cardElevation="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/grindView_newQuestion"
+            app:layout_constraintBottom_toTopOf="@+id/grindView_information"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -32,6 +32,8 @@
                 android:id="@+id/title_info_question"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="Title"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -46,7 +48,7 @@
             android:horizontalSpacing="5dp"
             android:numColumns="auto_fit"
             android:verticalSpacing="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/create_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />

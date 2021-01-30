@@ -17,9 +17,9 @@
             android:id="@+id/title_ranking_testView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Here the rank of the users (based on personal points)"
+            android:text="Follow your progress!"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold" />
 

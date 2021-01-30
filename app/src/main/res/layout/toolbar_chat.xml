@@ -6,13 +6,13 @@
     android:id="@+id/toolbar_chat"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
     android:clickable="true"
     android:elevation="4dp"
     android:focusable="true"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     app:layout_constraintWidth_max="wrap"
     app:menu="@menu/chat_menu_nodelete"
+    app:navigationIcon="@drawable/back_icon"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,31 +21,20 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/abc_vector_test" />
-
-        <ImageView
             android:id="@+id/image_toolbar"
             android:layout_width="50dp"
             android:layout_height="0dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:clickable="true"
             android:contentDescription="TODO"
             android:focusable="true"
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/back_button"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/iadvice_avatar"
-            tools:srcCompat="@drawable/iadvice_avatar" />
+            app:srcCompat="@drawable/ic_launcher_foreground" />
 
         <TextView
             android:id="@+id/chat_title"
