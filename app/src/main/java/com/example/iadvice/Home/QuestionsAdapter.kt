@@ -27,7 +27,7 @@ class QuestionsAdapter(
     val itemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
 
-    var pos = RecyclerView.NO_POSITION
+    var highlightedPosition = RecyclerView.NO_POSITION
 
     private val listener: OnItemClickListener = itemClickListener
 
@@ -44,7 +44,13 @@ class QuestionsAdapter(
         val item = myDataset[position]
         holder.getType(chatType)
 
-        holder.itemView.isSelected = pos == position;
+        //holder.itemView.isSelected = highlightedPosition == position;
+
+        if(highlightedPosition == position){
+            holder.card.setBackgroundColor(Color.parseColor("#2196F3"))
+        }else{
+            holder.card.setBackgroundColor(Color.parseColor("#FFFFFF"))
+        }
 
         holder.bind(item, itemClickListener, myDataset.size.toString())
     }
@@ -82,17 +88,6 @@ class QuestionsAdapter(
                 .circleCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(Image)
-
-
-            itemView.setOnTouchListener { v, event ->
-                notifyItemChanged(pos)
-                pos = layoutPosition
-                card.setCardBackgroundColor(Color.parseColor("#2196F3"))
-                notifyItemChanged(pos)
-                false
-            }
-
-
 
             //customize the layout based on category of the chat
             when(item.category){
@@ -147,9 +142,9 @@ class QuestionsAdapter(
                 }
             }
 
-
             itemView.setOnClickListener{
-            //    card.setCardBackgroundColor(Color.parseColor("#2196F3"))
+                highlightedPosition = layoutPosition
+                notifyDataSetChanged()
             clickListener.onItemClick(item)
             }
 
