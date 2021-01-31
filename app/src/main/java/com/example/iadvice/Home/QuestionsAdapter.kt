@@ -18,6 +18,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
+
 lateinit var context_used: Context
 
 class QuestionsAdapter(
@@ -26,12 +27,14 @@ class QuestionsAdapter(
     val itemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
 
+    var pos = RecyclerView.NO_POSITION
+
     private val listener: OnItemClickListener = itemClickListener
 
     /* Create new views (invoked by the layout manager) */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionChatViewHolder {
         context_used = parent.context
-        return QuestionChatViewHolder.from(parent)
+        return  QuestionChatViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.other_question_chat, parent, false))
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -41,7 +44,7 @@ class QuestionsAdapter(
         val item = myDataset[position]
         holder.getType(chatType)
 
-
+        holder.itemView.isSelected = pos == position;
 
         holder.bind(item, itemClickListener, myDataset.size.toString())
     }
@@ -53,7 +56,7 @@ class QuestionsAdapter(
     /**
      *  Holder for the view of the single item
      **/
-    class QuestionChatViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(
+   inner class QuestionChatViewHolder(itemView: View): RecyclerView.ViewHolder(
         itemView
     ) {
         val title: TextView = itemView.findViewById(R.id.questionChatTitle_text)
@@ -80,31 +83,74 @@ class QuestionsAdapter(
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(Image)
 
+
+            itemView.setOnTouchListener { v, event ->
+                notifyItemChanged(pos)
+                pos = layoutPosition
+                card.setCardBackgroundColor(Color.parseColor("#2196F3"))
+                notifyItemChanged(pos)
+                false
+            }
+
+
+
             //customize the layout based on category of the chat
             when(item.category){
-                "Home" -> {categoryImage.setImageResource(R.drawable.ic_home)
+                "Home" -> {
+                    categoryImage.setImageResource(R.drawable.ic_home)
                     card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_home))
                 }
-                "Sport" -> {categoryImage.setImageResource(R.drawable.ic_sport)
-                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_sport))
+                "Sport" -> {
+                    categoryImage.setImageResource(R.drawable.ic_sport)
+                    card.setStrokeColor(
+                        ContextCompat.getColor(
+                            context_used,
+                            R.color.category_sport
+                        )
+                    )
                 }
-                "Technology" -> {categoryImage.setImageResource(R.drawable.ic_technology)
-                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_technology))
+                "Technology" -> {
+                    categoryImage.setImageResource(R.drawable.ic_technology)
+                    card.setStrokeColor(
+                        ContextCompat.getColor(
+                            context_used,
+                            R.color.category_technology
+                        )
+                    )
                 }
-                "Games" -> {categoryImage.setImageResource(R.drawable.ic_games)
-                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_games))
+                "Games" -> {
+                    categoryImage.setImageResource(R.drawable.ic_games)
+                    card.setStrokeColor(
+                        ContextCompat.getColor(
+                            context_used,
+                            R.color.category_games
+                        )
+                    )
                 }
-                "Style" -> {categoryImage.setImageResource(R.drawable.ic_style)
-                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_style))
+                "Style" -> {
+                    categoryImage.setImageResource(R.drawable.ic_style)
+                    card.setStrokeColor(
+                        ContextCompat.getColor(
+                            context_used,
+                            R.color.category_style
+                        )
+                    )
                 }
-                "Various" -> {categoryImage.setImageResource(R.drawable.ic_various)
-                    card.setStrokeColor(ContextCompat.getColor(context_used, R.color.category_various))
+                "Various" -> {
+                    categoryImage.setImageResource(R.drawable.ic_various)
+                    card.setStrokeColor(
+                        ContextCompat.getColor(
+                            context_used,
+                            R.color.category_various
+                        )
+                    )
                 }
             }
 
+
             itemView.setOnClickListener{
-                //card.setCardBackgroundColor(Color.parseColor("#2196F3"))
-                clickListener.onItemClick(item)
+            //    card.setCardBackgroundColor(Color.parseColor("#2196F3"))
+            clickListener.onItemClick(item)
             }
 
         }
@@ -115,23 +161,8 @@ class QuestionsAdapter(
                     owner.visibility = View.GONE
                     ownerLabel.visibility = View.GONE
                 }
-                "other" -> {
-                }
-                else -> {
-                    //TODO inserire cambio layout chatlist in archive
-                }
             }
         }
-
-        companion object {
-            fun from(parent: ViewGroup): QuestionChatViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.other_question_chat, parent, false)
-                return QuestionChatViewHolder(view)
-            }
-        }
-
     }
 }
 
