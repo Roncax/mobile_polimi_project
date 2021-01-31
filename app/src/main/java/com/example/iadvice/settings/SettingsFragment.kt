@@ -183,6 +183,7 @@ class SettingsFragment : Fragment(),  OnCategoryClickListener {
         val arrayChecked = BooleanArray(arrayCat.size){false}
 
        for (c in categories){
+           Log.d(TAG,"${c}")
            val index = arrayCat.indexOf(c)
            arrayChecked[index] = true
        }
