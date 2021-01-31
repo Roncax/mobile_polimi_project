@@ -52,8 +52,6 @@ class ChatActivityFragment : Fragment() {
     private lateinit var customDialog: CustomListViewEvaluationDialog
     private lateinit var binding: ActivityChatFragmentBinding
 
-    private var isTablet by Delegates.notNull<Boolean>()
-
     private val chatObserver = Observer<Chat> { chat ->
         binding.toolbarChat.chat_title.text = viewModel.currentChat.title
 
@@ -98,16 +96,13 @@ class ChatActivityFragment : Fragment() {
         loadMessages(viewModel.currentChatId, binding.messageList)
         viewModel.currentChatLiveData.observe(viewLifecycleOwner, chatObserver)
 
-        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
-
         //if tablet version do not show arrow for back navigation
-        if(isTablet)
+        if(PersistenceUtils.isTablet)
             binding.toolbarChat.navigationIcon = null
 
 
-
         //nascondo l'altra appbar
-        if (!isTablet)
+        if (!PersistenceUtils.isTablet)
             requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE
 
         binding.apply {
@@ -144,11 +139,11 @@ class ChatActivityFragment : Fragment() {
         binding.toolbarChat.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.chatInformationsFragment -> {
-                    if (!isTablet) {
+                    if (!PersistenceUtils.isTablet) {
                         findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformations)
                         Log.d(TAG, "Clicked chat info")
                     } else {
-                        findNavController().navigate(R.id.action_chatActivityFragment2_to_chatInformationsFragment2)
+                        findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformationsFragment)
                     }
                 }
                 R.id.close_chat_item -> {

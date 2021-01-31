@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.properties.Delegates
 
 const val TAG = "MAIN_ACTIVITY"
 class MainActivity : AppCompatActivity() {
@@ -46,6 +47,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var actionBarToggle: ActionBarDrawerToggle
     private lateinit var navView: NavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private var isTablet by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +79,10 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { item ->
             drawerListener(item)
         }
+
+        isTablet = resources?.getBoolean(R.bool.isTablet)!!
+        PersistenceUtils.isTablet = isTablet
+
 
         PersistenceUtils.currentUserLiveData.observe(this, userObserver)
         PersistenceUtils.currentUserImageLiveData.observe(this, userImageObserver)

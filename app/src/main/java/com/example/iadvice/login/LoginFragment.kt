@@ -27,8 +27,6 @@ class LoginFragment : Fragment() {
 
     private lateinit var viewModel: LoginViewModel
 
-    private var isTablet by Delegates.notNull<Boolean>()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,8 +42,7 @@ class LoginFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         //Force the screen orientation in case of smartphone
-        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
-        if(!isTablet)
+        if(!PersistenceUtils.isTablet)
             activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
 
         binding.apply {

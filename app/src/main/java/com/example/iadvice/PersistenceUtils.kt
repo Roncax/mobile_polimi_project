@@ -20,7 +20,7 @@ import kotlin.properties.Delegates
 object PersistenceUtils {
 
     lateinit var currenChatId: String
-
+    var isTablet by Delegates.notNull<Boolean>()
 
     var userListRank:MutableList<User> = mutableListOf()
     val userListRankLiveData: MutableLiveData<User> by lazy {
@@ -180,10 +180,6 @@ object PersistenceUtils {
             }
             updateChatImages(tempList)
         }
-
-
-
-
     }
 
 }

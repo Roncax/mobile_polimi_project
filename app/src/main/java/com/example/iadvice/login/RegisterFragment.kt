@@ -19,6 +19,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.iadvice.GlideApp
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.databinding.RegisterFragmentBinding
 import com.example.iadvice.settings.CategoriesAdapter
@@ -42,8 +43,6 @@ class RegisterFragment : Fragment(), OnCategoryClickListener {
     private lateinit var viewModel: RegisterViewModel
     private lateinit var binding: RegisterFragmentBinding
 
-    private var isTablet by Delegates.notNull<Boolean>()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,8 +57,7 @@ class RegisterFragment : Fragment(), OnCategoryClickListener {
         // viewModelProviders used to not destroy the viewmodel until detached
         requireNotNull(this.activity).application
 
-        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
-        if (!isTablet) {
+        if (!PersistenceUtils.isTablet) {
             activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
