@@ -6,9 +6,17 @@
     <fragment
         android:id="@+id/chatActivityFragment2"
         android:name="com.example.iadvice.chat.ChatActivityFragment"
-        android:label="ChatActivityFragment" />
+        android:label="ChatActivityFragment" >
+        <action
+            android:id="@+id/action_chatActivityFragment2_to_chatInformationsFragment2"
+            app:destination="@id/chatInformationsFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/emptyFragment"
         android:name="com.example.iadvice.Home.EmptyFragment"
         android:label="EmptyFragment" />
+    <fragment
+        android:id="@+id/chatInformationsFragment2"
+        android:name="com.example.iadvice.chatInformation.ChatInformationsFragment"
+        android:label="ChatInformationsFragment" />
 </navigation>

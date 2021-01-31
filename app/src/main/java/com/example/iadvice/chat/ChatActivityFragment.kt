@@ -38,6 +38,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_chat.*
 import kotlinx.android.synthetic.main.toolbar_chat.view.*
 import java.util.*
+import kotlin.properties.Delegates
 
 
 class ChatActivityFragment : Fragment() {
@@ -51,15 +52,18 @@ class ChatActivityFragment : Fragment() {
     private lateinit var customDialog: CustomListViewEvaluationDialog
     private lateinit var binding: ActivityChatFragmentBinding
 
+    private var isTablet by Delegates.notNull<Boolean>()
+
     private val chatObserver = Observer<Chat> { chat ->
         binding.toolbarChat.chat_title.text = viewModel.currentChat.title
 
-        if (!chat.isActive){
+        if (!chat.isActive) {
             binding.materialCardView.visibility = View.GONE
         }
 
         //Caricamento dell'immagine cover della chat
-        val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("chat_images/${viewModel.currentChat.chatId}/${viewModel.currentChat.coverId}" )
+        val imageRef: StorageReference =
+            FirebaseStorage.getInstance().reference.child("chat_images/${viewModel.currentChat.chatId}/${viewModel.currentChat.coverId}")
         GlideApp.with(requireView())
             .load(imageRef)
             .circleCrop()
@@ -70,8 +74,9 @@ class ChatActivityFragment : Fragment() {
             binding.toolbarChat.menu.clear()
             binding.toolbarChat.inflateMenu(R.menu.chat_menu)
         }
-        
-        Log.d(TAG,
+
+        Log.d(
+            TAG,
             "Visible close button '${chat}' owner:${FirebaseAuth.getInstance().currentUser!!.uid} me: ${viewModel.currentChat.owner.keys.first()}"
         )
     }
@@ -82,7 +87,7 @@ class ChatActivityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-            binding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.activity_chat_fragment, container, false
         )
@@ -93,10 +98,17 @@ class ChatActivityFragment : Fragment() {
         loadMessages(viewModel.currentChatId, binding.messageList)
         viewModel.currentChatLiveData.observe(viewLifecycleOwner, chatObserver)
 
+        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
+
+        //if tablet version do not show arrow for back navigation
+        if(isTablet)
+            binding.toolbarChat.navigationIcon = null
+
 
 
         //nascondo l'altra appbar
-        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE
+        if (!isTablet)
+            requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE
 
         binding.apply {
             messageList.layoutManager = LinearLayoutManager(context)
@@ -132,8 +144,12 @@ class ChatActivityFragment : Fragment() {
         binding.toolbarChat.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.chatInformationsFragment -> {
-                    findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformations)
-                    Log.d(TAG, "Clicked chat info")
+                    if (!isTablet) {
+                        findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformations)
+                        Log.d(TAG, "Clicked chat info")
+                    } else {
+                        findNavController().navigate(R.id.action_chatActivityFragment2_to_chatInformationsFragment2)
+                    }
                 }
                 R.id.close_chat_item -> {
                     Log.d(TAG, "BuildEvaluationDialog")
@@ -147,7 +163,6 @@ class ChatActivityFragment : Fragment() {
 
         return binding.root
     }
-
 
 
     private fun buildEvaluationDialog() {
@@ -169,7 +184,8 @@ class ChatActivityFragment : Fragment() {
 
     fun popStack() {
         if (requireView().findNavController().popBackStack()) {
-            requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
+            requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility =
+                View.VISIBLE
         }
     }
 
