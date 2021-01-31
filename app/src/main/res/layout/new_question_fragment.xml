@@ -36,7 +36,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/question_text_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cover_imageView"
+                app:layout_constraintTop_toBottomOf="@+id/click_change_cover"
                 app:layout_constraintVertical_chainStyle="packed">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -87,6 +87,15 @@
                 app:layout_constraintVertical_chainStyle="packed"
                 app:srcCompat="@drawable/default_picture"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/click_change_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click the picture to change the chat cover"
+                app:layout_constraintEnd_toEndOf="@+id/cover_imageView"
+                app:layout_constraintStart_toStartOf="@+id/cover_imageView"
+                app:layout_constraintTop_toBottomOf="@+id/cover_imageView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -244,7 +253,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="@string/next_button"
-                app:icon="@drawable/next_icon"
+                app:icon="@drawable/forward_icon"
                 app:iconGravity="end"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

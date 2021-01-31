@@ -19,7 +19,11 @@ import com.google.firebase.storage.StorageReference
 import org.w3c.dom.Text
 
 
-class QuestionsAdapter ( val myDataset: MutableList<Chat>, val chatType:String, val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
+class QuestionsAdapter(
+    val myDataset: MutableList<Chat>,
+    val chatType: String,
+    val itemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
 
     private val listener: OnItemClickListener = itemClickListener
 
@@ -44,21 +48,23 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val chatType:String, 
     /**
      *  Holder for the view of the single item
      **/
-    class QuestionChatViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class QuestionChatViewHolder private constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.questionChatTitle_text)
         val question: TextView = itemView.findViewById(R.id.questionChatQuestion_text)
         val numberUsers: TextView = itemView.findViewById(R.id.questionNumberUsers_text)
         val Image: ImageView = itemView.findViewById(R.id.questionChat_image)
         val owner: TextView = itemView.findViewById(R.id.ownerChatQuestion_text)
         val ownerLabel: TextView = itemView.findViewById(R.id.ownerLabel_text)
-        val card:CardView = itemView.findViewById(R.id.chatCard)
+        val card: CardView = itemView.findViewById(R.id.chatCard)
 
-        fun bind(item: Chat, clickListener: OnItemClickListener, size:String){
+        fun bind(item: Chat, clickListener: OnItemClickListener, size: String) {
             title.text = item.title
             question.text = item.question
             numberUsers.text = (item.userList.size + 1).toString()
             owner.text = item.owner.values.first()
-            val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("chat_images/${item.chatId}/${item.coverId}" )
+            val imageRef: StorageReference =
+                FirebaseStorage.getInstance().reference.child("chat_images/${item.chatId}/${item.coverId}")
 
             GlideApp.with(this.itemView)
                 .load(imageRef)
@@ -67,19 +73,20 @@ class QuestionsAdapter ( val myDataset: MutableList<Chat>, val chatType:String, 
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(Image)
 
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 clickListener.onItemClick(item)
             }
 
         }
 
         fun getType(chatType: String) {
-            when(chatType){
+            when (chatType) {
                 "your" -> {
                     owner.visibility = View.GONE
                     ownerLabel.visibility = View.GONE
                 }
-                "other" -> {}
+                "other" -> {
+                }
                 else -> {
                     //TODO inserire cambio layout chatlist in archive
                 }

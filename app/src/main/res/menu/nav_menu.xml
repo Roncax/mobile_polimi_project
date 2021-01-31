@@ -10,8 +10,9 @@
 
         <item
             android:id="@+id/refreshButton"
-            android:icon="@android:drawable/ic_popup_sync"
+            android:icon="@drawable/iadvice_home_icon"
             android:title="@string/Refresh"
+            android:visible="false"
             app:showAsAction="always" />
 
     </group>

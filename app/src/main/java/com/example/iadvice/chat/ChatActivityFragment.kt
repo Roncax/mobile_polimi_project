@@ -10,11 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.iadvice.GlideApp
 import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
@@ -27,6 +31,12 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_chat_fragment.*
 import com.example.iadvice.databinding.ActivityChatFragmentBinding
+import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar_chat.*
+import kotlinx.android.synthetic.main.toolbar_chat.view.*
 import java.util.*
 
 
@@ -42,10 +52,25 @@ class ChatActivityFragment : Fragment() {
     private lateinit var binding: ActivityChatFragmentBinding
 
     private val chatObserver = Observer<Chat> { chat ->
-        if (FirebaseAuth.getInstance().currentUser!!.uid == viewModel.currentChat.owner.keys.first()) {
-            binding.closeButton.visibility = View.VISIBLE
+        binding.toolbarChat.chat_title.text = viewModel.currentChat.title
+
+        if (!chat.isActive){
+            binding.materialCardView.visibility = View.GONE
         }
 
+        //Caricamento dell'immagine cover della chat
+        val imageRef: StorageReference = FirebaseStorage.getInstance().reference.child("chat_images/${viewModel.currentChat.chatId}/${viewModel.currentChat.coverId}" )
+        GlideApp.with(requireView())
+            .load(imageRef)
+            .circleCrop()
+            .into(binding.toolbarChat.image_toolbar)
+
+
+        if (FirebaseAuth.getInstance().currentUser!!.uid == viewModel.currentChat.owner.keys.first()) {
+            binding.toolbarChat.menu.clear()
+            binding.toolbarChat.inflateMenu(R.menu.chat_menu)
+        }
+        
         Log.d(TAG,
             "Visible close button '${chat}' owner:${FirebaseAuth.getInstance().currentUser!!.uid} me: ${viewModel.currentChat.owner.keys.first()}"
         )
@@ -66,15 +91,17 @@ class ChatActivityFragment : Fragment() {
         adapter = MessageAdapter(requireContext(), viewModel)
 
         loadMessages(viewModel.currentChatId, binding.messageList)
-
         viewModel.currentChatLiveData.observe(viewLifecycleOwner, chatObserver)
 
-        binding.apply {
 
+
+        //nascondo l'altra appbar
+        requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE
+
+        binding.apply {
             messageList.layoutManager = LinearLayoutManager(context)
             messageList.adapter = adapter
             messageList.scrollToPosition(adapter.itemCount - 1)
-
             btnSend.setOnClickListener {
                 if (txtMessage.text.isNotEmpty()) {
                     val message = Message(
@@ -96,14 +123,26 @@ class ChatActivityFragment : Fragment() {
                 }
             }
 
-            showInfochatButton.setOnClickListener {
-                findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformations)
+        }
+
+
+        binding.toolbarChat.setNavigationOnClickListener {
+            popStack()
+        }
+        binding.toolbarChat.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.chatInformationsFragment -> {
+                    findNavController().navigate(R.id.action_chatActivityFragment_to_chatInformations)
+                    Log.d(TAG, "Clicked chat info")
+                }
+                R.id.close_chat_item -> {
+                    Log.d(TAG, "BuildEvaluationDialog")
+                    buildEvaluationDialog()
+                }
             }
 
-            closeButton.setOnClickListener {
-                Log.d(TAG, "BuildEvaluationDialog")
-                buildEvaluationDialog()
-            }
+
+            return@setOnMenuItemClickListener true
         }
 
         return binding.root
@@ -128,6 +167,11 @@ class ChatActivityFragment : Fragment() {
 
     }
 
+    fun popStack() {
+        if (requireView().findNavController().popBackStack()) {
+            requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
+        }
+    }
 
     private fun resetInput() {
         // Clean text box
