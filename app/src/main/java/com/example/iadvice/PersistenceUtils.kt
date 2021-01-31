@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
+import kotlin.properties.Delegates
 
 
 object PersistenceUtils {
@@ -45,8 +46,6 @@ object PersistenceUtils {
     val currentChatImagesLiveData: MutableLiveData<MutableList<StorageReference>> by lazy {
         MutableLiveData<MutableList<StorageReference>>()
     }
-
-
 
     fun updateCurrentUser(user: User){
         currentUser = user

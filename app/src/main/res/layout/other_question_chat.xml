@@ -12,7 +12,8 @@
     android:focusable="true"
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="10dp"
-    app:cardElevation="5dp">
+    app:cardElevation="5dp"
+    app:strokeWidth="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/questionChat_view"
@@ -104,5 +105,12 @@
             android:text="OwnerIdentifier"
             app:layout_constraintBaseline_toBaselineOf="@+id/ownerLabel_text"
             app:layout_constraintStart_toEndOf="@+id/ownerLabel_text" />
+
+        <ImageView
+            android:id="@+id/category_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/ownerChatQuestion_text"
+            app:layout_constraintStart_toStartOf="@+id/imageView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -16,6 +16,7 @@ import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.databinding.LoginFragmentBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.properties.Delegates
 
 
 class LoginFragment : Fragment() {
@@ -25,6 +26,8 @@ class LoginFragment : Fragment() {
     }
 
     private lateinit var viewModel: LoginViewModel
+
+    private var isTablet by Delegates.notNull<Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +43,10 @@ class LoginFragment : Fragment() {
         // viewModelProviders used to not destroy the viewModel until detached
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
-        //Force the screen orientation
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        //Force the screen orientation in case of smartphone
+        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
+        if(!isTablet)
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
 
         binding.apply {
 

@@ -16,23 +16,33 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.iadvice.GlideApp
 import com.example.iadvice.R
 import com.example.iadvice.databinding.RegisterFragmentBinding
+import com.example.iadvice.settings.CategoriesAdapter
+import com.example.iadvice.settings.OnCategoryClickListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.register_fragment.*
+import kotlin.properties.Delegates
 
 private const val TAG = "RegisterFragment"
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(), OnCategoryClickListener {
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    lateinit var dialog: AlertDialog
 
     private lateinit var viewModel: RegisterViewModel
     private lateinit var binding: RegisterFragmentBinding
+
+    private var isTablet by Delegates.notNull<Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +58,11 @@ class RegisterFragment : Fragment() {
         // viewModelProviders used to not destroy the viewmodel until detached
         requireNotNull(this.activity).application
 
-        //Force the screen orientation
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
+        if (!isTablet) {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
 
         binding.apply {
             registerButton.setOnClickListener {
@@ -88,31 +101,42 @@ class RegisterFragment : Fragment() {
 
     // Method to show an alert dialog with multiple choice list items
     private fun showCategoriesDialog() {
-        lateinit var dialog: AlertDialog
 
+        //array che contiene tutte le categorie
         val arrayCat = resources.getStringArray(R.array.categories)
-        val arrayChecked = BooleanArray(arrayCat.size) { i -> arrayCat[i] == "Casual" }
-        val builder = MaterialAlertDialogBuilder(this.requireContext())
+        //array che mappa categoria con il fatto che sia selezionata o meno
+        val arrayChecked = BooleanArray(arrayCat.size)
 
+        val builder = MaterialAlertDialogBuilder(this.requireContext())
+        builder.setView(R.layout.dialog)
         builder.setTitle("Categories of interest")
 
-        // Define multiple choice items for alert dialog
-        builder.setMultiChoiceItems(arrayCat, arrayChecked) { _, which, isChecked ->
-            arrayChecked[which] = isChecked
-        }
+        viewModel.categories = mutableListOf()
 
-        builder.setPositiveButton("Done") { _, _ ->
-            viewModel.categories = mutableListOf()
-            for (i in arrayCat.indices) {
-                val checked = arrayChecked[i]
-                if (checked) {
-                    viewModel.categories.add(arrayCat[i])
-                }
-            }
-        }
+        //in pratica il bottone non fa nulla, le categorie vengono aggiunte/tolte direttamente al click del checkbox
+        builder.setPositiveButton("Done") { _, _ -> }
 
         dialog = builder.create()
         dialog.show()
+        attachAdapter(arrayCat, arrayChecked)
+    }
+
+    //used to manage the adapter of the recyclerview containing checbox with categories names
+    private fun attachAdapter(arrayCat: Array<String>, arrayChecked: BooleanArray) {
+        viewAdapter = CategoriesAdapter(arrayCat, arrayChecked, this@RegisterFragment)
+
+        recyclerView =
+            (dialog as? AlertDialog)?.findViewById<View>(R.id.RecyclerViewDialog) as RecyclerView
+
+        //set the categories clickable
+        (viewAdapter as CategoriesAdapter).setClickable(true)
+
+        recyclerView.apply {
+            //used to improve performances
+            setHasFixedSize(true)
+            adapter = viewAdapter
+        }
+
     }
 
 
@@ -177,5 +201,12 @@ class RegisterFragment : Fragment() {
 
     }
 
-
+    //cliccando il checkbox il viemodel viene automaticamente aggiornato
+    override fun onItemClick(item: String, clicked: Boolean) {
+        if (viewModel.categories.contains(item)) {
+            viewModel.categories.remove(item)
+        } else {
+            viewModel.categories.add(item)
+        }
+    }
 }
