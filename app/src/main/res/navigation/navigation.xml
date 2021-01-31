@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/your_questions_fragment"
         android:name="com.example.iadvice.home.RecyclerViewHandlerFragment"
-        android:label="My chats"
+        android:label="Archive"
         tools:layout="@layout/your_questions_fragment">
 
 
@@ -95,12 +95,6 @@
             android:id="@+id/action_mainHome_fragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:popUpTo="@id/mainHome_fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/archiveFragment"
-        android:name="com.example.iadvice.ArchiveFragment"
-        android:label="Closed or expired chats"
-        tools:layout="@layout/archive_fragment" >
     </fragment>
     <fragment
         android:id="@+id/chatActivityFragment"
