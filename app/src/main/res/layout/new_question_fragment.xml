@@ -44,7 +44,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
-                    android:maxWidth="300dp" />
+                    android:maxWidth="300dp"
+                    android:maxLength="20" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +68,8 @@
                     android:id="@+id/questionEditTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:maxLength="200" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,13 +136,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
                 android:maxWidth="150dp"
                 android:stepSize="5.0"
                 android:valueFrom="5"
                 android:valueTo="30"
                 app:layout_constraintBottom_toBottomOf="@+id/maxUsersNumberText"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/region_spinner"
                 app:layout_constraintStart_toStartOf="@+id/region_spinner"
                 app:layout_constraintTop_toTopOf="@+id/maxUsersNumberText"
                 app:layout_constraintWidth_max="wrap" />
@@ -190,7 +191,7 @@
 
             <TextView
                 android:id="@+id/maxUsersNumberText"
-                android:layout_width="68dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/max_chat_users"

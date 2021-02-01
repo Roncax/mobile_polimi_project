@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:text="Evaluate partecipants (from 1 to 5)"
+        android:text="Evaluate partecipants (from 1 to 5 stars)"
+        android:textColor="@color/textColorDark"
         android:textSize="14sp" />
 
     <ScrollView

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00BCD4</color>
-    <color name="colorPrimaryDark">#3F51B5</color>
-    <color name="colorAccent">#2196F3</color>
-    <color name="textColorPrimary">#442C2E</color>
-    <color name="toolbarIconColor">@color/textColorPrimary</color>
-    <color name="loginPageBackgroundColor">#FFFFFF</color>
-    <color name="productGridBackgroundColor">#FFFFFF</color>
+    <color name="colorPrimary">#61bc9f</color>
+    <color name="colorPrimaryDark">#2d8b71</color>
+    <color name="colorPrimaryLight">#93efd0</color>
 
+    <color name="colorSecondary">#90caf9</color>
+    <color name="colorSecondaryDark">#5d99c6</color>
+    <color name="colorSecondaryLight">#c3fdff</color>
 
-    <color name="colorPrimaryTab">@color/colorAccent</color>
-    <color name="generic_buttons">#35CF57</color>>
+    <color name="textColorDark">#292C2C</color>
+    <color name="textColorLight">#C2C5C5</color>
 
-    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
-    <color name="category_home">#F7DC6F</color>
+
+
+    <color name="category_home">#E1D39A</color>
     <color name="category_sport">#7DCEA0 </color>
-    <color name="category_technology">#85C1E9</color>
-    <color name="category_games">#FF5733 </color>
-    <color name="category_style">#C39BD3 </color>
-    <color name="category_various">#85929E</color>
+    <color name="category_technology">#8EBFDF</color>
+    <color name="category_games">#E36C53</color>
+    <color name="category_style">#C6AAD1</color>
+    <color name="category_various">#C3C6C8</color>
 
 </resources>

@@ -14,10 +14,10 @@
             android:layout_width="470dp"
             android:layout_height="wrap_content"
             android:alpha="0.5"
-            android:background="@color/colorPrimaryTab"
+            android:background="@color/colorPrimaryLight"
+            app:layout_constraintBottom_toTopOf="@id/pager"
             app:layout_constraintEnd_toStartOf="@id/chat_nav_container"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/pager"
             app:layout_constraintTop_toTopOf="parent"
 
             app:tabGravity="center"
@@ -44,6 +44,7 @@
             android:layout_marginBottom="20dp"
             android:elevation="3dp"
             android:src="@drawable/ic_add"
+            app:backgroundTint="@color/colorSecondary"
             app:layout_constraintBottom_toBottomOf="@+id/pager"
             app:layout_constraintEnd_toStartOf="@+id/divider" />
 
@@ -51,7 +52,7 @@
             android:id="@+id/divider"
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:background="@color/black"
+            android:background="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="@id/pager"
