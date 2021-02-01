@@ -84,15 +84,6 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if(chatType == "archived")
-            binding.fab.visibility = View.GONE
-        else
-            binding.fab.setOnClickListener { onFabClick() }
-
-    }
-
 
     private fun attachAdapter() {
         var chatList: MutableList<Chat> = mutableListOf()
@@ -137,14 +128,6 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
         }
     }
 
-
-
-
-
-
-    private fun onFabClick() {
-        findNavController().navigate(R.id.newQuestionFragment, null)
-    }
 
     companion object {
         fun newInstance(chatType: String): RecyclerViewHandlerFragment {

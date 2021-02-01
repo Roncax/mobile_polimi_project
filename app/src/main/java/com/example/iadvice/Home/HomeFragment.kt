@@ -70,6 +70,8 @@ class HomeFragment : Fragment() {
             activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
         }
 
+        binding.fab!!.setOnClickListener{findNavController().navigate(R.id.newQuestionFragment, null) }
+
         return binding.root
     }
 
@@ -84,7 +86,7 @@ class HomeFragment : Fragment() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "My questions"
-                else -> tab.text = "others"
+                else -> tab.text = "Help others"
             }
         }.attach()
     }
