@@ -83,8 +83,8 @@ class HomeFragment : Fragment() {
         val tabLayout = requireView().findViewById<TabLayout>(R.id.tabLayout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "My chats"
-                else -> tab.text = "From the world"
+                0 -> tab.text = "My questions"
+                else -> tab.text = "others"
             }
         }.attach()
     }

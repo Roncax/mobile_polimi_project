@@ -7,6 +7,14 @@
         android:enabled="true"
         android:menuCategory="container"
         android:visible="true">
+
+        <item
+            android:id="@+id/close_chat_item"
+            android:enabled="true"
+            android:icon="@drawable/close_icon"
+            android:title="Chat close"
+            android:visible="true"
+            app:showAsAction="always" />
         <item
             android:id="@+id/chatInformationsFragment"
             android:enabled="true"
@@ -14,13 +22,6 @@
             android:title="Chat info"
             android:visible="true"
             app:showAsAction="always" />
-        <item
-            android:id="@+id/close_chat_item"
-            android:enabled="true"
-            android:icon="@drawable/close_icon"
-            android:title="Chat close"
-            android:visible="true"
-            app:showAsAction="ifRoom" />
 
     </group>
 </menu>

@@ -100,7 +100,6 @@ class ChatActivityFragment : Fragment() {
         if(PersistenceUtils.isTablet)
             binding.toolbarChat.navigationIcon = null
 
-
         //nascondo l'altra appbar
         if (!PersistenceUtils.isTablet)
             requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE

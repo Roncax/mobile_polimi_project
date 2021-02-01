@@ -17,21 +17,20 @@
         android:layout_alignParentTop="false"
         android:layout_alignParentEnd="false"
         android:layout_alignParentRight="false"
-        android:layout_marginStart="30dp"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/category_icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:text="Prova" />
+        tools:text="Test" />
 
     <ImageView
         android:id="@+id/category_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/category_checkBox"
-        app:layout_constraintStart_toEndOf="@+id/category_checkBox"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/category_checkBox"
         app:srcCompat="@drawable/ic_home" />
 
