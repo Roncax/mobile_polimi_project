@@ -17,6 +17,7 @@ import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
+import com.google.firebase.database.core.persistence.PersistenceStorageEngine
 import kotlin.properties.Delegates
 
 const val KEY_CHATTYPE = "type_of_chat_to_display"
@@ -30,9 +31,6 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
 
     private lateinit var viewModel: HomeFragmentViewModel
-
-    private var isTablet by Delegates.notNull<Boolean>()
-
 
     private val chatListObserver = Observer<MutableList<Chat>> { chat ->
         Log.d(
@@ -76,8 +74,6 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
         attachAdapter()
 
-        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
-
         return binding.root
     }
 
@@ -117,7 +113,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
 
     override fun onItemClick(item: Chat) {
-        if (!isTablet)
+        if (!PersistenceUtils.isTablet)
             onItemClick_normal(item)
         else
             onItemClick_tablet(item)
@@ -137,7 +133,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
         } else {
             val navHostFragment =
                 parentFragmentManager.findFragmentById(R.id.chat_nav_container) as NavHostFragment
-            navHostFragment.navController.navigate(R.id.chatActivityFragment2)
+                navHostFragment.navController.navigate(R.id.chatActivityFragment)
         }
     }
 

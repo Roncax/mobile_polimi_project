@@ -4,11 +4,19 @@
     app:startDestination="@id/emptyFragment">
 
     <fragment
-        android:id="@+id/chatActivityFragment2"
+        android:id="@+id/chatActivityFragment"
         android:name="com.example.iadvice.chat.ChatActivityFragment"
-        android:label="ChatActivityFragment" />
+        android:label="ChatActivityFragment" >
+        <action
+            android:id="@+id/action_chatActivityFragment_to_chatInformationsFragment"
+            app:destination="@id/chatInformationsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/emptyFragment"
         android:name="com.example.iadvice.Home.EmptyFragment"
         android:label="EmptyFragment" />
+    <fragment
+        android:id="@+id/chatInformationsFragment"
+        android:name="com.example.iadvice.chatInformation.ChatInformationsFragment"
+        android:label="ChatInformationsFragment" />
 </navigation>

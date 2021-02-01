@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.viewpager2.widget.ViewPager2
 import com.example.iadvice.MainActivity
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.HomeFragmentBinding
@@ -37,8 +38,6 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewPagerAdapter: HomeViewPagerAdapter
     private lateinit var viewPager: ViewPager2
     private lateinit var binding: HomeFragmentBinding
-
-    private var isTablet by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +65,8 @@ class HomeFragment : Fragment() {
         requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.VISIBLE
 
         //Force the screen orientation in case of smartphone
-        isTablet = context?.resources?.getBoolean(R.bool.isTablet)!!
-        if(!isTablet) {
+
+        if(!PersistenceUtils.isTablet) {
             activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
         }
 

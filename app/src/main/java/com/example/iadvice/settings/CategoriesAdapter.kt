@@ -68,14 +68,13 @@ class CategoriesAdapter(
             checkBox.isClickable = click
 
             when(item){
-                "Games" -> categoryIcon.setImageResource(R.drawable.ic_games)
-                "Sport" -> categoryIcon.setImageResource(R.drawable.ic_sport)
                 "Home" -> categoryIcon.setImageResource(R.drawable.ic_home)
-                "Clothes" -> categoryIcon.setImageResource(R.drawable.ic_style)
-                else -> categoryIcon.setImageResource(R.drawable.ic_language)
+                "Sport" -> categoryIcon.setImageResource(R.drawable.ic_sport)
+                "Technology" -> categoryIcon.setImageResource(R.drawable.ic_technology)
+                "Games" -> categoryIcon.setImageResource(R.drawable.ic_games)
+                "Style" -> categoryIcon.setImageResource(R.drawable.ic_style)
+                "Various" -> categoryIcon.setImageResource(R.drawable.ic_various)
             }
-
-
 
 
         }
