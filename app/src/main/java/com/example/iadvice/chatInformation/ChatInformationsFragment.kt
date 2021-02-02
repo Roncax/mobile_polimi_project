@@ -49,6 +49,7 @@ class ChatInformationsFragment : Fragment() {
 
         //Update the question
         requireView().findViewById<TextView>(R.id.title_info_question).text = chatViewModel.currentChat.question
+        requireView().findViewById<TextView>(R.id.asker_info_question).text = chatViewModel.currentChat.owner.values.first()
 
     }
 

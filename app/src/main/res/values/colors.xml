@@ -4,14 +4,13 @@
     <color name="colorPrimaryDark">#2d8b71</color>
     <color name="colorPrimaryLight">#93efd0</color>
 
-    <color name="colorSecondary">#90caf9</color>
-    <color name="colorSecondaryDark">#5d99c6</color>
-    <color name="colorSecondaryLight">#c3fdff</color>
 
     <color name="textColorDark">#292C2C</color>
     <color name="textColorLight">#C2C5C5</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="highlightChat">#D6D6D6</color>
+
 
     <color name="category_home">#CAAE3D</color>
     <color name="category_sport">#53A175</color>

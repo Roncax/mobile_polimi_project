@@ -17,6 +17,7 @@
         android:layout_alignParentTop="false"
         android:layout_alignParentEnd="false"
         android:layout_alignParentRight="false"
+        android:buttonTint="@color/colorPrimaryDark"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/category_icon"

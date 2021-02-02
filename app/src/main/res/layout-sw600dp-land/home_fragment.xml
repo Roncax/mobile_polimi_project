@@ -44,7 +44,7 @@
             android:layout_marginBottom="20dp"
             android:elevation="3dp"
             android:src="@drawable/ic_add"
-            app:backgroundTint="@color/colorSecondary"
+            app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/pager"
             app:layout_constraintEnd_toStartOf="@+id/divider" />
 

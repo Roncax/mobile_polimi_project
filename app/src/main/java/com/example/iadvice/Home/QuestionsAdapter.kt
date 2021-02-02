@@ -57,7 +57,7 @@ class QuestionsAdapter(
         Log.d(TAG,"HIGHLIGHTED NEL BIND --> ${PersistenceUtils.highlightedPosition}")
 
         if(highlightedPosition == position){
-            holder.card.setBackgroundColor(ContextCompat.getColor(context_used,R.color.colorPrimaryLight))
+            holder.card.setBackgroundColor(ContextCompat.getColor(context_used,R.color.highlightChat))
             holder.card.radius = 0F
         }else{
             holder.card.setBackgroundColor(Color.parseColor("#FFFFFF"))
