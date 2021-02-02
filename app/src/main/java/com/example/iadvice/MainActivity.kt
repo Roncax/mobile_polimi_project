@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.settings_fragment.*
 import kotlin.properties.Delegates
 
 const val TAG = "MAIN_ACTIVITY"

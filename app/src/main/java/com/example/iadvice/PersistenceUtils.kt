@@ -2,6 +2,7 @@ package com.example.iadvice
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
 import com.example.iadvice.database.User
 import com.example.iadvice.login.LoginFragment
 import com.google.android.gms.tasks.Task
@@ -21,6 +22,7 @@ object PersistenceUtils {
 
     lateinit var currenChatId: String
     var isTablet by Delegates.notNull<Boolean>()
+    var highlightedPosition by Delegates.notNull<Int>()
 
     var userListRank:MutableList<User> = mutableListOf()
     val userListRankLiveData: MutableLiveData<User> by lazy {

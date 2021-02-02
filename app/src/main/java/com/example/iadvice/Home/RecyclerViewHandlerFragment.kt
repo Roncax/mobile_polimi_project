@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,10 +18,12 @@ import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.example.iadvice.databinding.YourQuestionsFragmentBinding
+import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.database.core.persistence.PersistenceStorageEngine
 import kotlin.properties.Delegates
 
 const val KEY_CHATTYPE = "type_of_chat_to_display"
+const val KEY_HIGHLIHTEDPOS = "highlightedPosition"
 
 class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
 
@@ -47,8 +50,11 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        PersistenceUtils.highlightedPosition = RecyclerView.NO_POSITION
         if(savedInstanceState != null){
             chatType = savedInstanceState.getString(KEY_CHATTYPE,"archived")
+            if(chatType != "archived")
+                PersistenceUtils.highlightedPosition = savedInstanceState.getInt(KEY_HIGHLIHTEDPOS)
         }
 
         viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
@@ -93,7 +99,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
             else -> viewModel.archivedChatList
         }
 
-        viewAdapter = QuestionsAdapter(chatList, chatType, this@RecyclerViewHandlerFragment)
+        viewAdapter = QuestionsAdapter(chatList, chatType, this@RecyclerViewHandlerFragment, PersistenceUtils.highlightedPosition)
 
         recyclerView = binding.RecyclerView.apply {
             //used to improve performances
@@ -161,5 +167,7 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(KEY_CHATTYPE,chatType)
+        Log.d("QUESTION_ADAPTER", "HIGHLIGHTED SALVATO ---> ${PersistenceUtils.highlightedPosition}")
+        outState.putInt(KEY_HIGHLIHTEDPOS, PersistenceUtils.highlightedPosition)
     }
 }

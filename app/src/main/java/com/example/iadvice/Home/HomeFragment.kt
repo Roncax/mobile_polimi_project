@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.viewpager2.widget.ViewPager2
@@ -70,9 +71,19 @@ class HomeFragment : Fragment() {
             activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
         }
 
-        binding.fab!!.setOnClickListener{findNavController().navigate(R.id.newQuestionFragment, null) }
+        binding.fab!!.setOnClickListener{onFabClick()}
+
 
         return binding.root
+    }
+
+    private fun onFabClick() {
+        if (PersistenceUtils.isTablet){
+            activity?.findNavController(R.id.chat_nav_container)?.navigate(R.id.newQuestionFragment)
+        }
+        else {
+            findNavController().navigate(R.id.newQuestionFragment, null)
+        }
     }
 
 

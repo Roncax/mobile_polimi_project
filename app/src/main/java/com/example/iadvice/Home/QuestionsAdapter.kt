@@ -3,6 +3,8 @@ package com.example.iadvice.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.iadvice.GlideApp
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.database.Chat
 import com.google.android.material.card.MaterialCardView
@@ -20,14 +23,20 @@ import com.google.firebase.storage.StorageReference
 
 
 lateinit var context_used: Context
+private const val TAG = "QUESTION_ADAPTER"
 
 class QuestionsAdapter(
     val myDataset: MutableList<Chat>,
     val chatType: String,
-    val itemClickListener: OnItemClickListener
+    val itemClickListener: OnItemClickListener,
+     highlightedPosition: Int
 ) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
 
-    var highlightedPosition = RecyclerView.NO_POSITION
+    var highlightedPosition: Int
+    init{
+        this.highlightedPosition = highlightedPosition
+        Log.d(TAG,"HIGHLIGHTED PASSATO --> ${PersistenceUtils.highlightedPosition}")
+    }
 
     private val listener: OnItemClickListener = itemClickListener
 
@@ -44,10 +53,10 @@ class QuestionsAdapter(
         val item = myDataset[position]
         holder.getType(chatType)
 
-        //holder.itemView.isSelected = highlightedPosition == position;
+        Log.d(TAG,"HIGHLIGHTED NEL BIND --> ${PersistenceUtils.highlightedPosition}")
 
         if(highlightedPosition == position){
-            holder.card.setBackgroundColor(Color.parseColor("#2196F3"))
+            holder.card.setBackgroundColor(ContextCompat.getColor(context_used, R.color.colorPrimaryLight))
         }else{
             holder.card.setBackgroundColor(Color.parseColor("#FFFFFF"))
         }
@@ -144,6 +153,9 @@ class QuestionsAdapter(
 
             itemView.setOnClickListener{
                 highlightedPosition = layoutPosition
+                if(chatType !="archived")
+                    PersistenceUtils.highlightedPosition = layoutPosition
+                Log.d(TAG,"HIGHLIGHTED DOPO CLICK --> ${PersistenceUtils.highlightedPosition}")
                 notifyDataSetChanged()
             clickListener.onItemClick(item)
             }

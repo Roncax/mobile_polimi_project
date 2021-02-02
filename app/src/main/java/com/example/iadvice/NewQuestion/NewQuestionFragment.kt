@@ -14,11 +14,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.iadvice.GlideApp
+import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
 import com.example.iadvice.databinding.NewQuestionFragmentBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.installations.local.PersistedInstallation
 import java.util.*
 import javax.xml.datatype.DatatypeConstants.MONTHS
 
@@ -61,8 +64,13 @@ class NewQuestionFragment : Fragment() {
                         .isNotEmpty() and questionEditTextView.text.toString().isNotEmpty()
                 ) {
                     fillViewModel()
+                    if(!PersistenceUtils.isTablet){
                     requireView().findNavController()
-                        .navigate(R.id.action_newQuestionFragment_to_newQuestionImagesFragment)
+                        .navigate(R.id.action_newQuestionFragment_to_newQuestionImagesFragment)}
+                    else{
+                        activity?.findNavController(R.id.chat_nav_container)?.navigate(R.id.action_newQuestionFragment_to_newQuestionImagesFragment)
+
+                    }
                 } else {
                     Toast.makeText(
                         context,
