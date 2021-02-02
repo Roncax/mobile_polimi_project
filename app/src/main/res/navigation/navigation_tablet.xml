@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_tablet"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_tablet"
     app:startDestination="@id/emptyFragment">
 
     <fragment
@@ -31,4 +33,17 @@
         android:id="@+id/newQuestionImagesFragment"
         android:name="com.example.iadvice.newQuestion.NewQuestionImagesFragment"
         android:label="NewQuestionImagesFragment" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.iadvice.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_your_questions_fragment"
+            app:destination="@id/your_questions_fragment" />
+    </fragment>
+    <activity
+        android:id="@+id/your_questions_fragment"
+        android:name="com.example.iadvice.MainActivity"
+        android:label="your_questions_fragment"
+        tools:layout="@layout/your_questions_fragment" />
 </navigation>

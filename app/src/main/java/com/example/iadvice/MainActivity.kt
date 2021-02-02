@@ -139,6 +139,9 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.archiveFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_your_questions_fragment)
+                if(PersistenceUtils.isTablet){
+                    findNavController(R.id.chat_nav_container).navigate(R.id.your_questions_fragment)
+                }
             }
             R.id.rankingFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_rankingFragment)
