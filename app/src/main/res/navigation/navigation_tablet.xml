@@ -19,4 +19,16 @@
         android:id="@+id/chatInformationsFragment"
         android:name="com.example.iadvice.chatInformation.ChatInformationsFragment"
         android:label="ChatInformationsFragment" />
+    <fragment
+        android:id="@+id/newQuestionFragment"
+        android:name="com.example.iadvice.newQuestion.NewQuestionFragment"
+        android:label="NewQuestionFragment" >
+        <action
+            android:id="@+id/action_newQuestionFragment_to_newQuestionImagesFragment"
+            app:destination="@id/newQuestionImagesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newQuestionImagesFragment"
+        android:name="com.example.iadvice.newQuestion.NewQuestionImagesFragment"
+        android:label="NewQuestionImagesFragment" />
 </navigation>

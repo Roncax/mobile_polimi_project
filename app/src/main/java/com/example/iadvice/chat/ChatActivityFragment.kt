@@ -104,6 +104,10 @@ class ChatActivityFragment : Fragment() {
         if (!PersistenceUtils.isTablet)
             requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE
 
+        
+
+
+
         binding.apply {
             messageList.layoutManager = LinearLayoutManager(context)
             messageList.adapter = adapter
