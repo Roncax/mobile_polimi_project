@@ -13,13 +13,11 @@
 
     <color name="white">#FFFFFF</color>
 
-
-
-    <color name="category_home">#E1D39A</color>
-    <color name="category_sport">#7DCEA0 </color>
+    <color name="category_home">#CAAE3D</color>
+    <color name="category_sport">#53A175</color>
     <color name="category_technology">#8EBFDF</color>
     <color name="category_games">#E36C53</color>
     <color name="category_style">#C6AAD1</color>
-    <color name="category_various">#C3C6C8</color>
+    <color name="category_various">#717171</color>
 
 </resources>

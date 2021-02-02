@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/chatCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="5dp"
     android:clickable="true"
     android:focusable="true"
     app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="5dp"
-    app:strokeWidth="2dp">
+    app:cardCornerRadius="5dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/questionChat_view"
@@ -26,8 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +81,6 @@
             android:layout_marginEnd="15dp"
             android:ellipsize="end"
             android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@+id/ownerLabel_text"
             app:layout_constraintEnd_toStartOf="@+id/category_image"
             app:layout_constraintStart_toStartOf="@+id/questionChatTitle_text"
             app:layout_constraintTop_toBottomOf="@+id/questionChatTitle_text"
@@ -92,6 +90,7 @@
             android:id="@+id/ownerLabel_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="5dp"
             android:text="Owner:"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -114,7 +113,9 @@
             android:id="@+id/category_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/ownerChatQuestion_text"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/imageView"

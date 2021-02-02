@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.iadvice.GlideApp
@@ -56,7 +57,8 @@ class QuestionsAdapter(
         Log.d(TAG,"HIGHLIGHTED NEL BIND --> ${PersistenceUtils.highlightedPosition}")
 
         if(highlightedPosition == position){
-            holder.card.setBackgroundColor(ContextCompat.getColor(context_used, R.color.colorPrimaryLight))
+            holder.card.setBackgroundColor(ContextCompat.getColor(context_used,R.color.colorPrimaryLight))
+            holder.card.radius = 0F
         }else{
             holder.card.setBackgroundColor(Color.parseColor("#FFFFFF"))
         }
