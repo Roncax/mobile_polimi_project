@@ -189,7 +189,7 @@ class RegisterFragment : Fragment(), OnCategoryClickListener {
                 viewModel.username = binding.nicknameText.text.toString()
                 viewModel.uid = it.result!!.user!!.uid
                 viewModel.gender = binding.genderSpinner.selectedItem.toString()
-                viewModel.country = binding.countrySpinner.selectedCountryCode
+                viewModel.country = binding.countrySpinner.selectedCountryNameCode
 
                 viewModel.registerUser()
             }
