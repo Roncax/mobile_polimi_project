@@ -30,8 +30,7 @@ private const val TAG = "QUESTION_ADAPTER"
 class QuestionsAdapter(
     val myDataset: MutableList<Chat>,
     val chatType: String,
-    val itemClickListener: OnItemClickListener,
-     highlightedPosition: Int
+    val itemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
 
     var highlightedPosition = PersistenceUtils.highlightedPosition
@@ -67,6 +66,9 @@ class QuestionsAdapter(
         }else {
             holder.card.setBackgroundColor(Color.parseColor("#FFFFFF"))
         }
+
+        if(!PersistenceUtils.isTablet)
+            holder.card.setBackgroundColor(Color.parseColor("#FFFFFF"))
 
         holder.bind(item, itemClickListener, myDataset.size.toString())
     }
