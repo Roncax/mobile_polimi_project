@@ -1,6 +1,7 @@
 package com.example.iadvice.chat
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +25,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.iadvice.GlideApp
 import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.R
+import com.example.iadvice.R.id.myNavHostFragment
 import com.example.iadvice.database.Chat
 import com.example.iadvice.database.Message
 import com.example.iadvice.evaluation.CustomListViewEvaluationDialog
@@ -102,10 +107,17 @@ class ChatActivityFragment : Fragment() {
 
         //nascondo l'altra appbar
         if (!PersistenceUtils.isTablet)
-            requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE
+        {requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE}
+        else{
+            val navHostFragmentFullScreen = parentFragmentManager.findFragmentById(R.id.myNavHostFragment)?.id
+            if(navHostFragmentFullScreen != null){
+                //sono nell'archivio
+                requireActivity().findViewById<AppBarLayout>(R.id.appBarLayout).visibility = View.GONE
+                val backIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.back_icon)
+                binding.toolbarChat.navigationIcon = backIcon
+            }
 
-        
-
+        }
 
 
         binding.apply {

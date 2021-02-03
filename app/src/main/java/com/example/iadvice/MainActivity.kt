@@ -19,6 +19,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.example.iadvice.database.User
+import com.example.iadvice.home.HomeFragmentDirections
+import com.example.iadvice.home.RecyclerViewHandlerFragmentDirections
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.StorageReference
@@ -139,9 +141,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.archiveFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_your_questions_fragment)
-                if(PersistenceUtils.isTablet){
-                    findNavController(R.id.chat_nav_container).navigate(R.id.your_questions_fragment)
-                }
+                /*if(PersistenceUtils.isTablet){
+                    findNavController(R.id.myNavHostFragment).navigate(HomeFragmentDirections.actionHomeFragmentToYourQuestionsFragment())
+                   }
+
+                 */
             }
             R.id.rankingFragment -> {
                 findNavController(R.id.myNavHostFragment).navigate(R.id.action_homeFragment_to_rankingFragment)
