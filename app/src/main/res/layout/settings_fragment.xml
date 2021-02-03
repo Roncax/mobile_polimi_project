@@ -37,8 +37,8 @@
             android:id="@+id/add_image_register_button"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="25dp"
             android:adjustViewBounds="true"
             android:clickable="true"
             android:contextClickable="false"
@@ -58,12 +58,33 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:text="Country:"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/RecyclerView"
+            app:layout_constraintBottom_toTopOf="@+id/materialCardView2"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            app:cardElevation="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/edit_button"
+            app:layout_constraintEnd_toEndOf="@+id/nickname_text_layout"
+            app:layout_constraintStart_toStartOf="@+id/nickname_text_layout"
+            app:layout_constraintTop_toBottomOf="@+id/country_spinner">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:isScrollContainer="true"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </com.google.android.material.card.MaterialCardView>
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/country_spinner"
@@ -82,19 +103,6 @@
             app:layout_constraintEnd_toEndOf="@+id/gender_spinner"
             app:layout_constraintStart_toStartOf="@+id/gender_spinner"
             app:layout_constraintTop_toTopOf="@+id/textView3" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/edit_button"
-            app:layout_constraintEnd_toEndOf="@+id/nickname_text_layout"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -132,6 +140,15 @@
             app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintStart_toEndOf="@+id/textView"
             tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change your picture"
+            app:layout_constraintEnd_toEndOf="@+id/add_image_register_button"
+            app:layout_constraintStart_toStartOf="@+id/add_image_register_button"
+            app:layout_constraintTop_toBottomOf="@+id/add_image_register_button" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

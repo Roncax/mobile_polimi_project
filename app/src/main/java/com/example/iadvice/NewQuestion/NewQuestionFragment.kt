@@ -22,6 +22,8 @@ import com.example.iadvice.databinding.NewQuestionFragmentBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.installations.local.PersistedInstallation
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.util.*
 import javax.xml.datatype.DatatypeConstants.MONTHS
 
@@ -47,7 +49,12 @@ class NewQuestionFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val viewModelFactory = NewQuestionViewModelFactory(application)
 
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(NewQuestionViewModel::class.java)
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            viewModelFactory
+        ).get(NewQuestionViewModel::class.java)
+
+        uploadDefaultImage()
 
         binding.apply {
 
@@ -60,23 +67,37 @@ class NewQuestionFragment : Fragment() {
 
 
             nextButton.setOnClickListener {
-                if (titleTexbox.text.toString()
-                        .isNotEmpty() and questionEditTextView.text.toString().isNotEmpty()
-                ) {
-                    fillViewModel()
-                    if(!PersistenceUtils.isTablet){
-                    requireView().findNavController()
-                        .navigate(R.id.action_newQuestionFragment_to_newQuestionImagesFragment)}
-                    else{
-                        activity?.findNavController(R.id.chat_nav_container)?.navigate(R.id.action_newQuestionFragment_to_newQuestionImagesFragment)
 
-                    }
-                } else {
+                if (titleTexbox.text.toString().isEmpty()) {
                     Toast.makeText(
                         context,
-                        "You forgot to insert the title or the question, please fill and retry",
+                        "You forgot to insert the title, please fill and retry",
                         Toast.LENGTH_SHORT
                     ).show()
+                    return@setOnClickListener
+                } else if (questionEditTextView.text.toString().isEmpty()) {
+                    Toast.makeText(
+                        context,
+                        "You forgot to insert the question, please fill and retry",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                } else if (viewModel.coverImage == Uri.EMPTY) {
+                    Toast.makeText(
+                        context,
+                        "You forgot to insert the cover image, please add one and retry",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                } else {
+                    fillViewModel()
+                    if (!PersistenceUtils.isTablet) {
+                        requireView().findNavController()
+                            .navigate(R.id.action_newQuestionFragment_to_newQuestionImagesFragment)
+                    } else {
+                        activity?.findNavController(R.id.chat_nav_container)
+                            ?.navigate(R.id.action_newQuestionFragment_to_newQuestionImagesFragment)
+                    }
                 }
             }
 
@@ -129,6 +150,21 @@ class NewQuestionFragment : Fragment() {
         viewModel.category = binding.categorySpinner.selectedItem.toString()
         viewModel.question = binding.questionEditTextView.text.toString()
         viewModel.maxUsers = binding.maxUserSlider.value.toInt()
+    }
+
+
+    private fun uploadDefaultImage() {
+        val imagesRef: StorageReference =
+            FirebaseStorage.getInstance().reference.child("avatar_images/default_picture.png")
+
+        binding.apply {
+            GlideApp.with(this@NewQuestionFragment)
+                .load(imagesRef)
+                .fitCenter()
+                .circleCrop()
+                .into(coverImageView)
+        }
+
     }
 
 
