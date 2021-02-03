@@ -3,6 +3,7 @@ package com.example.iadvice
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -23,6 +24,7 @@ class MainHomeFragment : Fragment() {
             Log.d(TAG, "The user is already present with id ${user?.uid}")
             PersistenceUtils.retrieveUser()
             PersistenceUtils.retrieveCurrentUserImage()
+            PersistenceUtils.highlightedPosition = RecyclerView.NO_POSITION
             findNavController().navigate(R.id.homeFragment)
         } else {
             Log.d(TAG, "The user is not already present")

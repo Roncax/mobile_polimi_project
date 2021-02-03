@@ -50,11 +50,13 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        PersistenceUtils.highlightedPosition = RecyclerView.NO_POSITION
+        //PersistenceUtils.highlightedPosition = RecyclerView.NO_POSITION
         if(savedInstanceState != null){
             chatType = savedInstanceState.getString(KEY_CHATTYPE,"archived")
-            if(chatType != "archived")
+            /*if(chatType != "archived")
                 PersistenceUtils.highlightedPosition = savedInstanceState.getInt(KEY_HIGHLIHTEDPOS)
+
+             */
         }
 
         viewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
@@ -99,6 +101,11 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
             else -> viewModel.archivedChatList
         }
 
+  /*      val navHostFragmentFullScreen = parentFragmentManager.findFragmentById(R.id.myNavHostFragment)?.id
+        if(navHostFragmentFullScreen != null)
+            Log.d("PORCODDIO","${chatType}")
+*/
+        Log.d("QUESTION_ADAPTER","TI STO PASSANDO --> ${chatType} E PERSISTENCE VALE ${PersistenceUtils.highlightedPosition}")
         viewAdapter = QuestionsAdapter(chatList, chatType, this@RecyclerViewHandlerFragment, PersistenceUtils.highlightedPosition)
 
         recyclerView = binding.RecyclerView.apply {
@@ -168,6 +175,6 @@ class RecyclerViewHandlerFragment() : Fragment(), OnItemClickListener {
         super.onSaveInstanceState(outState)
         outState.putString(KEY_CHATTYPE,chatType)
         Log.d("QUESTION_ADAPTER", "HIGHLIGHTED SALVATO ---> ${PersistenceUtils.highlightedPosition}")
-        outState.putInt(KEY_HIGHLIHTEDPOS, PersistenceUtils.highlightedPosition)
+       // outState.putInt(KEY_HIGHLIHTEDPOS, PersistenceUtils.highlightedPosition)
     }
 }

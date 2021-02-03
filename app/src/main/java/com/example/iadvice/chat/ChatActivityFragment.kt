@@ -116,7 +116,6 @@ class ChatActivityFragment : Fragment() {
                 val backIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.back_icon)
                 binding.toolbarChat.navigationIcon = backIcon
             }
-
         }
 
 

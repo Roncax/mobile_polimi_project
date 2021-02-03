@@ -21,6 +21,7 @@ import com.example.iadvice.database.Chat
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlin.properties.Delegates
 
 
 lateinit var context_used: Context
@@ -33,10 +34,14 @@ class QuestionsAdapter(
      highlightedPosition: Int
 ) : RecyclerView.Adapter<QuestionsAdapter.QuestionChatViewHolder>() {
 
-    var highlightedPosition: Int
+    var highlightedPosition = PersistenceUtils.highlightedPosition
+
     init{
-        this.highlightedPosition = highlightedPosition
-        Log.d(TAG,"HIGHLIGHTED PASSATO --> ${PersistenceUtils.highlightedPosition}")
+    if(chatType == "archived")
+        this.highlightedPosition = RecyclerView.NO_POSITION
+
+    Log.d(TAG,"HIGHLIGHTED INIZIALE VALE --> ${this.highlightedPosition}")
+
     }
 
     private val listener: OnItemClickListener = itemClickListener
@@ -56,10 +61,10 @@ class QuestionsAdapter(
 
         Log.d(TAG,"HIGHLIGHTED NEL BIND --> ${PersistenceUtils.highlightedPosition}")
 
-        if(highlightedPosition == position){
+        if(position == highlightedPosition && chatType != "archived"){
             holder.card.setBackgroundColor(ContextCompat.getColor(context_used,R.color.colorPrimaryLight))
             holder.card.radius = 0F
-        }else{
+        }else {
             holder.card.setBackgroundColor(Color.parseColor("#FFFFFF"))
         }
 
@@ -154,10 +159,11 @@ class QuestionsAdapter(
             }
 
             itemView.setOnClickListener{
+                if(chatType !="archived"){
                 highlightedPosition = layoutPosition
-                if(chatType !="archived")
                     PersistenceUtils.highlightedPosition = layoutPosition
-                Log.d(TAG,"HIGHLIGHTED DOPO CLICK --> ${PersistenceUtils.highlightedPosition}")
+                Log.d(TAG,"SALVO PERSISTENCEUTILS --> ${PersistenceUtils.highlightedPosition}")
+                }
                 notifyDataSetChanged()
             clickListener.onItemClick(item)
             }
