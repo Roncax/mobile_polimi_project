@@ -3,10 +3,12 @@ package com.example.iadvice.newQuestion
 import android.app.Application
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.iadvice.PersistenceUtils
 import com.example.iadvice.database.Chat
+import com.example.iadvice.home.context_used
 import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -103,22 +105,30 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
                     }
                 }
 
+                if(userMap.size <= 0){
+                    Log.d(TAG, "Only ${userMap.size} user selected")
+                    Toast.makeText(
+                        context_used, "No user fulfill the parameters, try others!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else {
 
-                uploadImages(chatId)
-                val newChat = Chat(
-                    chatId = chatId,
-                    owner = mutableMapOf(userId to PersistenceUtils.currentUser.username),
-                    title = title,
-                    isActive = true,
-                    userList = userMap,
-                    expiration = expiration,
-                    coverId = coverId,
-                    question = question,
-                    category = category
-                )
-                mDatabase.child("chats").child(chatId).setValue(newChat)
+                    uploadImages(chatId)
+                    val newChat = Chat(
+                        chatId = chatId,
+                        owner = mutableMapOf(userId to PersistenceUtils.currentUser.username),
+                        title = title,
+                        isActive = true,
+                        userList = userMap,
+                        expiration = expiration,
+                        coverId = coverId,
+                        question = question,
+                        category = category
+                    )
+                    mDatabase.child("chats").child(chatId).setValue(newChat)
 
-                    for((k, v) in userMap){
+                    for ((k, v) in userMap) {
                         mDatabase.child("users").child(k).child("chatlist")
                             .child("other")
                             .child(chatId).setValue(chatId)
@@ -128,8 +138,9 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
                             .setValue(v)
                     }
 
-                Log.d(TAG, "The chat $chatId is uploaded")
-                newChatLiveData.value = newChat
+                    Log.d(TAG, "The chat $chatId is uploaded")
+                    newChatLiveData.value = newChat
+                }
 
             }
 

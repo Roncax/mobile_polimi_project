@@ -64,20 +64,56 @@ class RegisterFragment : Fragment(), OnCategoryClickListener {
 
         binding.apply {
             registerButton.setOnClickListener {
-                if (binding.nicknameText.text.toString().isNotEmpty() and
-                    binding.genderSpinner.selectedItem.toString().isNotEmpty() and
-                    binding.emailRegisterText.text.toString().isNotEmpty() and
-                    binding.firstPwText.text.toString().isNotEmpty() and
-                    (viewModel.categories != mutableListOf<String>()) and
-                    (viewModel.uri != Uri.parse("gs://iadvice-49847.appspot.com/avatar_images/default_picture.png"))
-                ) {
-                    performRegister(binding)
-                } else {
-                    Toast.makeText(
-                        context, "You forgot a field, please fill and retry",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
+                when {
+                    binding.nicknameText.text.toString().isEmpty() -> {
+                        Toast.makeText(
+                            context, "You forgot to insert the nickname, please fill and retry",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+                    binding.genderSpinner.selectedItem.toString().isEmpty() -> {
+                        Toast.makeText(
+                            context, "You forgot to insert your gender, please fill and retry",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+                    binding.emailRegisterText.text.toString().isEmpty() -> {
+                        Toast.makeText(
+                            context, "You forgot to insert your email, please fill and retry",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+                    binding.firstPwText.text.toString().isEmpty() -> {
+                        Toast.makeText(
+                            context, "You forgot to insert the password, please fill and retry",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+                    viewModel.categories == mutableListOf<String>() -> {
+                        Toast.makeText(
+                            context, "You forgot to select the categories, please fill and retry",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+                    viewModel.uri == Uri.parse("gs://iadvice-49847.appspot.com/avatar_images/default_picture.png") -> {
+                        Toast.makeText(
+                            context, "You forgot to select your profile photo, please insert one",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+                    else -> {
+                        performRegister(binding)
+                        Toast.makeText(
+                            context, "Successful registration, your account has been created!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
 
             }
@@ -94,6 +130,7 @@ class RegisterFragment : Fragment(), OnCategoryClickListener {
 
         }
         uploadDefaultImage()
+
         return binding.root
     }
 
