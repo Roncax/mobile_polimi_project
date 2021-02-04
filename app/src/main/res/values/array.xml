@@ -3,7 +3,7 @@
 
     <string-array name="region_array">
         <item>My country</item>
-        <item>Rest of the world</item>
+        <item>All</item>
     </string-array>
 
     <string-array name="gender_array">

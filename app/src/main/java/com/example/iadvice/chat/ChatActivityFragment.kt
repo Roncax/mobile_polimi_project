@@ -60,8 +60,8 @@ class ChatActivityFragment : Fragment() {
     private val chatObserver = Observer<Chat> { chat ->
         binding.toolbarChat.chat_title.text = viewModel.currentChat.title
 
-        if (!chat.isActive) {
-            binding.materialCardView.visibility = View.GONE
+        if (chat.isActive) {
+            binding.materialCardView.visibility = View.VISIBLE
         }
 
         //Caricamento dell'immagine cover della chat
@@ -95,7 +95,9 @@ class ChatActivityFragment : Fragment() {
             R.layout.activity_chat_fragment, container, false
         )
 
+        binding.materialCardView.visibility = View.GONE
         viewModel = ViewModelProvider(this).get(ChatActivityViewModel::class.java)
+        viewModel.messageList = mutableListOf()
         adapter = MessageAdapter(requireContext(), viewModel)
 
         loadMessages(viewModel.currentChatId, binding.messageList)

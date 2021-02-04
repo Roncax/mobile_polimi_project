@@ -20,6 +20,7 @@ import kotlin.properties.Delegates
 
 object PersistenceUtils {
 
+    lateinit var currentChatCoverId: String
     lateinit var currenChatId: String
     var isTablet by Delegates.notNull<Boolean>()
     var highlightedPosition by Delegates.notNull<Int>()
@@ -177,8 +178,10 @@ object PersistenceUtils {
             val tempList = mutableListOf<StorageReference>()
             val items: List<StorageReference> = result.result!!.items
             for (item in items) {
-                Log.d(TAG, "Item retrieved $item")
-                tempList.add(item)
+                if (item.name != currentChatCoverId) {
+                    Log.d(TAG, "Item retrieved $item")
+                    tempList.add(item)
+                }
             }
             updateChatImages(tempList)
         }

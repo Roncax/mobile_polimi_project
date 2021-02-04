@@ -68,16 +68,13 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
                 realCountry = dataSnapshot.child(userId).child("country").value.toString()
                 realSex = dataSnapshot.child(userId).child("gender").value.toString()
 
-                Log.d(TAG, "real Country: $realCountry")
-                Log.d(TAG, "real Category: $category")
-                Log.d(TAG, "real Gender: $realSex")
 
                 kotlin.run loop@{
                     Log.d(TAG, "In loop")
 
                     children.forEach {
 
-                        if (userMap.size > maxUsers) {
+                        if (userMap.size >= maxUsers) {
                             return@loop
                         }
                         if (it.child("uid").value.toString() != userId) {
@@ -92,10 +89,6 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
                             val validUser =
                                 checkCountry(country = country) && checkCategory(categories) && checkGender(gender)
 
-                            Log.d(TAG, "Country: $country")
-                            Log.d(TAG, "Category: $categories")
-                            Log.d(TAG, "Gender: $gender")
-                            Log.d(TAG, "Is valid?: $validUser")
 
                             if (validUser) {
                                 Log.d(TAG, "On true validUser id: ${it.key}")
@@ -105,10 +98,10 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
                     }
                 }
 
-                if(userMap.size <= 0){
+                if(userMap.isEmpty()){
                     Log.d(TAG, "Only ${userMap.size} user selected")
                     Toast.makeText(
-                        context_used, "No user fulfill the parameters, try others!",
+                        context_used, "No user fulfill the parameters, try other parameters!",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -174,7 +167,7 @@ class NewQuestionViewModel(private val application: Application) : ViewModel() {
     private fun checkGender(gender: String): Boolean {
         return when (sex) {
             "Both" -> true
-            else -> (gender == realSex)
+            else -> (gender != realSex)
         }
     }
 

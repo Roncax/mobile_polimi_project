@@ -30,12 +30,13 @@ init {
     retrieveChat()
 }
 
-    private fun retrieveChat(){
+    fun retrieveChat(){
         val chatOwner = object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val chat = dataSnapshot.getValue<Chat>()
                 currentChat = chat!!
+                PersistenceUtils.currentChatCoverId = currentChat.coverId.toString()
                 currentChatLiveData.value = chat
             }
 
