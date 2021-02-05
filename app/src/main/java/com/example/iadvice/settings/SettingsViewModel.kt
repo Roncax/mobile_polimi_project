@@ -69,10 +69,12 @@ class SettingsViewModel : ViewModel() {
         db.child("users").child(userId).child("gender").setValue(_gender.value.toString())
         db.child("users").child(userId).child("username").setValue(_username.value.toString())
 
+        var categories_map = mutableMapOf<String, String>()
         for (category in categoriesList.keys) {
-            db.child("users").child(userId).child("categories").child(category).setValue("true")
+            categories_map[category] = "true"
         }
 
+        db.child("users").child(userId).child("categories").setValue(categories_map)
         if (uri != Uri.parse("gs://iadvice-49847.appspot.com/avatar_images/default_picture.png")) {
             Log.d(TAG, "L'immagine non é nulla!!")
             FirebaseStorage.getInstance().reference.child("avatar_images/$userId").putFile(uri)
